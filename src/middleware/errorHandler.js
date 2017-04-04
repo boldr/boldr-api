@@ -13,14 +13,13 @@ export default app => {
     // eslint-disable-line no-unused-vars
     const statusCode = err.status || 500;
 
-    const stacktrace = app.get('env') === 'development'
+    const stacktrace = process.env.NODE_ENV === 'development'
       ? {
         stack: err.stack,
       }
       : {};
 
-    res.status(statusCode);
-    res.json({
+    res.status(statusCode).json({
       status: statusCode,
       error: err.error || err.message,
       ...stacktrace,

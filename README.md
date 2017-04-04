@@ -3,3 +3,6 @@
 [![Build Status](https://drone.boldr.io/api/badges/boldr/boldr-api/status.svg)](https://drone.boldr.io/boldr/boldr-api) |
 [![Build Status](https://travis-ci.org/boldr/boldr-api.svg?branch=master)](https://travis-ci.org/boldr/boldr-api) |  [![codecov](https://codecov.io/gh/boldr/boldr-api/branch/master/graph/badge.svg)](https://codecov.io/gh/boldr/boldr-api) |
  [![Code Climate](https://codeclimate.com/github/boldr/boldr-api/badges/gpa.svg)](https://codeclimate.com/github/boldr/boldr-api)
+
+
+ Have questions or want to help with development? Join us on <a href="https://slack.boldr.io" target="blank"><img src="/docs/assets/slack-logo.png" height="25" /></a>.

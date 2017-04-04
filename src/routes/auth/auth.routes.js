@@ -3,7 +3,7 @@ import { isAuthenticated } from '../../services/authentication';
 import * as ctrl from './auth.controller';
 
 /**
- * @apiDefine AuthGroup
+ * @apiDefine Auth
  *
  */
 const router = new Router();
@@ -11,7 +11,7 @@ const router = new Router();
 /**
  * @api {post} /auth/login        Login
  * @apiName Login
- * @apiGroup AuthGroup
+ * @apiGroup Auth
  * @apiHeader {String} Authorization Bearer {token}
  * @apiParam {String} email User email address
  * @apiParam {String} password User password
@@ -51,7 +51,7 @@ router.post('/login', ctrl.loginUser);
 /**
  * @api {post} /auth/signup       Signup
  * @apiName Signup
- * @apiGroup AuthGroup
+ * @apiGroup Auth
  * @apiParam {String} email User email address
  * @apiParam {String} password User password
  * @apiParam {String} first_name First name of the user
@@ -67,7 +67,7 @@ router.post('/signup', ctrl.registerUser);
 /**
  * @api {get} /auth/check          Authentication check
  * @apiName CheckAuthentication
- * @apiGroup AuthGroup
+ * @apiGroup Auth
  * @apiUse authHeader
  * @apiSuccess (Success 200) {Object} user Current user data
  * @apiError 401 Invalid credentials.
@@ -77,7 +77,7 @@ router.get('/check', isAuthenticated, ctrl.checkAuthentication);
 /**
  * @api {get} /auth/verification/:verifToken        Verify user
  * @apiName verify
- * @apiGroup AuthGroup
+ * @apiGroup Auth
  * @apiParam {String} verification <VerificationToken>
  * @apiSuccess 200 {Object} user Current user data
  * @apiError 401 Invalid token.

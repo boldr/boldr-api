@@ -20,6 +20,8 @@ routes(app);
 // Configure static serving of our "public" root http path static files.
 // Note: these will be served off the root (i.e. '/') of our application.
 app.use('/uploads', Express.static(pathResolve(appRootDir.get(), './static/uploads')));
+
+app.use('/apidocs', Express.static(pathResolve(appRootDir.get(), './static/apidocs')));
 // Catch and format errors
 errorHandler(app);
 

@@ -72,20 +72,57 @@ export default app => {
 
 /**
  * @apiDefine authHeader
- * @apiHeader {String} Authorization Bearer JSONWEBTOKEN
- * @apiHeaderExample {json} Authorization Header Example:
- *    {
- *      "Authorization": "Bearer JSONWEBTOKEN"
- *    }
+ * @apiHeader (Authorization) {String} Authorization    A JWT retrieved from logging in.
+ * @apiHeaderExample AuthHeader (example):
+ *      "Authorization": "Bearer eyJhbGciOiJIUzI1NiI"
  */
 
 /**
- * @apiDefine admin Admin access only
+ * @apiDefine admin   Admin access only
  * You must pass an authorization header with a token associated with an admin user
  * to access this endpoint.
  */
 
-/**
-  * @apiDefine user User access for certain restricted routes.
+ /**
+  * @apiDefine user   User access for certain restricted routes.
   * You must pass an authorization header with a token to access this endpoint.
   */
+
+/**
+ * @apiDefine UnauthorizedError
+ * @apiError 401    Unauthorized
+ * @apiErrorExample Unauthorized (example):
+ *     HTTP/1.1 401 Unauthorized
+ *     "The request requires user authentication. Please try again with the correct authorization header"
+ */
+
+ /**
+  * @apiDefine NotFoundError
+  * @apiError 404    Not Found
+  * @apiErrorExample NotFound (example):
+  *     HTTP/1.1 404 Not Found
+  *     "Unable to find what you were looking for. Please try the request again."
+  */
+
+/**
+ * @apiDefine MissingUserFields
+ * @apiError 400    Bad Request: MissingUserFields
+ * @apiErrorExample MissingUserFields (example):
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *      "username": [{
+ *          "message":"should have required property 'username'",
+ *          "keyword":"required",
+ *          "params": {
+ *            "missingProperty":"username"
+ *           }
+ *         }],
+ *      "password": [{
+ *          "message":"should have required property 'password'",
+ *          "keyword":"required",
+ *          "params": {
+ *            "missingProperty":"password"
+ *          }
+ *       }]
+ *     }
+ */

@@ -123,7 +123,7 @@ describe('Posts API Endpoint', () => {
       .set('Accept', 'application/json')
       .set('Authorization', `Bearer ${token}`)
       .send({
-        name: faker.random.word(),
+        name: 'faketag',
         description: 'im a fake tag',
       });
 

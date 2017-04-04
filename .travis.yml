@@ -1,18 +1,13 @@
 sudo: required
-
 language: node_js
-
 node_js:
-  - 7.7
-
+- 7.7
 services:
-  - docker
-
+- docker
 branches:
   only:
   - master
   - develop
-
 env:
   CXX: g++-4.8
   DOCKER_COMPOSE_VERSION: 1.10.0
@@ -25,32 +20,31 @@ git:
 addons:
   apt:
     sources:
-      - ubuntu-toolchain-r-test
+    - ubuntu-toolchain-r-test
     packages:
-      - g++-4.8
-
+    - g++-4.8
 before_install:
-  - sudo /etc/init.d/postgresql stop
-  - sudo apt-get update
-  - sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-engine
-  - docker-compose --version
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
-  - docker-compose --version
-  - docker-compose -f ./docker-compose.yml up --build -d
-
+- sudo /etc/init.d/postgresql stop
+- sudo apt-get update
+- sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-engine
+- docker-compose --version
+- sudo rm /usr/local/bin/docker-compose
+- curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname
+  -s`-`uname -m` > docker-compose
+- chmod +x docker-compose
+- sudo mv docker-compose /usr/local/bin
+- docker-compose --version
+- docker-compose -f ./docker-compose.yml up --build -d
 install:
-  - yarn
-
+- yarn
 script:
-  - yarn test:ci
-
+- yarn test:ci
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
-
+- bash <(curl -s https://codecov.io/bash)
 cache:
   yarn: true
   directories:
-    - node_modules
+  - node_modules
+notifications:
+  slack:
+    secure: jgeaFqyqaCgO4CUpvQT7QhIYXfIkB9i/XO/Breu9bjb168pw2EsTL4q3v8pxfcervQ9DV6ShO64obAc6j02bOK00AYFTSVcM9Hlnz+HRMVu+CsIbEGGr5Sw6JkOVJQHVWP51iWK5puQVoRefNNcjkD8ad7uLeZxtaRTR1dTYSzZUyWj/g/oRM9IcZSaE1+3iyx/DmsuMP4e7SzYGyacm7WmZZ5WbPOfk5u1GNMvjhF7DVhZTWGXdNb0opYC2sz4bia/AL8B1cMxF09DfVZngUYlcWSfsEiVHYb7q7BUB4oYYvc4ScL1TidfekNWfXC1sWyMQOQRA+jy/WFAJo8VmiCG1Thx0e4EhcvpyvABaozINUgMbnmP/Bdt/Kb98mxad1UhiLb8wP7qAcME9JhucHQamOzrlipjAreb6yWQHmx/WOojvpiKJ+JkqCps7daNttX0XdnDWc5X1DK8iaawui2XNAXQEfY+RlR5H4WL9DeEQ81KoKKeWLb9pTJpqdlFZqBLzvXA886B0owiiACwW50p48Uxx9iuip1QPcwHwcoezqmGTl8NB2LYStz4AMAS59obopQ2oONFzZD/JPZ1ihosuvkkni4JipA+BssdXEEBH+lq4GdDY8mHNx+DYmYBiGdyWUHb5iH79kc9f0KINLabA83YgQ9TR3E6459iq/EA=

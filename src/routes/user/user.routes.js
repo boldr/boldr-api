@@ -25,7 +25,7 @@ router.get('/', processQuery, controller.index.bind(controller));
  * @apiGroup User
  * @apiPermission public
  * @apiSuccess {Object} user User's data.
- * @apiError 404 User not found.
+ * @apiUse NotFoundError
  */
 router.get('/:id', ctrl.getUser);
 
@@ -38,61 +38,74 @@ router.get('/:id', ctrl.getUser);
  * @apiParam {String} email User's email address.
  * @apiParam {String} password User's password.
  * @apiSuccess (Sucess 201) {Object} user User's data.
- * @apiError {Object} 400 Some parameters may contain invalid values.
- * @apiError 401 Admin access only.
+ * @apiUse MissingUserFields
+ * @apiUse UnauthorizedError
  * @apiError 409 Email already registered.
  */
 router.post('/', isAuthenticated, checkRole('Admin'), ctrl.adminCreateUser);
 
 /**
  * @api {put} /users/:id      Update user
- * @apiName updateUser
- * @apiGroup User
- * @apiPermission admin
- * @apiUse authHeader
- * @apiParam {String} [email] User's email.
- * @apiParam {String} [password] User's password.
- * @apiSuccess {Object} user User's data.
- * @apiError {Object} 400 Some parameters may contain invalid values.
- * @apiError 401 Current user or admin access only.
- * @apiError 404 User not found.
- */
-router.put('/:id', isAuthenticated, ctrl.updateUser);
-router.put('/admin/:id', isAuthenticated, checkRole('Admin'), ctrl.adminUpdateUser);
-/**
- * @api {patch} /users/:id        Update user
- * @apiName updateUser
+ * @apiName UpdateUser
  * @apiGroup User
  * @apiPermission user
  * @apiUse authHeader
  * @apiParam {String} [email] User's email.
  * @apiParam {String} [password] User's password.
  * @apiSuccess {Object} user User's data.
- * @apiError {Object} 400 Some parameters may contain invalid values.
- * @apiError 401 Current user or admin access only.
- * @apiError 404 User not found.
+ * @apiUse UnauthorizedError
+ * @apiUse NotFoundError
+ */
+router.put('/:id', isAuthenticated, ctrl.updateUser);
+
+/**
+ * @api {put} /users/admin/:id      Admin update user
+ * @apiName AdminUpdateUser
+ * @apiGroup User
+ * @apiPermission admin
+ * @apiUse authHeader
+ * @apiParam {String} [email] User's email.
+ * @apiParam {String} [password] User's password.
+ * @apiSuccess {Object} user User's data.
+ * @apiUse UnauthorizedError
+ * @apiUse NotFoundError
+ */
+router.put('/admin/:id', isAuthenticated, checkRole('Admin'), ctrl.adminUpdateUser);
+/**
+ * @api {patch} /users/:id        Update user
+ * @apiName ModifyUser
+ * @apiGroup User
+ * @apiPermission user
+ * @apiUse authHeader
+ * @apiParam {String} [email] User's email.
+ * @apiParam {String} [password] User's password.
+ * @apiSuccess {Object} user User's data.
+ * @apiUse UnauthorizedError
+ * @apiUse NotFoundError
  */
 router.patch('/:id', isAuthenticated, ctrl.updateUser);
 
 /**
  * @api {delete} /users/:id       Delete user
- * @apiName destroyUser
+ * @apiName DestroyUser
  * @apiGroup User
  * @apiPermission admin
  * @apiUse authHeader
+ * @apiParam {String} id    The id of the user to be deleted
  * @apiSuccess (Success 204) 204 No Content.
- * @apiError 401 Admin access only.
- * @apiError 404 User not found.
+ * @apiUse UnauthorizedError
+ * @apiUse NotFoundError
  */
 router.delete('/:id', isAuthenticated, checkRole('Admin'), ctrl.destroyUser);
 
 /**
  * @api {get} /users/:username/profile     Get user profile
- * @apiName getUsername
+ * @apiName GetProfile
  * @apiGroup User
  * @apiPermission public
- * @apiSuccess {Object} user User's data.
- * @apiError 404 User not found.
+ * @apiParam {String} username  Username of the profile owner.
+ * @apiSuccess {Object} user    User's data.
+ * @apiUse NotFoundError
  */
 router.get('/:username/profile', ctrl.getUsername);
 

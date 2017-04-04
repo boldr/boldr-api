@@ -5,7 +5,7 @@ import { checkRole } from '../../middleware/rbac';
 import * as ctrl from './admin.controller';
 
 /**
- * @apiDefine AdminGroup
+ * @apiDefine Admin
  *
  */
 
@@ -14,7 +14,7 @@ const router = new Router();
 /**
  * @api {get} /stats          List statistics
  * @apiName GetAllStats
- * @apiGroup AdminGroup
+ * @apiGroup Admin
  * @apiPermission admin
  * @apiSuccess {Number}   posts            The post count
  * @apiSuccess {Number}   tags             The tag count

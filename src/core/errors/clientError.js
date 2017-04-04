@@ -53,8 +53,7 @@ class Forbidden extends HttpError {
 class NotFound extends HttpError {
   constructor(message, status = 404, isPublic = false) {
     super(
-      `The server monkeys misplaced the resource you requested. Check for misspellings and
-    try the request again..`,
+      'Unable to find what you were looking for. Please try the request again.',
       404,
       isPublic,
     );

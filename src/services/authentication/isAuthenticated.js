@@ -1,5 +1,6 @@
 /* @flow */
 import type { $Response, $Request, NextFunction } from 'express';
+import { Unauthorized } from '../../core/errors/clientError';
 /**
  * Attaches the user object to the request if authenticated
  * Otherwise returns 403
@@ -11,7 +12,7 @@ function isAuthenticated(req: $Request, res: $Response, next: NextFunction) {
   if (req.isAuthenticated()) {
     next();
   } else {
-    return res.status(401).json('Unauthorized. Please login and try again.');
+    return next(new Unauthorized());
   }
 }
 

@@ -4,7 +4,7 @@ import { checkRole } from '../../middleware/rbac';
 import * as ctrl from './attachment.controller';
 
 /**
- * @apiDefine AttachmentGroup
+ * @apiDefine Attachment
  *
  */
 
@@ -13,7 +13,7 @@ const router = new Router();
 /**
  * @api {get} /attachments              List all attachments
  * @apiName GetAllAttachments
- * @apiGroup AttachmentGroup
+ * @apiGroup Attachment
  *
  * @apiExample Example usage:
  * curl -i https://staging.boldr.io/api/v1/attachments
@@ -33,14 +33,14 @@ router.get('/', ctrl.listAttachments);
 /**
  * @api {post} /attachments         Upload attachment
  * @apiName UploadAttachment
- * @apiGroup AttachmentGroup
+ * @apiGroup Attachment
  * @apiPermission user
  */
 router.post('/', isAuthenticated, ctrl.uploadAttachment);
 /**
  * @api {get} /attachments/:id    Get specific attachment
  * @apiName GetAttachment
- * @apiGroup AttachmentGroup
+ * @apiGroup Attachment
  *
  * @apiExample Example usage:
  * curl -i https://staging.boldr.io/api/v1/attachments/1
@@ -54,7 +54,7 @@ router.get('/:id', ctrl.getAttachment);
 /**
  * @api {delete} /attachments/:id  Delete attachment
  * @apiName DeleteAttachment
- * @apiGroup AttachmentGroup
+ * @apiGroup Attachment
  * @apiUse authHeader
  * @apiPermission admin
  * @apiSuccess (Success 204) 204 No Content.
@@ -65,7 +65,7 @@ router.delete('/:id', isAuthenticated, checkRole('Admin'), ctrl.deleteAttachment
 /**
  * @api {put} /attachments/:id      Update attachment
  * @apiName UpdateAttachment
- * @apiGroup AttachmentGroup
+ * @apiGroup Attachment
  * @apiUse authHeader
  * @apiPermission admin
  * @apiSuccess (Success 202) 202

@@ -12,10 +12,13 @@
   "bugs": "https://github.com/boldr/boldr-api/issues",
   "homepage": "https://github.com/boldr/boldr-api#readme",
   "scripts": {
+    "api": "apidoc -i src -o static/apidocs",
+    "apidoc": "apidoc-markdown2 -p static/apidocs -o docs/apidoc.md",
     "build": "babel src --out-dir lib",
     "build:test": "echo \"nothing\" && exit 0",
     "changelog": "conventional-changelog -p atom -i CHANGELOG.md",
     "clean": "rimraf lib",
+    "clean:apidoc": "rimraf static/apidocs",
     "dev": "better-npm-run dev",
     "format": "prettier-eslint --write \"src/**/*.js\" \"db/**/*.js\" \"internal/**/*.js\"",
     "lint": "eslint src",
@@ -75,6 +78,8 @@
     "winston": "^2.3.1"
   },
   "devDependencies": {
+    "apidoc": "^0.17.5",
+    "apidoc-markdown2": "^0.3.2",
     "babel-cli": "^6.24.0",
     "babel-eslint": "^7.2.1",
     "babel-jest": "^19.0.0",

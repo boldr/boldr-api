@@ -31,7 +31,11 @@ export async function getUser(req, res, next) {
 
 export async function getUsername(req, res, next) {
   try {
-    const user = await User.query().where({ username: req.params.username }).eager('[roles]').omit(['password']).first();
+    const user = await User.query()
+    .where({ username: req.params.username })
+    .eager('[roles]')
+    .omit(['password'])
+    .first();
 
     return responseHandler(res, 200, user);
   } catch (error) {
@@ -79,10 +83,12 @@ export async function adminUpdateUser(req, res, next) {
 }
 
 export async function destroyUser(req, res, next) {
+  const requestedUser = await User.query().findById(req.params.id);
+  if (!requestedUser) {
+    return next(new NotFound());
+  }
   try {
-    await User.query().findById(req.params.id).then(user => {
-      return user.$relatedQuery('roles').delete();
-    });
+    requestedUser.$relatedQuery('roles').delete();
     await User.query().deleteById(req.params.id);
 
     return res.status(204).json({ message: 'User deleted.' });
@@ -113,12 +119,12 @@ export async function adminCreateUser(req, res, next) {
     }
     const newUser = await objection.transaction(User, async User => {
       const user = await User.query().insert(payload);
-      await user.$relatedQuery('roles').relate({ id: 1 });
-
       if (!user) {
         /* istanbul ignore next */
         return next(new NotFound());
       }
+      await user.$relatedQuery('roles').relate({ id: 1 });
+
       // generate user verification token to send in the email.
       const verificationToken = generateHash();
       // get the mail template
