@@ -173,6 +173,9 @@
       "command": "jest -w 2 --forceExit",
       "env": {
         "NODE_ENV": "test",
+        "REDIS_URI": "redis://127.0.0.1:6379/1",
+        "DATABASE_URI": "postgres://postgres:password@127.0.0.1:5432/boldr",
+        "TOKEN_SECRET": "b0ldrs0s3cr3t",
         "KNEX_TEST_TIMEOUT": 30000
       }
     }
