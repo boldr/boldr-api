@@ -1,11 +1,10 @@
 debug: true
 pipeline:
   build:
-    image: strues/alpine-node:7
+    image: node:7
     commands:
-      - npm install -g node-gyp
-      - yarn
-      - yarn test:ci
+      - npm install
+      - npm run test:ci
 services:
   database:
     image: strues/boldr-pg
