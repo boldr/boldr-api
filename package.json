@@ -14,6 +14,7 @@
   "scripts": {
     "build": "babel src --out-dir lib",
     "build:test": "echo \"nothing\" && exit 0",
+    "changelog": "conventional-changelog -p atom -i CHANGELOG.md",
     "clean": "rimraf lib",
     "dev": "better-npm-run dev",
     "format": "prettier-eslint --write \"src/**/*.js\" \"db/**/*.js\" \"internal/**/*.js\"",
@@ -28,7 +29,7 @@
     "seed": "better-npm-run seed",
     "seed:test": "better-npm-run seed:test",
     "test": "better-npm-run test",
-    "test:local": "better-npm-run test:local"
+    "test:ci": "better-npm-run test:ci"
   },
   "dependencies": {
     "app-root-dir": "^1.0.2",
@@ -83,6 +84,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-env": "^1.3.2",
     "cross-env": "^4.0.0",
+    "cz-conventional-kawaii": "^0.1.4",
     "eslint": "^3.19.0",
     "eslint-config-boldr": "^0.8.9",
     "eslint-plugin-flowtype": "^2.30.4",
@@ -160,7 +162,7 @@
         "NODE_ENV": "test"
       }
     },
-    "test:local": {
+    "test": {
       "command": "npm run reset && jest -w 2 --forceExit",
       "env": {
         "DATABASE_URI": "postgres://postgres:password@localhost:5432/boldr_test",
@@ -168,7 +170,7 @@
         "KNEX_TEST_TIMEOUT": 30000
       }
     },
-    "test": {
+    "test:ci": {
       "command": "jest -w 2 --forceExit",
       "env": {
         "NODE_ENV": "test",
@@ -199,5 +201,10 @@
     "coverageReporters": [
       "json"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-kawaii"
+    }
   }
 }

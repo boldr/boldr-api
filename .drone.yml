@@ -1,0 +1,23 @@
+debug: true
+pipeline:
+  build:
+    image: strues/alpine-node:7
+    commands:
+      - yarn
+      - yarn test:ci
+services:
+  database:
+    image: strues/boldr-pg
+  redis:
+    image: redis:3.2.6-alpine
+
+  # publish:
+  #   docker:
+  #     registry: registry.boldr.io
+  #     username: strues
+  #     password: $$PASSWORD
+  #     email: steven@strues.io
+  #     repo: boldr/cms
+  #     tag: $$BRANCH
+  #     file: Dockerfile
+  #     insecure: false
