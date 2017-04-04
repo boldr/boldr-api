@@ -39,7 +39,7 @@ before_install:
   - chmod +x docker-compose
   - sudo mv docker-compose /usr/local/bin
   - docker-compose --version
-  - docker-compose -f ./packages/boldr-api/docker-compose.yml up --build -d
+  - docker-compose -f ./docker-compose.yml up --build -d
 
 install:
   - yarn
