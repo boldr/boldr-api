@@ -32,32 +32,32 @@ export async function createDetail(req, res, next) {
   try {
     const payload = {
       name: req.body.name,
-      safe_name: slugIt(req.body.name),
+      safeName: slugIt(req.body.name),
       href: req.body.href,
-      mobile_href: req.body.mobile_href,
-      css_classname: req.body.css_classname,
-      has_dropdown: JSON.parse(req.body.has_dropdown),
+      mobileHref: req.body.mobileHref,
+      cssClassname: req.body.cssClassname,
+      hasDropdown: JSON.parse(req.body.hasDropdown),
       icon: req.body.icon,
       order: req.body.order,
       children: req.body.children,
     };
     const newLink = await MenuDetail.query().insert(payload);
 
-    const menuId = req.body.menu_id || 1;
+    const menuId = req.body.menuId || 1;
     const existingMenu = await Menu.query().where('id', menuId).first();
     if (!existingMenu) {
       throw new InternalServer();
     }
     debug(existingMenu, 'existing menu found');
     const associateMenuDetail = await MenuMenuDetail.query().insert({
-      menu_id: existingMenu.id,
-      menu_detail_id: newLink.id,
+      menuId: existingMenu.id,
+      menuDetailId: newLink.id,
     });
     debug(associateMenuDetail);
     await Activity.query().insert({
-      user_id: req.user.id,
+      userId: req.user.id,
       type: 'create',
-      activity_menu_detail: newLink.id,
+      activityMenuDetail: newLink.id,
     });
 
     return responseHandler(res, 201, newLink);
@@ -86,7 +86,7 @@ export async function deleteDetail(req, res, next) {
     if (!menuD) {
       return res.status(404).json('Unable to find a matching menu detail');
     }
-    await menuD.$relatedQuery('menu').unrelate().where('menu_detail_id', req.params.id);
+    await menuD.$relatedQuery('menu').unrelate().where('menuDetailId', req.params.id);
     await MenuDetail.query().deleteById(req.params.id);
     return responseHandler(res, 204);
   } catch (error) {

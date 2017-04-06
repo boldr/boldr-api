@@ -23,7 +23,7 @@ export async function forgottenPassword(req, res, next) {
     await user.$relatedQuery('resetToken').insert({
       ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
       token: resetPasswordToken,
-      user_id: user.id,
+      userId: user.id,
     });
 
     const mailBody = forgotPasswordEmail(resetPasswordToken);
@@ -50,7 +50,7 @@ export async function resetPassword(req, res, next) {
     }
     const mailSubject = '[Boldr] Password Changed';
 
-    const user = await User.query().findById(userResetToken.user_id);
+    const user = await User.query().findById(userResetToken.userId);
     await User.query().patchAndFetchById(user.id, {
       password: req.body.password,
     });

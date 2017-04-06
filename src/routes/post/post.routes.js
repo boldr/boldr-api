@@ -35,10 +35,10 @@ router
        * @apiSuccess {String}  results.posts.title            The title of the post
        * @apiSuccess {String}  results.posts.excerpt          A short description or snippet of the post
        * @apiSuccess {String}  results.posts.content          The content of the post
-       * @apiSuccess {String}  results.posts.feature_image    The URL for an image to use with the post
+       * @apiSuccess {String}  results.posts.featureImage    The URL for an image to use with the post
        * @apiSuccess {Object}  results.posts.meta             Meta data for the post
        * @apiSuccess {Object}  results.posts.attachments      Post attachments
-       * @apiSuccess {String}  results.posts.background_image The URL for the posts background image
+       * @apiSuccess {String}  results.posts.backgroundImage The URL for the posts background image
        * @apiSuccess {Boolean} results.posts.published        Whether the post is published for public display
 
        * @apiError   {Object} 400 Some parameters may contain invalid values.
@@ -57,9 +57,9 @@ router
        * @apiParam {String}   slug              The slug of the post which is the title, normalized for url use.
        * @apiParam {String}   excerpt           A short description or snippet of the post
        * @apiParam {String}   content           The content of the post as html
-       * @apiParam {Object}   raw_content       Raw, unprocessed rich content blocks
-       * @apiParam {String}   feature_image     The URL for an image to use with the post
-       * @apiParam {String}   background_image  The URL for a background image to use in the post
+       * @apiParam {Object}   rawContent       Raw, unprocessed rich content blocks
+       * @apiParam {String}   featureImage     The URL for an image to use with the post
+       * @apiParam {String}   backgroundImage  The URL for a background image to use in the post
        * @apiParam {String[]} tags              Array of tag names
        * @apiParam {Boolean}  published         Whether the post is published for public display
        * @apiParam {Object}   meta              Meta data for the post
@@ -88,11 +88,11 @@ router
        * @apiSuccess {String}   title            The title of the post
        * @apiSuccess {String}   excerpt          A short description or snippet of the post
        * @apiSuccess {String}   content           The content of the post as html
-       * @apiSuccess {Object}   raw_content       Raw, unprocessed rich content blocks
-       * @apiSuccess {String}   background_image  The URL for a background image to use in the post
+       * @apiSuccess {Object}   rawContent       Raw, unprocessed rich content blocks
+       * @apiSuccess {String}   backgroundImage  The URL for a background image to use in the post
        * @apiSuccess {Object}   meta              Meta data for the post
        * @apiSuccess {Object}   attachments       Post attachments
-       * @apiSuccess {String}   feature_image    The URL for an image to use with the post
+       * @apiSuccess {String}   featureImage    The URL for an image to use with the post
        * @apiSuccess {Object[]} tags            Tags related to the post
        * @apiSuccess {Object[]} comments          Comments related to the post
        * @apiSuccess {Boolean}  published        Whether the post is published for public display
@@ -140,15 +140,5 @@ router
        */
   .delete(isAuthenticated, checkRole('Admin'), ctrl.destroy);
 
-/**
-* @api {post} /posts/:id/comments     Comment on post
-* @apiName AddCommentToPost
-* @apiGroup Post
-* @apiPermission member
-
-* @apiError {Object} 404 Unable to find a post matching the id.
-* @apiError {Object} 401 You must be logged in to comment on a post
-*/
-router.post('/:id/comments', isAuthenticated, ctrl.addCommentToPost);
 
 export default router;

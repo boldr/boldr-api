@@ -17,7 +17,7 @@ class MenuMenuDetail extends BaseModel {
   static addTimestamps = false;
 
   static get idColumn() {
-    return ['menu_id', 'menu_detail_id'];
+    return ['menuId', 'menuDetailId'];
   }
 
   static get relationMappings() {
@@ -26,7 +26,7 @@ class MenuMenuDetail extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: MenuDetail,
         join: {
-          from: 'menu_menu_detail.menu_detail_id',
+          from: 'menu_menu_detail.menuDetailId',
           to: 'menu_detail.id',
         },
       },
@@ -34,7 +34,7 @@ class MenuMenuDetail extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: Menu,
         join: {
-          from: 'menu_menu_detail.menu_id',
+          from: 'menu_menu_detail.menuId',
           to: 'menu.id',
         },
       },

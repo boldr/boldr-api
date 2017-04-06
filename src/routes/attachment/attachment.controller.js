@@ -60,9 +60,9 @@ export async function updateAttachment(req, res, next) {
     const updatedAttachment = await Attachment.query().patchAndFetchById(req.params.id, req.body);
 
     await Activity.query().insert({
-      user_id: req.user.id,
+      userId: req.user.id,
       type: 'update',
-      activity_attachment: req.params.id,
+      activityAttachment: req.params.id,
     });
 
     return responseHandler(res, 202, updatedAttachment);
@@ -89,12 +89,12 @@ export async function deleteAttachment(req, res, next) {
       return next(new BadRequest());
     }
     // unlink the attachment from the activity
-    await Activity.query().delete().where({ activity_attachment: req.params.id }).first();
+    await Activity.query().delete().where({ activityAttachment: req.params.id }).first();
 
     // remove the attachment from the database
     await Attachment.query().deleteById(req.params.id);
     // remove from the file system.
-    fs.removeSync(`./public/files/${attachment.safe_name}`);
+    fs.removeSync(`./public/files/${attachment.safeName}`);
     // send a 204
     return res.status(204).json('Deleted');
   } catch (error) {
@@ -150,19 +150,19 @@ export function uploadAttachment(req, res, next) {
         fs.removeSync(fileLoc);
         // TODO: configure url based on config value.
         const newAttachment = await Attachment.query().insert({
-          user_id: req.user.id,
-          file_name: newFileName,
-          safe_name: newFileName,
+          userId: req.user.id,
+          fileName: newFileName,
+          safeName: newFileName,
           // path: `files/${newFileName}`,
           url: `/uploads/${newFileName}`,
-          file_description: req.body.file_description,
-          file_type: mimetype,
+          fileDescription: req.body.fileDescription,
+          fileType: mimetype,
         });
         // create an activity entry
         await Activity.query().insert({
-          user_id: req.user.id,
+          userId: req.user.id,
           type: 'create',
-          activity_attachment: newAttachment.id,
+          activityAttachment: newAttachment.id,
         });
 
         return res.status(201).json(newAttachment);

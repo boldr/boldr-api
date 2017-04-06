@@ -10,9 +10,9 @@ import User from './user';
  * @property {String}   ip
  * @property {String}   token
  * @property {Boolean}  used
- * @property {String}   user_id
- * @property {Date}     created_at
- * @property {Date}     updated_at
+ * @property {String}   userId
+ * @property {Date}     createdAt
+ * @property {Date}     updatedAt
  */
 class VerificationToken extends BaseModel {
   static get tableName() {
@@ -26,7 +26,7 @@ class VerificationToken extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: User,
         join: {
-          from: 'verification_token.user_id',
+          from: 'verification_token.userId',
           to: 'user.id',
         },
       },

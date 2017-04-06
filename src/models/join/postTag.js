@@ -18,7 +18,7 @@ class PostTag extends BaseModel {
   static addTimestamps = false;
 
   static get idColumn() {
-    return ['post_id', 'tag_id'];
+    return ['postId', 'tagId'];
   }
 
   static get relationMappings() {
@@ -27,7 +27,7 @@ class PostTag extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: Tag,
         join: {
-          from: 'post_tag.tag_id',
+          from: 'post_tag.tagId',
           to: 'tag.id',
         },
       },
@@ -35,7 +35,7 @@ class PostTag extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: Post,
         join: {
-          from: 'post_tag.post_id',
+          from: 'post_tag.postId',
           to: 'post.id',
         },
       },

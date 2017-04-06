@@ -12,10 +12,10 @@ const config = {
   connection: process.env.DATABASE_URI,
   migrations: {
     tableName: 'migrations',
-    directory: path.resolve(process.cwd(), './db/migrations'),
+    directory: path.resolve(process.cwd(), './db/migrations')
   },
   seeds: {
-    directory: path.resolve(process.cwd(), './db/seeds'),
+    directory: path.resolve(process.cwd(), './db/seeds')
   },
 };
 

@@ -30,18 +30,18 @@ const router = new Router();
  *      "user": {
  *      "id": "1b062e26-df71-48ce-b363-4ae9b966e7a0",
  *      "email": "admin@boldr.io",
- *      "first_name": "Joe",
- *      "last_name": "Gray",
+ *      "firstName": "Joe",
+ *      "lastName": "Gray",
  *      "username": "Joey",
- *      "avatar_url": "https://boldr.io/images/unknown-avatar.png",
+ *      "avatarUrl": "https://boldr.io/images/unknown-avatar.png",
  *      "verified": true,
  *      "role": [{
  *            "id": 3,
  *            "name": "Admin",
  *            "image": null,
  *            "description": "Complete control over the CMS",
- *            "created_at": "2016-11-21T19:49:59.653Z",
- *            "updated_at": "2016-11-21T19:49:59.653Z"
+ *            "createdAt": "2016-11-21T19:49:59.653Z",
+ *            "updatedAt": "2016-11-21T19:49:59.653Z"
  *            }]
  *       }
  *     }
@@ -54,10 +54,10 @@ router.post('/login', ctrl.loginUser);
  * @apiGroup Auth
  * @apiParam {String} email User email address
  * @apiParam {String} password User password
- * @apiParam {String} first_name First name of the user
- * @apiParam {String} last_name Last name of the user
+ * @apiParam {String} firstName First name of the user
+ * @apiParam {String} lastName Last name of the user
  * @apiParam {String} username The user's display name
- * @apiParam {String} avatar_url Url for the user's avatar
+ * @apiParam {String} avatarUrl Url for the user's avatar
  * @apiSuccess (Success 201) {Object} user Current user data
  * @apiError 409 Email already exists
  * @apiError 400 Bad request.

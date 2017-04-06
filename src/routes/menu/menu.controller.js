@@ -31,7 +31,7 @@ export async function createMenu(req, res, next) {
   try {
     const payload = {
       name: req.body.name,
-      safe_name: slugIt(req.body.name),
+      safeName: slugIt(req.body.name),
       attributes: req.body.attributes,
       restricted: req.body.restricted,
     };

@@ -18,11 +18,11 @@ export async function registerUser(req, res, next) {
   req.assert('email', 'Email is not valid').isEmail();
   req.assert('email', 'Email cannot be blank').notEmpty();
   req.assert('password', 'Password cannot be blank').notEmpty();
-  req.assert('first_name', 'First name cannot be blank').notEmpty();
+  req.assert('firstName', 'First name cannot be blank').notEmpty();
 
   req.sanitize('email').normalizeEmail({ remove_dots: false });
-  req.sanitize('first_name').trim();
-  req.sanitize('last_name').trim();
+  req.sanitize('firstName').trim();
+  req.sanitize('lastName').trim();
 
   const checkExisting = await User.query().where('email', req.body.email);
 
@@ -42,10 +42,10 @@ export async function registerUser(req, res, next) {
       // no need to hash here, its taken care of on the model instance
       email: req.body.email,
       password: req.body.password,
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       username: req.body.username,
-      avatar_url: req.body.avatar_url,
+      avatarUrl: req.body.avatarUrl,
     };
 
     const newUser = await objection.transaction(User, async User => {
@@ -67,7 +67,7 @@ export async function registerUser(req, res, next) {
       const verificationEmail = await user.$relatedQuery('verificationToken').insert({
         ip: req.ip,
         token: verifToken,
-        user_id: user.id,
+        userId: user.id,
       });
       if (!verificationEmail) {
         return res.status(500).json('There was a problem with the mailer.');
@@ -75,9 +75,9 @@ export async function registerUser(req, res, next) {
     });
     await Activity.query().insert({
       id: uuid.v4(),
-      user_id: payload.id,
+      userId: payload.id,
       type: 'register',
-      activity_user: payload.id,
+      activityUser: payload.id,
     });
     // Massive transaction is finished, send the data to the user.
     return responseHandler(res, 201, newUser);
@@ -134,7 +134,7 @@ export async function verifyUser(req, res, next) {
     if (token.used === true) {
       return res.status(401).json('This token has already been used.');
     }
-    const user = await User.query().patchAndFetchById(token.user_id, { verified: true });
+    const user = await User.query().patchAndFetchById(token.userId, { verified: true });
 
     await VerificationToken.query().where({ token: req.params.verifToken }).update({ used: true });
 

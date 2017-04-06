@@ -6,7 +6,6 @@ import Tag from './tag';
 import User from './user';
 import Attachment from './attachment';
 import BaseModel from './base';
-import Comment from './comment';
 
 class Post extends BaseModel {
   static get tableName() {
@@ -25,7 +24,7 @@ class Post extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: User,
         join: {
-          from: 'post.user_id',
+          from: 'post.userId',
           to: 'user.id',
         },
       },
@@ -35,8 +34,8 @@ class Post extends BaseModel {
         join: {
           from: 'post.id',
           through: {
-            from: 'post_tag.post_id',
-            to: 'post_tag.tag_id',
+            from: 'post_tag.postId',
+            to: 'post_tag.tagId',
           },
           to: 'tag.id',
         },
@@ -47,22 +46,10 @@ class Post extends BaseModel {
         join: {
           from: 'post.id',
           through: {
-            from: 'post_attachment.post_id',
-            to: 'post_attachment.attachment_id',
+            from: 'post_attachment.postId',
+            to: 'post_attachment.attachmentId',
           },
           to: 'attachment.id',
-        },
-      },
-      comments: {
-        relation: Model.ManyToManyRelation,
-        modelClass: Comment,
-        join: {
-          from: 'post.id',
-          through: {
-            from: 'post_comment.post_id',
-            to: 'post_comment.comment_id',
-          },
-          to: 'comment.id',
         },
       },
     };

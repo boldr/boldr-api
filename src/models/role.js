@@ -18,8 +18,8 @@ class Role extends BaseModel {
         join: {
           from: 'role.id',
           through: {
-            from: 'user_role.role_id',
-            to: 'user_role.user_id',
+            from: 'user_role.roleId',
+            to: 'user_role.userId',
           },
           to: 'user.id',
         },

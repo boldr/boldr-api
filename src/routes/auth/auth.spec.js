@@ -79,10 +79,10 @@ describe('Auth API Endpoint', () => {
       .send({
         email: faker.internet.email(),
         password: 'password',
-        first_name: faker.name.firstName(),
-        last_name: faker.name.lastName(),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
         username: faker.internet.userName(),
-        avatar_url: faker.image.imageUrl(),
+        avatarUrl: faker.image.imageUrl(),
       })
       .expect(res => {
         expect(res.status).toBe(201);

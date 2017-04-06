@@ -15,7 +15,7 @@ import {
 } from '../../core';
 import User from '../../models/user';
 
-const debug = require('debug')('boldr:user-ctrl');
+const debug = require('debug')('boldrAPI:user-ctrl');
 
 export async function getUser(req, res, next) {
   try {
@@ -71,9 +71,9 @@ export async function adminUpdateUser(req, res, next) {
       username: req.body.username,
       bio: req.body.bio,
       // role: req.body.role,
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      avatar_url: req.body.avatar_url,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      avatarUrl: req.body.avatarUrl,
     };
     User.query().patchAndFetchById(req.params.id, payload).then(user => res.status(202).json(user));
   } catch (error) {
@@ -106,10 +106,10 @@ export async function adminCreateUser(req, res, next) {
       // no need to hash here, its taken care of on the model instance
       email: req.body.email,
       password: req.body.password,
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       username: req.body.username,
-      avatar_url: req.body.avatar_url,
+      avatarUrl: req.body.avatarUrl,
     };
     const checkExisting = await User.query().where('email', req.body.email);
 
@@ -137,7 +137,7 @@ export async function adminCreateUser(req, res, next) {
       const verificationEmail = await user.$relatedQuery('verificationToken').insert({
         ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
         token: verificationToken,
-        user_id: user.id,
+        userId: user.id,
       });
 
       if (!verificationEmail) {

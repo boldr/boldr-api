@@ -13,18 +13,6 @@ describe('Posts API Endpoint', () => {
     };
     const { body } = await agent.post('/api/v1/auth/login').set('Accept', 'application/json').send(loginData);
     token = body.token; // eslint-disable-line
-    await db('comment').insert({
-      id: '2f462e26-df71-48ce-b363-4ae9b966e7a0',
-      content: 'Hey im a comment',
-      comment_author_ip: '127.0.0.1',
-      comment_author_id: '1b062e26-df71-48ce-b363-4ae9b966e7a0',
-      likes: 1,
-      dislikes: 0,
-    });
-    await db('post_comment').insert({
-      post_id: 'cb61bbae-c91e-4014-b665-3485734b88fb',
-      comment_id: '2f462e26-df71-48ce-b363-4ae9b966e7a0',
-    });
   });
 
   it('GET /posts -- List', async () => {
@@ -57,7 +45,7 @@ describe('Posts API Endpoint', () => {
       .set('Authorization', `Bearer ${token}`)
       .send({
         // title: faker.name.title(),
-        feature_image: faker.image.imageUrl(),
+        featureImage: faker.image.imageUrl(),
         content: faker.lorem.paragraphs(),
         excerpt: faker.lorem.paragraph(),
         published: true,
@@ -74,7 +62,7 @@ describe('Posts API Endpoint', () => {
       .set('Authorization', `Bearer ${token}`)
       .send({
         title: faker.name.title(),
-        feature_image: faker.image.imageUrl(),
+        featureImage: faker.image.imageUrl(),
         content: faker.lorem.paragraphs(),
         excerpt: faker.lorem.paragraph(),
         published: true,
@@ -92,7 +80,7 @@ describe('Posts API Endpoint', () => {
       .set('Authorization', `Bearer ${token}`)
       .send({
         title: 'Nother One',
-        feature_image: 'asdfasdfasdfasdf',
+        featureImage: 'asdfasdfasdfasdf',
         content: 'aasdfasdf',
         excerpt: 'abavasdf',
         published: true,
@@ -108,7 +96,7 @@ describe('Posts API Endpoint', () => {
       .set('Accept', 'application/json')
       .set('Authorization', `Bearer ${token}`)
       .send({
-        feature_image: faker.image.imageUrl(),
+        featureImage: faker.image.imageUrl(),
         content: faker.lorem.paragraphs(),
         excerpt: faker.lorem.paragraph(),
         published: true,
@@ -128,18 +116,6 @@ describe('Posts API Endpoint', () => {
       });
 
     expect(status).toBe(202);
-    expect(typeof body).toBe('object');
-  });
-  it('+++ POST /posts/:id/comments -- Add comment to post', async () => {
-    const { status, body } = await agent
-      .post('/api/v1/posts/cb61bbae-c91e-4014-b665-3485734b88fb/comments')
-      .set('Accept', 'application/json')
-      .set('Authorization', `Bearer ${token}`)
-      .send({
-        content: 'abcd',
-      });
-
-    expect(status).toBe(201);
     expect(typeof body).toBe('object');
   });
 });

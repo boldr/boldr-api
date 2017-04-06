@@ -5,7 +5,6 @@ import BaseModel from './base';
 import Role from './role';
 import Attachment from './attachment';
 import ResetToken from './resetToken';
-import Comment from './comment';
 import VerificationToken from './verificationToken';
 import Post from './post';
 import UserRole from './join/userRole';
@@ -19,21 +18,21 @@ const debug = require('debug')('boldrAPI:user-model');
  * User model representing an account and identity of a person.
  * @class User
  * @extends BaseModel
- * @property {String}   first_name
- * @property {String}   last_name
+ * @property {String}   firstName
+ * @property {String}   lastName
  * @property {String}   username
  * @property {String}   email
  * @property {String}   bio
  * @property {String}   location
- * @property {String}   avatar_url
- * @property {String}   profile_image
+ * @property {String}   avatarUrl
+ * @property {String}   profileImage
  * @property {String}   website
  * @property {String}   language
  * @property {Boolean}  verified
  * @property {Object}   [social]
  * @property {Date}     birthday
- * @property {Date}     created_at
- * @property {Date}     updated_at
+ * @property {Date}     createdAt
+ * @property {Date}     updatedAt
  */
 class User extends BaseModel {
   static get tableName() {
@@ -43,7 +42,7 @@ class User extends BaseModel {
   static get jsonSchema() {
     return {
       type: 'object',
-      required: ['first_name', 'email', 'password', 'last_name', 'username'],
+      required: ['firstName', 'email', 'password', 'lastName', 'username'],
       properties: {
         id: {
           type: 'string',
@@ -51,8 +50,8 @@ class User extends BaseModel {
           maxLength: 36,
           pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
         },
-        first_name: { type: 'string' },
-        last_name: { type: 'string' },
+        firstName: { type: 'string' },
+        lastName: { type: 'string' },
         email: {
           type: 'string',
         },
@@ -61,8 +60,8 @@ class User extends BaseModel {
         bio: { type: 'string' },
         location: { type: 'string' },
         website: { type: 'string' },
-        avatar_url: { type: 'string' },
-        profile_image: { type: 'string' },
+        avatarUrl: { type: 'string' },
+        profileImage: { type: 'string' },
         language: { type: 'string' },
         social: {
           type: 'object',
@@ -70,8 +69,8 @@ class User extends BaseModel {
         },
         verified: { type: 'boolean' },
         birthday: { type: 'date' },
-        created_at: { type: 'date-time' },
-        updated_at: { type: 'date-time' },
+        createdAt: { type: 'date-time' },
+        updatedAt: { type: 'date-time' },
       },
     };
   }
@@ -92,8 +91,8 @@ class User extends BaseModel {
         join: {
           from: 'user.id',
           through: {
-            from: 'user_role.user_id',
-            to: 'user_role.role_id',
+            from: 'user_role.userId',
+            to: 'user_role.roleId',
           },
           to: 'role.id',
         },
@@ -103,7 +102,7 @@ class User extends BaseModel {
         modelClass: Post,
         join: {
           from: 'user.id',
-          to: 'post.user_id',
+          to: 'post.userId',
         },
       },
       uploads: {
@@ -111,7 +110,7 @@ class User extends BaseModel {
         modelClass: Attachment,
         join: {
           from: 'user.id',
-          to: 'attachment.user_id',
+          to: 'attachment.userId',
         },
       },
       verificationToken: {
@@ -119,7 +118,7 @@ class User extends BaseModel {
         modelClass: VerificationToken,
         join: {
           from: 'user.id',
-          to: 'verification_token.user_id',
+          to: 'verification_token.userId',
         },
       },
       resetToken: {
@@ -127,22 +126,14 @@ class User extends BaseModel {
         modelClass: ResetToken,
         join: {
           from: 'user.id',
-          to: 'reset_token.user_id',
-        },
-      },
-      comments: {
-        relation: Model.HasManyRelation,
-        modelClass: Comment,
-        join: {
-          from: 'user.id',
-          to: 'comment.comment_author_id',
+          to: 'reset_token.userId',
         },
       },
     };
   }
 
   fullName() {
-    return `${this.first_name} ${this.last_name}`;
+    return `${this.firstName} ${this.lastName}`;
   }
   stripPassword() {
     delete this['password']; // eslint-disable-line

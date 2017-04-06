@@ -37,7 +37,7 @@ describe('Menu Details API', async () => {
         href: 'test',
         order: 4,
         icon: 'question',
-        has_dropdown: 'false',
+        hasDropdown: 'false',
       })
       .expect(res => {
         expect(res.status).toBe(201);
