@@ -205,7 +205,7 @@
     "collectCoverage": true,
     "coverageDirectory": "<rootDir>/coverage",
     "coveragePathIgnorePatterns": [
-      "<rootDir>/(internal|flow-typed|docs|db)/",
+      "<rootDir>/(internal|flow-typed|docs|db|lib|static|boldrAPI)/",
       "/node_modules/"
     ],
     "transform": {
@@ -214,10 +214,12 @@
     "testRegex": ".*.spec\\.js",
     "setupTestFrameworkScriptFile": "<rootDir>/internal/jest/setup.js",
     "testPathIgnorePatterns": [
-      "<rootDir>/(internal|config|docs|.idea|public|db)/"
+      "<rootDir>/(internal|config|docs|.idea|static|lib|boldrAPI|db)/"
     ],
     "testEnvironment": "node",
     "transformIgnorePatterns": [
+      "/boldrAPI/",
+      "/lib/",
       "/node_modules/",
       "/db/"
     ],
