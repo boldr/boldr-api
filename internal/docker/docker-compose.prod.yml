@@ -1,56 +1,66 @@
-version: '2'
+version: '3'
+
 services:
 
-  postgres:
-    container_name: boldr_pg
-    build: ./db
-    restart: always
+  api:
+    build: .
+    container_name: boldr_api
+    depends_on:
+      - db
+      - redis
     environment:
-      - PGDATA=/var/lib/postgresql/data
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_USER=postgres
+      - NODE_DEBUG=false
+      - DATABASE_DEBUG=false
+      - DATABASE_URI=postgres://postgres:password@127.0.0.1:5432/boldr
+      - REDIS_URI=redis://127.0.0.1:6379/0
+      - TOKEN_SECRET=b0ldr@p1k3k
+    expose:
+      - "2121:2121"
+    ports:
+      # V8 inspector (when NODE_DEBUG=true)
+      - "127.0.0.1:9229:9229"
+    volumes:
+      - yarn:/root/.cache/yarn
+      - ./:/app
+      - "./static:/app/static"
+    user: node
+    working_dir: /app
+    networks:
+      - boldr
+    command: yarn start
+
+  db:
+    build: ./db
+    container_name: boldr_db
+    restart: always
+    env_file: .env
     ports:
       - "5432:5432"
+    tmpfs:
+      - /tmp
+      - /var/run/postgresql
     volumes:
-      - pg_volume:/var/lib/postgresql/data
+      - db:/var/lib/postgresql/data
     networks:
       - boldr
 
   redis:
-    image: redis:3.2.3-alpine
+    image: redis:3.2.8-alpine
     container_name: boldr_redis
-    restart: always
+    env_file: .env
+    volumes:
+      - redis:/data
     ports:
       - "6379:6379"
-    volumes:
-      - redis_volume:/data
+    user: redis
     networks:
       - boldr
 
-  boldrapi:
-    build: .
-    container_name: boldrapi
-    restart: always
-    env_file: .env
-    environment:
-      POSTGRES_CONN_URI: postgres://postgres:password@postgres:5432/boldr
-      REDIS_CONN_URI: redis://redis:6379/1
-    ports:
-      - "3000:3000"
-    depends_on:
-      - redis
-      - postgres
-    networks:
-      - boldr
-    volumes:
-      - "./public:/app/public"
+volumes:
+  db:
+  redis:
+  yarn:
 
 networks:
   boldr:
     driver: bridge
-
-volumes:
-  pg_volume:
-    driver: local
-  redis_volume:
-    driver: local

@@ -26,11 +26,13 @@ const config = convict({
     doc: 'Full address to website',
     format: String,
     default: 'http://localhost:3000',
+    env: 'SITE_URL',
   },
   apiPrefix: {
     doc: 'Version for the api',
     format: String,
     default: '/api/v1',
+    env: 'API_PREFIX',
   },
   logger: {
     level: {
@@ -69,7 +71,7 @@ const config = convict({
     uri: {
       doc: 'The connection uri for Postgres',
       format: String,
-      default: 'postgres://postgres:password@localhost:5432/boldr',
+      default: 'postgres://postgres:password@db:5432/boldr',
       env: 'DATABASE_URI',
     },
     name: {
@@ -81,6 +83,14 @@ const config = convict({
       doc: 'Enable debug mode',
       format: Boolean,
       default: false,
+    },
+  },
+  redis: {
+    uri: {
+      doc: 'The connection uri for Redis',
+      format: String,
+      default: 'redis://redis:6379/0',
+      env: 'REDIS_URI',
     },
   },
   token: {
@@ -113,7 +123,7 @@ const config = convict({
     user: {
       doc: 'The user login for the mail server',
       format: String,
-      default: 'admin@boldr.io',
+      default: 'hello@boldr.io',
       env: 'MAIL_USER',
     },
     password: {
@@ -125,7 +135,7 @@ const config = convict({
     from: {
       doc: 'The from address for the email',
       format: String,
-      default: 'noreply@boldr.io',
+      default: 'hello@boldr.io',
     },
   },
 });

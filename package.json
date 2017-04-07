@@ -31,7 +31,7 @@
     "migration": "better-npm-run migration",
     "pkg": "npm run clean && npm run build && npm run pkg:dirs && npm run pkg:files && npm run clean:lib",
     "pkg:dirs": "mkdir boldrAPI && cp -a lib boldrAPI && cp -a db ./boldrAPI/ && cp -a static ./boldrAPI/",
-    "pkg:files": "cp knexfile.js Procfile yarn.lock package.json boldrAPI && cp .env.prod boldrAPI/.env && cp internal/docker/Dockerfile boldrAPI/ && cp internal/docker/docker-compose.prod.yml boldrAPI/docker-compose.yml",
+    "pkg:files": "cp knexfile.js .env Procfile yarn.lock package.json boldrAPI/ && cp internal/docker/Dockerfile boldrAPI/ && cp internal/docker/docker-compose.prod.yml boldrAPI/docker-compose.yml",
     "precommit": "lint-staged",
     "prepush": "npm run test",
     "start": "NODE_ENV=production node lib/index.js",
@@ -127,8 +127,8 @@
       "command": "cross-env nodemon --exec babel-node --trace-warnings ./src/index.js",
       "env": {
         "NODE_ENV": "development",
-        "DATABASE_URI": "postgres://postgres:password@localhost:5432/boldr",
-        "REDIS_URI": "redis://127.0.0.1:6379/1",
+        "DATABASE_URI": "postgres://postgres:password@0.0.0.0:5432/boldr",
+        "REDIS_URI": "redis://0.0.0.0:6379/0",
         "DATABASE_DEBUG": true,
         "DEBUG": "boldrAPI:*"
       }
