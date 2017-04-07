@@ -94,7 +94,7 @@ export async function deleteAttachment(req, res, next) {
     // remove the attachment from the database
     await Attachment.query().deleteById(req.params.id);
     // remove from the file system.
-    fs.removeSync(`./public/files/${attachment.safeName}`);
+    fs.removeSync(`./static/uploads/${attachment.safeName}`);
     // send a 204
     return res.status(204).json('Deleted');
   } catch (error) {
