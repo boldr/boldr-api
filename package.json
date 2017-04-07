@@ -23,7 +23,7 @@
     "dev": "better-npm-run dev",
     "docker": "cd boldrAPI; docker build -t strues/boldr-api .",
     "format": "prettier-eslint --write \"src/**/*.js\" \"db/**/*.js\" \"internal/**/*.js\"",
-    "lint": "eslint src",
+    "lint": "eslint src db internal",
     "knex": "./node_modules/.bin/knex",
     "migrate": "better-npm-run migrate",
     "reset": "better-npm-run reset",
@@ -32,11 +32,19 @@
     "pkg": "npm run clean && npm run build && npm run pkg:dirs && npm run pkg:files && npm run clean:lib",
     "pkg:dirs": "mkdir boldrAPI && cp -a lib boldrAPI && cp -a db ./boldrAPI/ && cp -a static ./boldrAPI/",
     "pkg:files": "cp knexfile.js Procfile yarn.lock package.json boldrAPI && cp .env.prod boldrAPI/.env && cp internal/docker/Dockerfile boldrAPI/ && cp internal/docker/docker-compose.prod.yml boldrAPI/docker-compose.yml",
+    "precommit": "lint-staged",
+    "prepush": "npm run test",
     "start": "NODE_ENV=production node lib/index.js",
     "seed": "better-npm-run seed",
     "seed:test": "better-npm-run seed:test",
     "test": "better-npm-run test",
     "test:ci": "better-npm-run test:ci"
+  },
+  "lint-staged": {
+    "src/**/*.js": [
+      "prettier-eslint --write",
+      "git add"
+    ]
   },
   "dependencies": {
     "app-root-dir": "^1.0.2",
@@ -101,7 +109,9 @@
     "faker": "^4.1.0",
     "fast-async": "^6.2.2",
     "flow-bin": "^0.43.1",
+    "husky": "^0.13.3",
     "jest": "^19.0.2",
+    "lint-staged": "^3.4.0",
     "nodemon": "^1.11.0",
     "prettier-eslint-cli": "^3.2.0",
     "rimraf": "^2.6.1",
