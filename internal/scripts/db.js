@@ -1,3 +1,4 @@
+/* eslint-disable comma-dangle */
 const fs = require('fs');
 const path = require('path');
 const knex = require('knex');
