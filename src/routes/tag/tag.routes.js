@@ -1,8 +1,9 @@
 import { Router } from 'express';
+import { wrapRouter } from '../../utils/asyncRouter';
 import { isAuthenticated } from '../../services/authentication';
 import * as ctrl from './tag.controller';
 
-const router = new Router();
+const router = wrapRouter(new Router());
 /**
  * @api {get} /tags       List all tags
  * @apiName ListTags

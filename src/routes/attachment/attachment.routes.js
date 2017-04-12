@@ -1,14 +1,10 @@
 import { Router } from 'express';
 import { isAuthenticated } from '../../services/authentication';
+import { wrapRouter } from '../../utils/asyncRouter';
 import { checkRole } from '../../middleware/rbac';
 import * as ctrl from './attachment.controller';
 
-/**
- * @apiDefine Attachment
- *
- */
-
-const router = new Router();
+const router = wrapRouter(new Router());
 
 /**
  * @api {get} /attachments              List all attachments

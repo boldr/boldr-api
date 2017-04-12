@@ -66,12 +66,17 @@ module.exports = task('db', async () => {
 });
 
 async function dropDatabase(db) {
+  await db.schema.dropTableIfExists('block_relation');
   await db.schema.dropTableIfExists('post_attachment');
   await db.schema.dropTableIfExists('post_tag');
   await db.schema.dropTableIfExists('post_comment');
   await db.schema.dropTableIfExists('user_role');
   await db.schema.dropTableIfExists('template_page');
   await db.schema.dropTableIfExists('menu_menu_detail');
+  await db.schema.dropTableIfExists('block');
+  await db.schema.dropTableIfExists('media');
+  await db.schema.dropTableIfExists('media_type');
+  await db.schema.dropTableIfExists('content_type');
   await db.schema.dropTableIfExists('setting');
   await db.schema.dropTableIfExists('activity');
   await db.schema.dropTableIfExists('menu');

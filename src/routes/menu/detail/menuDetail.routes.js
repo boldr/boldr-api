@@ -1,8 +1,9 @@
-import express from 'express';
+import { Router } from 'express';
 import { isAuthenticated } from '../../../services/authentication';
+import { wrapRouter } from '../../../utils/asyncRouter';
 import * as ctrl from './menuDetail.controller';
 
-const router = express.Router({ mergeParams: true });
+const router = wrapRouter(new Router());
 /**
  * @api {get} /menu-details     List all menu items
  * @apiName getDetails

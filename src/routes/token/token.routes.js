@@ -1,9 +1,9 @@
 import { Router } from 'express';
 import { isAuthenticated } from '../../services/authentication';
+import { wrapRouter } from '../../utils/asyncRouter';
 import * as ctrl from './token.controller';
 
-const router = new Router();
-
+const router = wrapRouter(new Router());
 /**
  * @api {post} /tokens/forgot-password    Send forgot password email
  * @apiName forgottenPassword

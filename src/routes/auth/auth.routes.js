@@ -1,12 +1,9 @@
 import { Router } from 'express';
 import { isAuthenticated } from '../../services/authentication';
+import { wrapRouter } from '../../utils/asyncRouter';
 import * as ctrl from './auth.controller';
 
-/**
- * @apiDefine Auth
- *
- */
-const router = new Router();
+const router = wrapRouter(new Router());
 
 /**
  * @api {post} /auth/login        Login

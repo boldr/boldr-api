@@ -1,13 +1,10 @@
 import { Router } from 'express';
 import { isAuthenticated } from '../../services/authentication';
 import { checkRole } from '../../middleware/rbac';
+import { wrapRouter } from '../../utils/asyncRouter';
 import * as ctrl from './activity.controller';
 
-/**
- * @apiDefine Activity
- */
-
-const router = new Router();
+const router = wrapRouter(new Router());
 
 /**
  * @api {get} /activities           List all activities
