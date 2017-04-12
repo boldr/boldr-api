@@ -1,4 +1,6 @@
+import { ValidationError } from 'objection';
 import HttpError from '../core/errors/httpError';
+import { formatValidationErrors } from '../utils';
 
 export default app => {
   // catch 404 and forward to error handler
@@ -13,15 +15,19 @@ export default app => {
     // eslint-disable-line no-unused-vars
     const statusCode = err.status || 500;
 
-    const stacktrace = process.env.NODE_ENV === 'development'
-      ? {
-        stack: err.stack,
-      }
-      : {};
+    const isValidationError = (err.error || {}) instanceof ValidationError;
 
-    res.status(statusCode).json({
+    const stacktrace = app.get('env') === 'development' ? { stack: err.stack } : {};
+
+    const validation = isValidationError ? { validation: formatValidationErrors(err.error.data) } : {};
+
+    const message = isValidationError ? 'Validation error.' : err.message;
+
+    res.status(statusCode);
+    res.json({
       status: statusCode,
-      error: err.error || err.message,
+      message,
+      ...validation,
       ...stacktrace,
     });
   });
