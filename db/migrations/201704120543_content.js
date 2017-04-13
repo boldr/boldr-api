@@ -54,6 +54,7 @@ module.exports.up = async (db) => {
     // pk
     table.uuid('id').notNullable().defaultTo(db.raw('uuid_generate_v4()')).primary();
     table.string('fileName', 128).notNullable().unique();
+    table.string('safeName', 128).notNullable();
     table.string('thumbName', 128);
     table.string('fileDescription').nullable();
     table.integer('mediaType').unsigned().references('id').inTable('media_type');

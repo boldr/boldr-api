@@ -46,6 +46,43 @@ router.get('/', ctrl.listMedia);
  * @apiSuccess {String}  id   The Media id (uuid)
  */
 router.get('/:id', ctrl.getMedia);
+
+/**
+ * @api {post} /media         Upload media
+ * @apiName UploadMedia
+ * @apiGroup Media
+ * @apiPermission user
+ */
 router.post('/', isAuthenticated, ctrl.uploadMedia);
+
+/**
+ * @api {post} /media/remote         Upload from a remote resource
+ * @apiName UploadFromUrl
+ * @apiGroup Media
+ * @apiPermission user
+ */
 router.post('/remote', isAuthenticated, ctrl.uploadFromUrl);
+
+/**
+ * @api {delete} /media/:id  Delete media
+ * @apiName DeleteMedia
+ * @apiGroup Media
+ * @apiUse authHeader
+ * @apiPermission admin
+ * @apiSuccess (Success 204) 204 No Content.
+ * @apiError 401 Invalid credentials.
+ * @apiError 403 Forbidden
+ */
+router.delete('/:id', isAuthenticated, checkRole('Admin'), ctrl.deleteMedia);
+/**
+ * @api {put} /media/:id      Update media
+ * @apiName UpdateMedia
+ * @apiGroup Media
+ * @apiUse authHeader
+ * @apiPermission admin
+ * @apiSuccess (Success 202) 202
+ * @apiError 401 Invalid credentials.
+ * @apiError 403 Forbidden
+ */
+router.put('/:id', isAuthenticated, checkRole('Admin'), ctrl.updateMedia);
 export default router;
