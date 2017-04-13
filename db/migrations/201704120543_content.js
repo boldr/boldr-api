@@ -40,7 +40,7 @@ module.exports.up = async (db) => {
   });
   await db.schema.createTable('media_type', table => {
     // pk
-    table.increments('id').unsigned().primary();
+    table.increments('id').primary();
     // uuid
     table.uuid('uuid').notNullable().defaultTo(db.raw('uuid_generate_v4()'));
     table.string('mediaType', 32).notNullable().unique();
@@ -52,22 +52,21 @@ module.exports.up = async (db) => {
   });
   await db.schema.createTable('media', table => {
     // pk
-    table.increments('id').unsigned().primary();
-    // uuid
-    table.uuid('uuid').notNullable().defaultTo(db.raw('uuid_generate_v4()'));
+    table.uuid('id').notNullable().defaultTo(db.raw('uuid_generate_v4()')).primary();
     table.string('fileName', 128).notNullable().unique();
-    table.string('safeName', 128).notNullable().unique();
+    table.string('thumbName', 128);
     table.string('fileDescription').nullable();
     table.integer('mediaType').unsigned().references('id').inTable('media_type');
+    table.string('mimetype');
     table.string('url').notNullable();
     table.string('path');
-    table.string('remoteUrl');
+    table.uuid('userId').unsigned().references('id').inTable('user');
 
     table.timestamp('createdAt').defaultTo(db.fn.now());
     table.timestamp('updatedAt').defaultTo(db.fn.now());
 
-    table.index('uuid');
-    table.index('safeName');
+    table.index('fileName');
+    table.index('url');
     table.index('mediaType');
   });
 };

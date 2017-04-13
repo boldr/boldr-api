@@ -8,6 +8,7 @@ import ResetToken from './resetToken';
 import VerificationToken from './verificationToken';
 import Post from './post';
 import UserRole from './join/userRole';
+import Media from './media';
 
 const Promise = require('bluebird');
 const bcrypt = Promise.promisifyAll(require('bcrypt'));
@@ -111,6 +112,14 @@ class User extends BaseModel {
         join: {
           from: 'user.id',
           to: 'attachment.userId',
+        },
+      },
+      files: {
+        relation: Model.HasManyRelation,
+        modelClass: Media,
+        join: {
+          from: 'user.id',
+          to: 'media.userId',
         },
       },
       verificationToken: {

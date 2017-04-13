@@ -94,8 +94,9 @@ export async function getSlug(req, res, next) {
   try {
     const post = await Post.query()
       .where({ slug: req.params.slug })
-      .eager('[tags, author]')
+      .eager('[tags,author]')
       .omit(['password'])
+      .skipUndefined()
       .first();
 
     if (!post) {
@@ -119,10 +120,7 @@ export async function getSlug(req, res, next) {
  */
 export async function getId(req, res, next) {
   try {
-    const post = await Post.query()
-      .findById(req.params.id)
-      .eager('[tags, author]')
-      .first();
+    const post = await Post.query().findById(req.params.id).eager('[tags,author]').skipUndefined().first();
     return responseHandler(res, 200, post);
   } catch (error) {
     /* istanbul ignore next */

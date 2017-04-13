@@ -15,7 +15,7 @@ class MediaType extends BaseModel {
         modelClass: Media,
         join: {
           from: 'media_type.id',
-          to: 'media.id',
+          to: 'media.mediaType',
         },
       },
     };

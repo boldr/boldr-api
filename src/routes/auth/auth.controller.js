@@ -93,10 +93,10 @@ export async function registerUser(req, res, next) {
  * @param next
  */
 export async function loginUser(req, res, next) {
-  const user = await User.query().where({ email: req.body.email }).eager('[roles]').first();
+  const user = await User.query().where({ email: req.body.email }).eager('roles').first();
 
   if (!user) {
-    return next(new Unauthorized('Unable to find a user matching the provided credentials.'));
+    return next(new Unauthorized('Unable to find an account matching the information provided.'));
   }
 
   if (!user.verified) {
@@ -104,7 +104,7 @@ export async function loginUser(req, res, next) {
   }
   try {
     const validAuth = await user.authenticate(req.body.password);
-    if (!validAuth) return res.status(401).json('Unauthorized. Please try again.');
+    if (!validAuth) return next(new Unauthorized('Incorrect login credentials.'));
     // remove the password from the response.
     user.stripPassword();
     // sign the token
@@ -146,7 +146,7 @@ export async function verifyUser(req, res, next) {
 
 export async function checkAuthentication(req, res, next) {
   try {
-    const validUser = await User.query().findById(req.user.id).eager('[roles]');
+    const validUser = await User.query().findById(req.user.id).eager('roles');
 
     if (!validUser) {
       return res.status(401).json('Unauthorized: Please login again.');

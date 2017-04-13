@@ -46,5 +46,6 @@ router.get('/', ctrl.listMedia);
  * @apiSuccess {String}  id   The Media id (uuid)
  */
 router.get('/:id', ctrl.getMedia);
-
+router.post('/', isAuthenticated, ctrl.uploadMedia);
+router.post('/remote', isAuthenticated, ctrl.uploadFromUrl);
 export default router;

@@ -72,7 +72,7 @@ export async function addContentType(req, res, next) {
  */
 export async function listMediaTypes(req, res, next) {
   try {
-    const mediaTypes = await MediaType.query();
+    const mediaTypes = await MediaType.query().eager('[files]');
     return res.status(200).json(mediaTypes);
   } catch (error) {
     return next(error);

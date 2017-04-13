@@ -5,7 +5,7 @@ import Menu from '../../models/menu';
 
 export async function listMenu(req, res, next) {
   try {
-    const menus = await Menu.query().eager('details').returning('*');
+    const menus = await Menu.query().eager('[details]').skipUndefined();
 
     if (!menus) {
       return next(new NotFound('Unable to find any navigations. Try creating one.'));
@@ -19,7 +19,7 @@ export async function listMenu(req, res, next) {
 
 export async function showMenu(req, res, next) {
   try {
-    const menu = await Menu.query().eager('[details]').findById(req.params.id);
+    const menu = await Menu.query().findById(req.params.id).eager('[details]').skipUndefined();
 
     return responseHandler(res, 200, menu);
   } catch (error) {

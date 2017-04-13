@@ -88,7 +88,6 @@ async function dropDatabase(db) {
   await db.schema.dropTableIfExists('verification_token');
   await db.schema.dropTableIfExists('reset_token');
   await db.schema.dropTableIfExists('post');
-  await db.schema.dropTableIfExists('comment');
   await db.schema.dropTableIfExists('attachment');
   await db.schema.dropTableIfExists('user');
   await db.schema.dropTableIfExists('role');

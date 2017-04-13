@@ -3,7 +3,7 @@ import slugIt from '../../../utils/slugIt';
 import { InternalServer, BadRequest, responseHandler } from '../../../core/index';
 import { Activity, Menu, MenuDetail, MenuMenuDetail } from '../../../models';
 
-const debug = require('debug')('boldr:menuDetail-controller');
+const debug = require('debug')('boldrAPI:menuDetail-ctrl');
 
 export async function getDetails(req, res, next) {
   try {

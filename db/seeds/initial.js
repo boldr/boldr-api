@@ -395,8 +395,8 @@ function seed(knex, Promise) {
       knex('content_type').insert({
         id: 2,
         uuid: '524d6cfd-b447-443b-b758-4afee35aab50',
-        name: 'Article',
-        safeName: 'article'
+        name: 'Post',
+        safeName: 'post'
       }),
       knex('content_type').insert({
         id: 3,

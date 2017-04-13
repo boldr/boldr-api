@@ -1,6 +1,7 @@
 import { Model } from 'objection';
 import BaseModel from './base';
 import MediaType from './mediaType';
+import User from './user';
 
 class Media extends BaseModel {
   static get tableName() {
@@ -10,12 +11,20 @@ class Media extends BaseModel {
 
   static get relationMappings() {
     return {
-      mediaType: {
+      type: {
         relation: Model.BelongsToOneRelation,
         modelClass: MediaType,
         join: {
-          from: 'media.id',
+          from: 'media.mediaType',
           to: 'media_type.id',
+        },
+      },
+      owner: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: User,
+        join: {
+          from: 'media.userId',
+          to: 'user.id',
         },
       },
     };

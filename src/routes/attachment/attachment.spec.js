@@ -5,7 +5,7 @@ import app from '../../app';
 
 const agent = request.agent(app);
 
-describe('Attachment API Endpoint', async () => {
+describe('Attachment API Endpoint', () => {
   let token;
   beforeAll(async () => {
     const loginData = {
@@ -13,7 +13,7 @@ describe('Attachment API Endpoint', async () => {
       password: 'password',
     };
     const { body } = await agent.post('/api/v1/auth/login').set('Accept', 'application/json').send(loginData);
-    token = body.token;
+    token = body.token; // eslint-disable-line
     await db('attachment').insert({
       id: '1c462e26-df71-48ce-b363-4ae9b966e7a0',
       url: '/files/file.png',

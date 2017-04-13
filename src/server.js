@@ -2,7 +2,7 @@ import http from 'http';
 import { Model } from 'objection';
 
 import app from './app';
-import { logger, db, disconnect } from './services';
+import { logger, db, disconnect, destroyRedis } from './services';
 import config from './config';
 
 const debug = require('debug')('boldrAPI:engine');
@@ -23,11 +23,13 @@ server.on('error', err => {
 server.on('listening', () => {
   const address = server.address();
   logger.info('🚀  Starting server on %s:%s', address.address, address.port);
+  logger.debug(config.toString());
 });
 
 process.on('SIGINT', () => {
   logger.info('shutting down!');
   disconnect();
+  destroyRedis();
   server.close();
   process.exit();
 });

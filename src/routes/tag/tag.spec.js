@@ -66,7 +66,7 @@ describe('Tags API Endpoint', () => {
       .post('/api/v1/tags')
       .set('Authorization', `Bearer ${token}`)
       .send({
-        name: faker.random.word(),
+        name: 'bananas',
         description: 'a tag for a test.',
       })
       .expect(res => {
