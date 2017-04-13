@@ -15,10 +15,10 @@ const debug = require('debug')('boldr:activity-ctrl');
 export async function listActivities(req, res, next) {
   try {
     const activities = await Activity.query()
-      .skipUndefined()
       .orderBy('createdAt', 'desc')
       .limit(10)
-      .eager('[owner,post,member,attachment,menuDetail,tag]');
+      .eager('[owner,post,member,attachment,menuDetail,tag]')
+      .skipUndefined();
 
     return responseHandler(res, 200, activities);
   } catch (error) {

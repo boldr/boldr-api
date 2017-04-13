@@ -1,3 +1,3 @@
-import redisClient from './redis';
+import { mainRedisClient, pubSubRedisClient, destroyRedis } from './redis';
 
-export default redisClient;
+export { mainRedisClient, pubSubRedisClient, destroyRedis };

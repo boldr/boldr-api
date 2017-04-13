@@ -5,7 +5,7 @@ import app from '../../app';
 
 const agent = request.agent(app);
 
-describe('Attachment API Endpoint', () => {
+describe('Media API Endpoint', () => {
   let token;
   beforeAll(async () => {
     const loginData = {
@@ -14,29 +14,30 @@ describe('Attachment API Endpoint', () => {
     };
     const { body } = await agent.post('/api/v1/auth/login').set('Accept', 'application/json').send(loginData);
     token = body.token; // eslint-disable-line
-    await db('attachment').insert({
+    await db('media').insert({
       id: '1c462e26-df71-48ce-b363-4ae9b966e7a0',
       url: '/files/file.png',
       userId: '1b062e26-df71-48ce-b363-4ae9b966e7a0',
       safeName: 'file.png',
       fileName: 'file.png',
+      mediaType: 1,
     });
   });
-  test('+++ GET /attachments', () => {
-    return agent.get('/api/v1/attachments').expect(res => {
+  test('+++ GET /media', () => {
+    return agent.get('/api/v1/media').expect(res => {
       expect(res.status).toBe(200);
       expect(typeof res.body).toBe('object');
     });
   });
-  test('+++ GET /attachments/:id', () => {
-    return agent.get('/api/v1/attachments/668e14aa-ebe6-11e6-8ebf-4f81f17749d5').expect(res => {
+  test('+++ GET /media/:id', () => {
+    return agent.get('/api/v1/media/1c462e26-df71-48ce-b363-4ae9b966e7a0').expect(res => {
       expect(res.status).toBe(200);
       expect(typeof res.body).toBe('object');
     });
   });
-  test('+++ UPDATE /attachments/:id', () => {
+  test('+++ UPDATE /media/:id', () => {
     return agent
-      .put('/api/v1/attachments/668e14aa-ebe6-11e6-8ebf-4f81f17749d5')
+      .put('/api/v1/media/1c462e26-df71-48ce-b363-4ae9b966e7a0')
       .set('Authorization', `Bearer ${token}`)
       .send({
         fileDescription: `a test${Math.random()}`,
@@ -46,18 +47,19 @@ describe('Attachment API Endpoint', () => {
         expect(typeof res.body).toBe('object');
       });
   });
-  test('+++ DELETE /attachments/:id', () => {
+  test('+++ DELETE /media/:id', () => {
     return agent
-      .del('/api/v1/attachments/1c462e26-df71-48ce-b363-4ae9b966e7a0')
+      .del('/api/v1/media/1c462e26-df71-48ce-b363-4ae9b966e7a0')
       .set('Authorization', `Bearer ${token}`)
       .expect(res => {
         expect(res.status).toBe(204);
       });
   });
-  test('+++ POST /attachments', () => {
+  test('+++ POST /media', () => {
     return agent
-      .post('/api/v1/attachments')
+      .post('/api/v1/media')
       .set('Authorization', `Bearer ${token}`)
+      .field('mediaType', 1)
       .attach('file', path.join(__dirname, '__fixtures__/fix.png'))
       .expect(res => {
         expect(res.status).toBe(201);

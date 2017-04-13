@@ -39,6 +39,7 @@ module.exports.up = async db => {
 
     table.timestamp('createdAt').notNullable().defaultTo(db.fn.now());
     table.timestamp('updatedAt').nullable().defaultTo(null);
+    table.timestamp('deletedAt').nullable().defaultTo(null);
     // fk
 
     // indexes
@@ -102,6 +103,7 @@ module.exports.up = async db => {
     table.boolean('published').defaultTo(true);
     table.timestamp('createdAt').notNullable().defaultTo(db.fn.now());
     table.timestamp('updatedAt').nullable().defaultTo(null);
+    table.timestamp('deletedAt').nullable().defaultTo(null);
     // fk | uuid
     table.foreign('userId').references('id').inTable('user').onDelete('cascade').onUpdate('cascade');
 

@@ -17,6 +17,8 @@ const tables = [
   'menu_menu_detail',
   'setting',
   'template_page',
+  'content_type',
+  'media_type',
 ];
 
 function seed(knex, Promise) {
@@ -54,19 +56,19 @@ function seed(knex, Promise) {
           language: 'en_US',
           social: {
             facebook: {
-              url: 'www.facebook.com',
+              url: 'https://www.facebook.com',
             },
             twitter: {
-              url: 'www.twitter.com',
+              url: 'https://wwww.twitter.com',
             },
             linkedin: {
-              url: 'www.linkedin.com',
+              url: 'https://wwww.linkedin.com',
             },
             github: {
-              url: 'www.github.com',
+              url: 'https://wwww.github.com',
             },
             google: {
-              url: 'www.google.com',
+              url: 'https://wwww.google.com',
             },
           },
           verified: true,
@@ -87,19 +89,19 @@ function seed(knex, Promise) {
           language: 'en_US',
           social: {
             facebook: {
-              url: 'www.facebook.com',
+              url: 'https://wwww.facebook.com',
             },
             twitter: {
-              url: 'www.twitter.com',
+              url: 'https://wwww.twitter.com',
             },
             linkedin: {
-              url: 'www.linkedin.com',
+              url: 'https://wwww.linkedin.com',
             },
             github: {
-              url: 'www.github.com',
+              url: 'https://wwww.github.com',
             },
             google: {
-              url: 'www.google.com',
+              url: 'https://wwww.google.com',
             },
           },
           verified: true,
@@ -120,19 +122,19 @@ function seed(knex, Promise) {
           language: 'en_US',
           social: {
             facebook: {
-              url: 'www.facebook.com',
+              url: 'https://wwww.facebook.com',
             },
             twitter: {
-              url: 'www.twitter.com',
+              url: 'https://wwww.twitter.com',
             },
             linkedin: {
-              url: 'www.linkedin.com',
+              url: 'https://wwww.linkedin.com',
             },
             github: {
-              url: 'www.github.com',
+              url: 'https://wwww.github.com',
             },
             google: {
-              url: 'www.google.com',
+              url: 'https://wwww.google.com',
             },
           },
           verified: true,
@@ -382,28 +384,91 @@ function seed(knex, Promise) {
           pageId: '0a277a50-b482-4b86-b0e7-83fdd3a372af',
         }),
       ]))
+      .then(() =>
+    Promise.all([
+      knex('content_type').insert({
+        id: 1,
+        uuid: '29f45e4b-9c66-4083-8daa-279921ec71e7',
+        name: 'Page',
+        safeName: 'page'
+      }),
+      knex('content_type').insert({
+        id: 2,
+        uuid: '524d6cfd-b447-443b-b758-4afee35aab50',
+        name: 'Post',
+        safeName: 'post'
+      }),
+      knex('content_type').insert({
+        id: 3,
+        uuid: '943d6b80-948e-4d93-a555-6f13bf581046',
+        name: 'FAQ',
+        safeName: 'faq'
+      }),
+      knex('content_type').insert({
+        id: 4,
+        uuid: '93a98080-fb1d-437c-9731-a66ebaece248',
+        name: 'Project',
+        safeName: 'project'
+      }),
+      knex('content_type').insert({
+        id: 5,
+        uuid: 'e2d2689d-d265-4e5b-b8f4-8df0feea2e05',
+        name: 'Link',
+        safeName: 'link'
+      }),
+      knex('content_type').insert({
+        id: 6,
+        uuid: '3f4aaba7-5835-4493-82c3-f341d5ba9c09',
+        name: 'Hero',
+        safeName: 'hero'
+      }),
+      knex('content_type').insert({
+        id: 7,
+        uuid: '132ee9d4-f653-4097-a311-1cc56a8629fd',
+        name: 'Carousel',
+        safeName: 'carousel'
+      }),
+    ]))
+    .then(() =>
+  Promise.all([
+    knex('media_type').insert({
+      id: 1,
+      uuid: '51ad0cb8-39e9-4ee5-80ca-50ebb35b372c',
+      mediaType: 'image',
+    }),
+    knex('media_type').insert({
+      id: 2,
+      uuid: '78614bdc-fd05-418e-b02c-a65e71075e70',
+      mediaType: 'video',
+    }),
+    knex('media_type').insert({
+      id: 3,
+      uuid: '3f9bb6d3-241b-4087-885f-117ead57bc73',
+      mediaType: 'audio',
+    })
+  ]))
     .then(() =>
       Promise.all([
         knex('setting').insert({
-          key: 'site_name',
+          key: 'siteName',
           label: 'Site Name',
           value: 'Boldr',
           description: 'The website name.',
         }),
         knex('setting').insert({
-          key: 'site_url',
+          key: 'siteUrl',
           label: 'Site URL',
           value: 'http://localhost:3000',
           description: 'The address used to access your website.',
         }),
         knex('setting').insert({
-          key: 'site_logo',
+          key: 'siteLogo',
           label: 'Site Logo',
           value: 'https://boldr.io/boldr.png',
           description: 'The logo is displayed in the header area.',
         }),
         knex('setting').insert({
-          key: 'site_description',
+          key: 'siteDescription',
           label: 'Site Description',
           value: 'A modern CMS',
           description: 'Meta header for search results.',
@@ -415,13 +480,13 @@ function seed(knex, Promise) {
           description: 'Favicon to use for your website.',
         }),
         knex('setting').insert({
-          key: 'google_analytics',
+          key: 'googleAnalytics',
           label: 'Google Analytics ID',
           value: 'UA-323432',
           description: 'Google Analytics tracking code',
         }),
         knex('setting').insert({
-          key: 'allow_registration',
+          key: 'allowRegistration',
           label: 'Allow Registration',
           value: true,
           description: "Toggle allowing user's to register for accounts.",

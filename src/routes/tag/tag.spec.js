@@ -66,7 +66,7 @@ describe('Tags API Endpoint', () => {
       .post('/api/v1/tags')
       .set('Authorization', `Bearer ${token}`)
       .send({
-        name: faker.random.word(),
+        name: 'bananas',
         description: 'a tag for a test.',
       })
       .expect(res => {
@@ -76,7 +76,7 @@ describe('Tags API Endpoint', () => {
 
   test('+++ Post /tags - should fail without name.', () => {
     return agent.post('/api/v1/tags').set('Authorization', `Bearer ${token}`).send(badTag).expect(res => {
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(500);
     });
   });
   test('+++ PUT /tags/:id - should update a tag.', () => {

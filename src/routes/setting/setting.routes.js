@@ -1,9 +1,10 @@
 import { Router } from 'express';
 import { checkRole } from '../../middleware/rbac';
+import { wrapRouter } from '../../utils/asyncRouter';
 import { isAuthenticated } from '../../services/authentication';
 import * as ctrl from './setting.controller';
 
-const router = new Router();
+const router = wrapRouter(new Router());
 /**
  * @api {get} /settings       Get all settings objects
  * @apiName listSettings

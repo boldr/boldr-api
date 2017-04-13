@@ -1,8 +1,9 @@
-import express from 'express';
+import { Router } from 'express';
+import { wrapRouter } from '../../utils/asyncRouter';
 import { isAuthenticated } from '../../services/authentication';
 import * as ctrl from './role.controller';
 
-const router = express.Router();
+const router = wrapRouter(new Router());
 /**
  * @api {get} /roles       List all roles
  * @apiName ListRoles

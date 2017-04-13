@@ -2,11 +2,12 @@ import { Router } from 'express';
 import { isAuthenticated } from '../../services/authentication';
 import { checkRole } from '../../middleware/rbac';
 import BaseController from '../../core/baseController';
+import { wrapRouter } from '../../utils/asyncRouter';
 import processQuery from '../../utils/processQuery';
 import { User } from '../../models';
 import * as ctrl from './user.controller';
 
-const router = new Router();
+const router = wrapRouter(new Router());
 const controller = new BaseController(User, 'id');
 /**
  * @api {get} /users        List all users

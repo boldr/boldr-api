@@ -1,8 +1,9 @@
+/* eslint-disable prefer-destructuring */
 import http from 'http';
-import { Model } from 'objection';
-
+import * as objection from 'objection';
+import * as objectionSoftDelete from 'objection-softdelete';
 import app from './app';
-import { logger, db, disconnect } from './services';
+import { logger, db, disconnect, destroyRedis } from './services';
 import config from './config';
 
 const debug = require('debug')('boldrAPI:engine');
@@ -11,7 +12,9 @@ const PORT = config.get('port');
 const HOST = config.get('host');
 const server = http.createServer(app);
 
+const Model = objection.Model;
 Model.knex(db);
+objectionSoftDelete.register(objection);
 
 server.listen(PORT, HOST);
 
@@ -23,11 +26,13 @@ server.on('error', err => {
 server.on('listening', () => {
   const address = server.address();
   logger.info('🚀  Starting server on %s:%s', address.address, address.port);
+  logger.debug(config.toString());
 });
 
 process.on('SIGINT', () => {
   logger.info('shutting down!');
   disconnect();
+  destroyRedis();
   server.close();
   process.exit();
 });
