@@ -55,14 +55,14 @@ describe('Media API Endpoint', () => {
         expect(res.status).toBe(204);
       });
   });
+  test('+++ POST /media', () => {
+    return agent
+      .post('/api/v1/media')
+      .set('Authorization', `Bearer ${token}`)
+      .field('mediaType', 1)
+      .attach('file', path.join(__dirname, '__fixtures__/fix.png'))
+      .expect(res => {
+        expect(res.status).toBe(201);
+      });
+  });
 });
-//   test('+++ POST /attachments', () => {
-//     return agent
-//       .post('/api/v1/attachments')
-//       .set('Authorization', `Bearer ${token}`)
-//       .attach('image', `${__dirname}/__fixtures__/fix.png`)
-//       .expect((res) => {
-//         expect(res.status).toBe(201);
-//       });
-//   });
-// });
