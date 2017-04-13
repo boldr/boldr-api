@@ -152,7 +152,8 @@ CREATE TABLE block (
     content jsonb,
     entities jsonb,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone
+    "updatedAt" timestamp with time zone,
+    "deletedAt" timestamp with time zone
 );
 
 
@@ -225,7 +226,8 @@ CREATE TABLE content_type (
     image character varying(200),
     description text,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone
+    "updatedAt" timestamp with time zone,
+    "deletedAt" timestamp with time zone
 );
 
 
@@ -278,13 +280,13 @@ ALTER TABLE gallery OWNER TO postgres;
 CREATE TABLE media (
     id uuid DEFAULT uuid_generate_v4() NOT NULL,
     "fileName" character varying(128) NOT NULL,
-    "thumbName" character varying(128) NOT NULL,
+    "safeName" character varying(128) NOT NULL,
+    "thumbName" character varying(128),
     "fileDescription" character varying(255),
     "mediaType" integer,
     mimetype character varying(255),
     url character varying(255) NOT NULL,
     path character varying(255),
-    "remoteUrl" character varying(255),
     "userId" uuid,
     "createdAt" timestamp with time zone DEFAULT now(),
     "updatedAt" timestamp with time zone DEFAULT now()
@@ -513,7 +515,8 @@ CREATE TABLE post (
     "userId" uuid NOT NULL,
     published boolean DEFAULT true,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone
+    "updatedAt" timestamp with time zone,
+    "deletedAt" timestamp with time zone
 );
 
 
@@ -814,7 +817,8 @@ CREATE TABLE "user" (
     social json,
     verified boolean DEFAULT false,
     "createdAt" timestamp with time zone DEFAULT now() NOT NULL,
-    "updatedAt" timestamp with time zone
+    "updatedAt" timestamp with time zone,
+    "deletedAt" timestamp with time zone
 );
 
 
@@ -1009,7 +1013,6 @@ ALTER TABLE ONLY verification_token ALTER COLUMN id SET DEFAULT nextval('verific
 --
 
 COPY activity (id, "userId", type, "activityPost", "activityUser", "activityAttachment", "activityTag", "activityMenuDetail", "activityTemplate", "activityPage", "activityRole", "createdAt", "updatedAt") FROM stdin;
-29b3b372-8db0-42ac-977f-b4f4fbcc6873	1b062e26-df71-48ce-b363-4ae9b966e7a0	create	\N	\N	f30f470d-3fc5-40a6-91e0-1018e8af289f	\N	\N	\N	\N	\N	2017-04-13 03:31:36.437+00	2017-04-13 03:31:36.437+00
 \.
 
 
@@ -1018,8 +1021,7 @@ COPY activity (id, "userId", type, "activityPost", "activityUser", "activityAtta
 --
 
 COPY attachment (id, "fileName", "safeName", "fileDescription", "fileType", "userId", url, "createdAt", "updatedAt") FROM stdin;
-668e14aa-ebe6-11e6-8ebf-4f81f17749d5	file.png	file.png	\N	\N	1b062e26-df71-48ce-b363-4ae9b966e7a0	/uploads/file.png	2017-04-13 03:01:43.915567+00	2017-04-13 03:01:43.915567+00
-f30f470d-3fc5-40a6-91e0-1018e8af289f	SJe7-_3Te.png	SJe7-_3Te.png	\N	image/png	1b062e26-df71-48ce-b363-4ae9b966e7a0	/uploads/SJe7-_3Te.png	2017-04-13 03:31:36.409+00	2017-04-13 03:31:36.409+00
+668e14aa-ebe6-11e6-8ebf-4f81f17749d5	file.png	file.png	\N	\N	1b062e26-df71-48ce-b363-4ae9b966e7a0	/uploads/file.png	2017-04-13 05:25:00.443819+00	2017-04-13 05:25:00.443819+00
 \.
 
 
@@ -1027,7 +1029,7 @@ f30f470d-3fc5-40a6-91e0-1018e8af289f	SJe7-_3Te.png	SJe7-_3Te.png	\N	image/png	1b
 -- Data for Name: block; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY block (id, uuid, "contentTypeId", key, content, entities, "createdAt", "updatedAt") FROM stdin;
+COPY block (id, uuid, "contentTypeId", key, content, entities, "createdAt", "updatedAt", "deletedAt") FROM stdin;
 \.
 
 
@@ -1057,14 +1059,14 @@ SELECT pg_catalog.setval('block_relation_id_seq', 1, false);
 -- Data for Name: content_type; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY content_type (id, uuid, name, "safeName", image, description, "createdAt", "updatedAt") FROM stdin;
-1	29f45e4b-9c66-4083-8daa-279921ec71e7	Page	page	\N	\N	2017-04-13 03:01:43.957866+00	\N
-2	524d6cfd-b447-443b-b758-4afee35aab50	Post	post	\N	\N	2017-04-13 03:01:43.959634+00	\N
-3	943d6b80-948e-4d93-a555-6f13bf581046	FAQ	faq	\N	\N	2017-04-13 03:01:43.961685+00	\N
-4	93a98080-fb1d-437c-9731-a66ebaece248	Project	project	\N	\N	2017-04-13 03:01:43.96636+00	\N
-5	e2d2689d-d265-4e5b-b8f4-8df0feea2e05	Link	link	\N	\N	2017-04-13 03:01:43.973509+00	\N
-6	3f4aaba7-5835-4493-82c3-f341d5ba9c09	Hero	hero	\N	\N	2017-04-13 03:01:43.975041+00	\N
-7	132ee9d4-f653-4097-a311-1cc56a8629fd	Carousel	carousel	\N	\N	2017-04-13 03:01:43.977226+00	\N
+COPY content_type (id, uuid, name, "safeName", image, description, "createdAt", "updatedAt", "deletedAt") FROM stdin;
+1	29f45e4b-9c66-4083-8daa-279921ec71e7	Page	page	\N	\N	2017-04-13 05:25:00.486155+00	\N	\N
+2	524d6cfd-b447-443b-b758-4afee35aab50	Post	post	\N	\N	2017-04-13 05:25:00.487958+00	\N	\N
+3	943d6b80-948e-4d93-a555-6f13bf581046	FAQ	faq	\N	\N	2017-04-13 05:25:00.490117+00	\N	\N
+4	93a98080-fb1d-437c-9731-a66ebaece248	Project	project	\N	\N	2017-04-13 05:25:00.494776+00	\N	\N
+5	e2d2689d-d265-4e5b-b8f4-8df0feea2e05	Link	link	\N	\N	2017-04-13 05:25:00.499812+00	\N	\N
+6	3f4aaba7-5835-4493-82c3-f341d5ba9c09	Hero	hero	\N	\N	2017-04-13 05:25:00.501431+00	\N	\N
+7	132ee9d4-f653-4097-a311-1cc56a8629fd	Carousel	carousel	\N	\N	2017-04-13 05:25:00.503746+00	\N	\N
 \.
 
 
@@ -1087,9 +1089,7 @@ COPY gallery (id, name, slug, description, restricted, status, "createdAt", "upd
 -- Data for Name: media; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY media (id, "fileName", "thumbName", "fileDescription", "mediaType", mimetype, url, path, "remoteUrl", "userId", "createdAt", "updatedAt") FROM stdin;
-f079b34f-280c-4224-a212-079088e185d6	Skv35Phpe.png	Skv35Phpe_small.png	\N	1	image/png	/uploads/Skv35Phpe.png	/Users/steventruesdell/Code/Boldr/boldr-api/static/uploads/Skv35Phpe.png	\N	1b062e26-df71-48ce-b363-4ae9b966e7a0	2017-04-13 03:04:15.226+00	2017-04-13 03:04:15.226+00
-17deb96d-8f03-45b5-b436-b028f58a8aba	H1Bgawn6x.png	H1Bgawn6x_small.png	\N	1	image/png	/uploads/H1Bgawn6x.png	/Users/steventruesdell/Code/Boldr/boldr-api/static/uploads/H1Bgawn6x.png	\N	1b062e26-df71-48ce-b363-4ae9b966e7a0	2017-04-13 03:13:48.584+00	2017-04-13 03:13:48.584+00
+COPY media (id, "fileName", "safeName", "thumbName", "fileDescription", "mediaType", mimetype, url, path, "userId", "createdAt", "updatedAt") FROM stdin;
 \.
 
 
@@ -1098,9 +1098,9 @@ f079b34f-280c-4224-a212-079088e185d6	Skv35Phpe.png	Skv35Phpe_small.png	\N	1	imag
 --
 
 COPY media_type (id, uuid, "mediaType", "createdAt", "updatedAt") FROM stdin;
-1	51ad0cb8-39e9-4ee5-80ca-50ebb35b372c	image	2017-04-13 03:01:43.992141+00	\N
-2	78614bdc-fd05-418e-b02c-a65e71075e70	video	2017-04-13 03:01:43.994532+00	\N
-3	3f9bb6d3-241b-4087-885f-117ead57bc73	audio	2017-04-13 03:01:43.996284+00	\N
+1	51ad0cb8-39e9-4ee5-80ca-50ebb35b372c	image	2017-04-13 05:25:00.518732+00	\N
+2	78614bdc-fd05-418e-b02c-a65e71075e70	video	2017-04-13 05:25:00.520824+00	\N
+3	3f9bb6d3-241b-4087-885f-117ead57bc73	audio	2017-04-13 05:25:00.522456+00	\N
 \.
 
 
@@ -1116,7 +1116,7 @@ SELECT pg_catalog.setval('media_type_id_seq', 1, false);
 --
 
 COPY menu (id, uuid, name, "safeName", attributes, restricted) FROM stdin;
-1	7be5e21b-20e4-4866-ab2e-4a80a337226c	Main	main	{}	f
+1	1b414a42-df17-4352-91d1-e415b097dfe4	Main	main	{}	f
 \.
 
 
@@ -1125,8 +1125,8 @@ COPY menu (id, uuid, name, "safeName", attributes, restricted) FROM stdin;
 --
 
 COPY menu_detail (id, uuid, "safeName", name, "cssClassname", "hasDropdown", "order", "mobileHref", href, icon, children) FROM stdin;
-1	028f3377-a41e-40e1-b637-583f2884aeb2	about	About	about-link	t	1	about	about	info	{"key":"about-menu","items":[{"name":"Tech","id":"tech","href":"about/tech","icon":"change_history"},{"name":"Setup","id":"setup","href":"about/setup","icon":"phonelink_setup"}]}
-2	a5b14867-4b4a-404a-8c1d-4eda00c458e9	blog	Blog	blog-link	f	2	blog	blog	info	\N
+1	7a0522cc-49c0-4328-b0a9-bd508119b1ba	about	About	about-link	t	1	about	about	info	{"key":"about-menu","items":[{"name":"Tech","id":"tech","href":"about/tech","icon":"change_history"},{"name":"Setup","id":"setup","href":"about/setup","icon":"phonelink_setup"}]}
+2	f1ba3de0-21bf-464e-8c0f-ec6ee3316319	blog	Blog	blog-link	f	2	blog	blog	info	\N
 \.
 
 
@@ -1159,8 +1159,8 @@ COPY menu_menu_detail ("menuId", "menuDetailId") FROM stdin;
 --
 
 COPY migrations (id, name, batch, migration_time) FROM stdin;
-1	201701270219_initial.js	1	2017-04-13 03:01:36.601+00
-2	201704120543_content.js	1	2017-04-13 03:01:36.709+00
+1	201701270219_initial.js	1	2017-04-13 05:24:56.383+00
+2	201704120543_content.js	1	2017-04-13 05:24:56.484+00
 \.
 
 
@@ -1185,8 +1185,8 @@ COPY migrations_lock (is_locked) FROM stdin;
 --
 
 COPY page (id, name, slug, url, layout, data, status, restricted, meta, "createdAt", "updatedAt") FROM stdin;
-87d1e9b3-b32e-474e-9246-6dce1b21a72d	Home	home	home	{"showHero":true,"showPosts":true}	{}	published	f	{"title":"Home","description":"The home page"}	2017-04-13 03:01:43.906488+00	\N
-0a277a50-b482-4b86-b0e7-83fdd3a372af	About	about	about	{"showHero":true,"showPosts":true}	{}	published	f	{"title":"About","description":"The about page"}	2017-04-13 03:01:43.908341+00	\N
+87d1e9b3-b32e-474e-9246-6dce1b21a72d	Home	home	home	{"showHero":true,"showPosts":true}	{}	published	f	{"title":"Home","description":"The home page"}	2017-04-13 05:25:00.434745+00	\N
+0a277a50-b482-4b86-b0e7-83fdd3a372af	About	about	about	{"showHero":true,"showPosts":true}	{}	published	f	{"title":"About","description":"The about page"}	2017-04-13 05:25:00.436327+00	\N
 \.
 
 
@@ -1194,10 +1194,10 @@ COPY page (id, name, slug, url, layout, data, status, restricted, meta, "created
 -- Data for Name: post; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY post (id, title, slug, "featureImage", attachments, meta, featured, "rawContent", content, excerpt, "userId", published, "createdAt", "updatedAt") FROM stdin;
-5c9ed236-79f0-4ff7-93bd-2815f06c74b4	Just Another Post	just-another-post	https://boldr.io/image1.jpg	\N	{}	t	\N	<h1>Lorem ipsum dolor sit amet.</h1>\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis sapien in est aliquam lacinia. Donec fringilla odio nulla, sagittis egestas dolor bibendum ut. Proin eget massa mattis, dictum enim vitae, facilisis eros. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum imperdiet varius ante. Maecenas sit amet luctus sapien, quis aliquet purus. Cras malesuada quam a dui pretium fermentum. Quisque tempor interdum quam, eu lacinia turpis interdum id. Curabitur non mauris lobortis, mattis nulla id, viverra nisi. Phasellus eget porttitor lorem. Quisque facilisis nec arcu eu fringilla. Vivamus elit ipsum, viverra eu maximus a, venenatis nec nibh.Suspendisse iaculis auctor fermentum. Sed suscipit ante nisl, nec iaculis magna consequat vel. Quisque viverra est a justo egestas, euismod egestas metus hendrerit.</p>\n<p><br></p>\n<blockquote>&nbsp;In ultricies sagittis ex a dapibus. Nunc feugiat lorem non tincidunt euismod. Duis quam nibh, volutpat sit amet enim non, eleifend ullamcorper diam. Etiam iaculis ante ut libero sollicitudin, eget eleifend nulla gravida. Pellentesque ut gravida augue. Donec nibh orci, rutrum nec sapien eu, lacinia pretium nulla. Nunc turpis sem, placerat ac velit sit amet, aliquet ultrices metus.Curabitur mollis venenatis lectus, at elementum felis dapibus non. Sed vel finibus mauris. Aenean semper arcu lectus, porta feugiat urna tincidunt congue. Ut euismod finibus massa quis condimentum. Vivamus interdum velit nec varius consectetur. Vivamus sodales commodo ante, vel fringilla nunc finibus et. Phasellus non sem finibus, congue nibh ut, ornare tortor.Curabitur sapien est, accumsan at justo a, porta malesuada risus. Integer facilisis viverra mauris condimentum finibus.</blockquote>\n<p><br></p>\n<p>&nbsp;Donec eget tortor id ipsum maximus commodo nec eu quam. Aliquam erat volutpat. Nunc tincidunt est sit amet justo placerat egestas. Vestibulum efficitur, neque tempor feugiat lacinia, turpis ex efficitur urna, ullamcorper porta ligula lorem id neque. Quisque interdum risus at nisl finibus varius. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.In euismod gravida tortor in placerat. Aenean blandit blandit efficitur. Cras a accumsan augue, at tincidunt massa. Vivamus eleifend sem sed nibh tempor laoreet. Quisque blandit turpis vitae bibendum mattis. Nulla sagittis quam eget diam feugiat ultricies. Aliquam varius tellus et turpis viverra tempus. Nam sit amet ex suscipit, convallis tortor at, malesuada felis. Vestibulum arcu eros, bibendum sit amet tempus placerat, pharetra nec tortor. Ut scelerisque quam non magna tincidunt, nec varius massa blandit.</p>\n<p><br></p>	Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, whenan unknown printer took a galley of type and scrambled it to make a type specimen book.	1b062e26-df71-48ce-b363-4ae9b966e7a0	t	2017-04-13 03:01:43.802338+00	\N
-cb61bbae-c91e-4014-b665-3485734b88fb	Nother One	nother-one	https://boldr.io/image3.jpg	\N	{}	f	\N	<h1>Lorem ipsum dolor sit amet.</h1>\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis sapien in est aliquam lacinia. Donec fringilla odio nulla, sagittis egestas dolor bibendum ut. Proin eget massa mattis, dictum enim vitae, facilisis eros. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum imperdiet varius ante. Maecenas sit amet luctus sapien, quis aliquet purus. Cras malesuada quam a dui pretium fermentum. Quisque tempor interdum quam, eu lacinia turpis interdum id. Curabitur non mauris lobortis, mattis nulla id, viverra nisi. Phasellus eget porttitor lorem. Quisque facilisis nec arcu eu fringilla. Vivamus elit ipsum, viverra eu maximus a, venenatis nec nibh.Suspendisse iaculis auctor fermentum. Sed suscipit ante nisl, nec iaculis magna consequat vel. Quisque viverra est a justo egestas, euismod egestas metus hendrerit.</p>\n<p><br></p>\n<blockquote>&nbsp;In ultricies sagittis ex a dapibus. Nunc feugiat lorem non tincidunt euismod. Duis quam nibh, volutpat sit amet enim non, eleifend ullamcorper diam. Etiam iaculis ante ut libero sollicitudin, eget eleifend nulla gravida. Pellentesque ut gravida augue. Donec nibh orci, rutrum nec sapien eu, lacinia pretium nulla. Nunc turpis sem, placerat ac velit sit amet, aliquet ultrices metus.Curabitur mollis venenatis lectus, at elementum felis dapibus non. Sed vel finibus mauris. Aenean semper arcu lectus, porta feugiat urna tincidunt congue. Ut euismod finibus massa quis condimentum. Vivamus interdum velit nec varius consectetur. Vivamus sodales commodo ante, vel fringilla nunc finibus et. Phasellus non sem finibus, congue nibh ut, ornare tortor.Curabitur sapien est, accumsan at justo a, porta malesuada risus. Integer facilisis viverra mauris condimentum finibus.</blockquote>\n<p><br></p>\n<p>&nbsp;Donec eget tortor id ipsum maximus commodo nec eu quam. Aliquam erat volutpat. Nunc tincidunt est sit amet justo placerat egestas. Vestibulum efficitur, neque tempor feugiat lacinia, turpis ex efficitur urna, ullamcorper porta ligula lorem id neque. Quisque interdum risus at nisl finibus varius. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.In euismod gravida tortor in placerat. Aenean blandit blandit efficitur. Cras a accumsan augue, at tincidunt massa. Vivamus eleifend sem sed nibh tempor laoreet. Quisque blandit turpis vitae bibendum mattis. Nulla sagittis quam eget diam feugiat ultricies. Aliquam varius tellus et turpis viverra tempus. Nam sit amet ex suscipit, convallis tortor at, malesuada felis. Vestibulum arcu eros, bibendum sit amet tempus placerat, pharetra nec tortor. Ut scelerisque quam non magna tincidunt, nec varius massa blandit.</p>\n<p><br></p>	Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, whenan unknown printer took a galley of type and scrambled it to make a type specimen book.	f11d3ebf-4ae6-4578-ba65-0c8f48b7f41f	f	2017-04-13 03:01:43.804052+00	\N
-ab33a0ca-b349-4cf8-947f-94f415149492	Random Post Title	random-post-title	https://boldr.io/image2.jpg	\N	{}	f	\N	<h1>Lorem ipsum dolor sit amet.</h1>\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis sapien in est aliquam lacinia. Donec fringilla odio nulla, sagittis egestas dolor bibendum ut. Proin eget massa mattis, dictum enim vitae, facilisis eros. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum imperdiet varius ante. Maecenas sit amet luctus sapien, quis aliquet purus. Cras malesuada quam a dui pretium fermentum. Quisque tempor interdum quam, eu lacinia turpis interdum id. Curabitur non mauris lobortis, mattis nulla id, viverra nisi. Phasellus eget porttitor lorem. Quisque facilisis nec arcu eu fringilla. Vivamus elit ipsum, viverra eu maximus a, venenatis nec nibh.Suspendisse iaculis auctor fermentum. Sed suscipit ante nisl, nec iaculis magna consequat vel. Quisque viverra est a justo egestas, euismod egestas metus hendrerit.</p>\n<p><br></p>\n<blockquote>&nbsp;In ultricies sagittis ex a dapibus. Nunc feugiat lorem non tincidunt euismod. Duis quam nibh, volutpat sit amet enim non, eleifend ullamcorper diam. Etiam iaculis ante ut libero sollicitudin, eget eleifend nulla gravida. Pellentesque ut gravida augue. Donec nibh orci, rutrum nec sapien eu, lacinia pretium nulla. Nunc turpis sem, placerat ac velit sit amet, aliquet ultrices metus.Curabitur mollis venenatis lectus, at elementum felis dapibus non. Sed vel finibus mauris. Aenean semper arcu lectus, porta feugiat urna tincidunt congue. Ut euismod finibus massa quis condimentum. Vivamus interdum velit nec varius consectetur. Vivamus sodales commodo ante, vel fringilla nunc finibus et. Phasellus non sem finibus, congue nibh ut, ornare tortor.Curabitur sapien est, accumsan at justo a, porta malesuada risus. Integer facilisis viverra mauris condimentum finibus.</blockquote>\n<p><br></p>\n<p>&nbsp;Donec eget tortor id ipsum maximus commodo nec eu quam. Aliquam erat volutpat. Nunc tincidunt est sit amet justo placerat egestas. Vestibulum efficitur, neque tempor feugiat lacinia, turpis ex efficitur urna, ullamcorper porta ligula lorem id neque. Quisque interdum risus at nisl finibus varius. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.In euismod gravida tortor in placerat. Aenean blandit blandit efficitur. Cras a accumsan augue, at tincidunt massa. Vivamus eleifend sem sed nibh tempor laoreet. Quisque blandit turpis vitae bibendum mattis. Nulla sagittis quam eget diam feugiat ultricies. Aliquam varius tellus et turpis viverra tempus. Nam sit amet ex suscipit, convallis tortor at, malesuada felis. Vestibulum arcu eros, bibendum sit amet tempus placerat, pharetra nec tortor. Ut scelerisque quam non magna tincidunt, nec varius massa blandit.</p>\n<p><br></p>	Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, whenan unknown printer took a galley of type and scrambled it to make a type specimen book.	1b062e26-df71-48ce-b363-4ae9b966e7a0	t	2017-04-13 03:01:43.805934+00	\N
+COPY post (id, title, slug, "featureImage", attachments, meta, featured, "rawContent", content, excerpt, "userId", published, "createdAt", "updatedAt", "deletedAt") FROM stdin;
+cb61bbae-c91e-4014-b665-3485734b88fb	Nother One	nother-one	https://boldr.io/image3.jpg	\N	{}	f	\N	<h1>Lorem ipsum dolor sit amet.</h1>\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis sapien in est aliquam lacinia. Donec fringilla odio nulla, sagittis egestas dolor bibendum ut. Proin eget massa mattis, dictum enim vitae, facilisis eros. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum imperdiet varius ante. Maecenas sit amet luctus sapien, quis aliquet purus. Cras malesuada quam a dui pretium fermentum. Quisque tempor interdum quam, eu lacinia turpis interdum id. Curabitur non mauris lobortis, mattis nulla id, viverra nisi. Phasellus eget porttitor lorem. Quisque facilisis nec arcu eu fringilla. Vivamus elit ipsum, viverra eu maximus a, venenatis nec nibh.Suspendisse iaculis auctor fermentum. Sed suscipit ante nisl, nec iaculis magna consequat vel. Quisque viverra est a justo egestas, euismod egestas metus hendrerit.</p>\n<p><br></p>\n<blockquote>&nbsp;In ultricies sagittis ex a dapibus. Nunc feugiat lorem non tincidunt euismod. Duis quam nibh, volutpat sit amet enim non, eleifend ullamcorper diam. Etiam iaculis ante ut libero sollicitudin, eget eleifend nulla gravida. Pellentesque ut gravida augue. Donec nibh orci, rutrum nec sapien eu, lacinia pretium nulla. Nunc turpis sem, placerat ac velit sit amet, aliquet ultrices metus.Curabitur mollis venenatis lectus, at elementum felis dapibus non. Sed vel finibus mauris. Aenean semper arcu lectus, porta feugiat urna tincidunt congue. Ut euismod finibus massa quis condimentum. Vivamus interdum velit nec varius consectetur. Vivamus sodales commodo ante, vel fringilla nunc finibus et. Phasellus non sem finibus, congue nibh ut, ornare tortor.Curabitur sapien est, accumsan at justo a, porta malesuada risus. Integer facilisis viverra mauris condimentum finibus.</blockquote>\n<p><br></p>\n<p>&nbsp;Donec eget tortor id ipsum maximus commodo nec eu quam. Aliquam erat volutpat. Nunc tincidunt est sit amet justo placerat egestas. Vestibulum efficitur, neque tempor feugiat lacinia, turpis ex efficitur urna, ullamcorper porta ligula lorem id neque. Quisque interdum risus at nisl finibus varius. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.In euismod gravida tortor in placerat. Aenean blandit blandit efficitur. Cras a accumsan augue, at tincidunt massa. Vivamus eleifend sem sed nibh tempor laoreet. Quisque blandit turpis vitae bibendum mattis. Nulla sagittis quam eget diam feugiat ultricies. Aliquam varius tellus et turpis viverra tempus. Nam sit amet ex suscipit, convallis tortor at, malesuada felis. Vestibulum arcu eros, bibendum sit amet tempus placerat, pharetra nec tortor. Ut scelerisque quam non magna tincidunt, nec varius massa blandit.</p>\n<p><br></p>	Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, whenan unknown printer took a galley of type and scrambled it to make a type specimen book.	f11d3ebf-4ae6-4578-ba65-0c8f48b7f41f	f	2017-04-13 05:25:00.335594+00	\N	\N
+ab33a0ca-b349-4cf8-947f-94f415149492	Random Post Title	random-post-title	https://boldr.io/image2.jpg	\N	{}	f	\N	<h1>Lorem ipsum dolor sit amet.</h1>\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis sapien in est aliquam lacinia. Donec fringilla odio nulla, sagittis egestas dolor bibendum ut. Proin eget massa mattis, dictum enim vitae, facilisis eros. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum imperdiet varius ante. Maecenas sit amet luctus sapien, quis aliquet purus. Cras malesuada quam a dui pretium fermentum. Quisque tempor interdum quam, eu lacinia turpis interdum id. Curabitur non mauris lobortis, mattis nulla id, viverra nisi. Phasellus eget porttitor lorem. Quisque facilisis nec arcu eu fringilla. Vivamus elit ipsum, viverra eu maximus a, venenatis nec nibh.Suspendisse iaculis auctor fermentum. Sed suscipit ante nisl, nec iaculis magna consequat vel. Quisque viverra est a justo egestas, euismod egestas metus hendrerit.</p>\n<p><br></p>\n<blockquote>&nbsp;In ultricies sagittis ex a dapibus. Nunc feugiat lorem non tincidunt euismod. Duis quam nibh, volutpat sit amet enim non, eleifend ullamcorper diam. Etiam iaculis ante ut libero sollicitudin, eget eleifend nulla gravida. Pellentesque ut gravida augue. Donec nibh orci, rutrum nec sapien eu, lacinia pretium nulla. Nunc turpis sem, placerat ac velit sit amet, aliquet ultrices metus.Curabitur mollis venenatis lectus, at elementum felis dapibus non. Sed vel finibus mauris. Aenean semper arcu lectus, porta feugiat urna tincidunt congue. Ut euismod finibus massa quis condimentum. Vivamus interdum velit nec varius consectetur. Vivamus sodales commodo ante, vel fringilla nunc finibus et. Phasellus non sem finibus, congue nibh ut, ornare tortor.Curabitur sapien est, accumsan at justo a, porta malesuada risus. Integer facilisis viverra mauris condimentum finibus.</blockquote>\n<p><br></p>\n<p>&nbsp;Donec eget tortor id ipsum maximus commodo nec eu quam. Aliquam erat volutpat. Nunc tincidunt est sit amet justo placerat egestas. Vestibulum efficitur, neque tempor feugiat lacinia, turpis ex efficitur urna, ullamcorper porta ligula lorem id neque. Quisque interdum risus at nisl finibus varius. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.In euismod gravida tortor in placerat. Aenean blandit blandit efficitur. Cras a accumsan augue, at tincidunt massa. Vivamus eleifend sem sed nibh tempor laoreet. Quisque blandit turpis vitae bibendum mattis. Nulla sagittis quam eget diam feugiat ultricies. Aliquam varius tellus et turpis viverra tempus. Nam sit amet ex suscipit, convallis tortor at, malesuada felis. Vestibulum arcu eros, bibendum sit amet tempus placerat, pharetra nec tortor. Ut scelerisque quam non magna tincidunt, nec varius massa blandit.</p>\n<p><br></p>	Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, whenan unknown printer took a galley of type and scrambled it to make a type specimen book.	1b062e26-df71-48ce-b363-4ae9b966e7a0	t	2017-04-13 05:25:00.337907+00	\N	\N
+5c9ed236-79f0-4ff7-93bd-2815f06c74b4	Just Another Post	just-another-post	https://boldr.io/image1.jpg	\N	{}	t	\N	<h1>Lorem ipsum dolor sit amet.</h1>\n<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec quis sapien in est aliquam lacinia. Donec fringilla odio nulla, sagittis egestas dolor bibendum ut. Proin eget massa mattis, dictum enim vitae, facilisis eros. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum imperdiet varius ante. Maecenas sit amet luctus sapien, quis aliquet purus. Cras malesuada quam a dui pretium fermentum. Quisque tempor interdum quam, eu lacinia turpis interdum id. Curabitur non mauris lobortis, mattis nulla id, viverra nisi. Phasellus eget porttitor lorem. Quisque facilisis nec arcu eu fringilla. Vivamus elit ipsum, viverra eu maximus a, venenatis nec nibh.Suspendisse iaculis auctor fermentum. Sed suscipit ante nisl, nec iaculis magna consequat vel. Quisque viverra est a justo egestas, euismod egestas metus hendrerit.</p>\n<p><br></p>\n<blockquote>&nbsp;In ultricies sagittis ex a dapibus. Nunc feugiat lorem non tincidunt euismod. Duis quam nibh, volutpat sit amet enim non, eleifend ullamcorper diam. Etiam iaculis ante ut libero sollicitudin, eget eleifend nulla gravida. Pellentesque ut gravida augue. Donec nibh orci, rutrum nec sapien eu, lacinia pretium nulla. Nunc turpis sem, placerat ac velit sit amet, aliquet ultrices metus.Curabitur mollis venenatis lectus, at elementum felis dapibus non. Sed vel finibus mauris. Aenean semper arcu lectus, porta feugiat urna tincidunt congue. Ut euismod finibus massa quis condimentum. Vivamus interdum velit nec varius consectetur. Vivamus sodales commodo ante, vel fringilla nunc finibus et. Phasellus non sem finibus, congue nibh ut, ornare tortor.Curabitur sapien est, accumsan at justo a, porta malesuada risus. Integer facilisis viverra mauris condimentum finibus.</blockquote>\n<p><br></p>\n<p>&nbsp;Donec eget tortor id ipsum maximus commodo nec eu quam. Aliquam erat volutpat. Nunc tincidunt est sit amet justo placerat egestas. Vestibulum efficitur, neque tempor feugiat lacinia, turpis ex efficitur urna, ullamcorper porta ligula lorem id neque. Quisque interdum risus at nisl finibus varius. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.In euismod gravida tortor in placerat. Aenean blandit blandit efficitur. Cras a accumsan augue, at tincidunt massa. Vivamus eleifend sem sed nibh tempor laoreet. Quisque blandit turpis vitae bibendum mattis. Nulla sagittis quam eget diam feugiat ultricies. Aliquam varius tellus et turpis viverra tempus. Nam sit amet ex suscipit, convallis tortor at, malesuada felis. Vestibulum arcu eros, bibendum sit amet tempus placerat, pharetra nec tortor. Ut scelerisque quam non magna tincidunt, nec varius massa blandit.</p>\n<p><br></p>	Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, whenan unknown printer took a galley of type and scrambled it to make a type specimen book.	1b062e26-df71-48ce-b363-4ae9b966e7a0	t	2017-04-13 05:25:00.333729+00	\N	\N
 \.
 
 
@@ -1247,9 +1247,9 @@ SELECT pg_catalog.setval('reset_token_id_seq', 1, false);
 --
 
 COPY role (id, uuid, name, image, description, "createdAt", "updatedAt") FROM stdin;
-1	ce907de2-e697-4a90-88fa-896d858b453a	Member	\N	A verified user without special privileges	2017-04-13 03:01:43.74177+00	\N
-2	e62312ec-424f-4850-8985-cf2c7095123f	Staff	\N	Allows access to the CMS dashboard.	2017-04-13 03:01:43.747216+00	\N
-3	87b32709-9df8-4586-828b-ce7b76ede45b	Admin	\N	Complete control over the CMS	2017-04-13 03:01:43.751167+00	\N
+1	0a05e791-f872-43e0-9f4b-10a7111e516c	Member	\N	A verified user without special privileges	2017-04-13 05:25:00.27795+00	\N
+2	8fa84145-807b-4ea8-ac7f-b930347520a4	Staff	\N	Allows access to the CMS dashboard.	2017-04-13 05:25:00.2822+00	\N
+3	a3c0d8c5-6b02-4fd0-a70a-77083a579381	Admin	\N	Complete control over the CMS	2017-04-13 05:25:00.285483+00	\N
 \.
 
 
@@ -1287,8 +1287,8 @@ SELECT pg_catalog.setval('setting_id_seq', 7, true);
 --
 
 COPY tag (id, uuid, name, description) FROM stdin;
-1	29ff86fc-2541-4b94-a8d3-cfa0450a97c5	javascript	Something something JS
-2	698fea7d-4e6d-4583-9781-c29f0f13a02a	apple	Stuff about stuff.
+1	40130084-5673-4c56-b96d-762fd6ef6c87	javascript	Something something JS
+2	e085f698-da04-4683-9c43-cac7032d147b	apple	Stuff about stuff.
 \.
 
 
@@ -1304,8 +1304,8 @@ SELECT pg_catalog.setval('tag_id_seq', 2, true);
 --
 
 COPY template (id, uuid, name, slug, meta, content, "createdAt", "updatedAt") FROM stdin;
-1	c23891fb-88c2-4e91-b95d-c652f15eab0c	Base	base	{}	{}	2017-04-13 03:01:43.892738+00	\N
-2	d42f91fb-88c2-4e91-b95d-c652f15eab0c	Content	content	{}	{}	2017-04-13 03:01:43.895533+00	\N
+1	c23891fb-88c2-4e91-b95d-c652f15eab0c	Base	base	{}	{}	2017-04-13 05:25:00.420982+00	\N
+2	d42f91fb-88c2-4e91-b95d-c652f15eab0c	Content	content	{}	{}	2017-04-13 05:25:00.423775+00	\N
 \.
 
 
@@ -1337,10 +1337,10 @@ SELECT pg_catalog.setval('template_page_id_seq', 2, true);
 -- Data for Name: user; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY "user" (id, email, password, "firstName", "lastName", username, "avatarUrl", "profileImage", location, bio, birthday, website, language, social, verified, "createdAt", "updatedAt") FROM stdin;
-1b062e26-df71-48ce-b363-4ae9b966e7a0	admin@boldr.io	$2a$10$F3/Xx3hWEpTdaP4fE/dIhOb.FtxRiYMuc80nQFPkSrsBH4L6B5.Ka	Joe	Gray	Joey	https://boldr.io/images/unknown-avatar.png	https://boldr.io/images/unknown-avatar.png	Colorado	I am me.	1988-01-01	https://boldr.io	en_US	{"facebook":{"url":"www.facebook.com"},"twitter":{"url":"www.twitter.com"},"linkedin":{"url":"www.linkedin.com"},"github":{"url":"www.github.com"},"google":{"url":"www.google.com"}}	t	2017-04-13 03:01:43.765186+00	\N
-f4d869a6-1a75-469b-a9cc-965c552929e4	user@boldr.io	$2a$10$F3/Xx3hWEpTdaP4fE/dIhOb.FtxRiYMuc80nQFPkSrsBH4L6B5.Ka	Jessica	Smith	Jess	https://boldr.io/images/unknown-avatar.png	https://boldr.io/images/unknown-avatar.png	Washington	Just a person	1988-01-01	https://boldr.io	en_US	{"facebook":{"url":"www.facebook.com"},"twitter":{"url":"www.twitter.com"},"linkedin":{"url":"www.linkedin.com"},"github":{"url":"www.github.com"},"google":{"url":"www.google.com"}}	t	2017-04-13 03:01:43.76722+00	\N
-f11d3ebf-4ae6-4578-ba65-0c8f48b7f41f	demo@boldr.io	$2a$10$F3/Xx3hWEpTdaP4fE/dIhOb.FtxRiYMuc80nQFPkSrsBH4L6B5.Ka	Sam	Hunt	Samus	https://boldr.io/images/unknown-avatar.png	https://boldr.io/images/unknown-avatar.png	California	Someone doing things.	1988-01-01	https://boldr.io	en_US	{"facebook":{"url":"www.facebook.com"},"twitter":{"url":"www.twitter.com"},"linkedin":{"url":"www.linkedin.com"},"github":{"url":"www.github.com"},"google":{"url":"www.google.com"}}	t	2017-04-13 03:01:43.770109+00	\N
+COPY "user" (id, email, password, "firstName", "lastName", username, "avatarUrl", "profileImage", location, bio, birthday, website, language, social, verified, "createdAt", "updatedAt", "deletedAt") FROM stdin;
+1b062e26-df71-48ce-b363-4ae9b966e7a0	admin@boldr.io	$2a$10$F3/Xx3hWEpTdaP4fE/dIhOb.FtxRiYMuc80nQFPkSrsBH4L6B5.Ka	Joe	Gray	Joey	https://boldr.io/images/unknown-avatar.png	https://boldr.io/images/unknown-avatar.png	Colorado	I am me.	1988-01-01	https://boldr.io	en_US	{"facebook":{"url":"https://www.facebook.com"},"twitter":{"url":"https://wwww.twitter.com"},"linkedin":{"url":"https://wwww.linkedin.com"},"github":{"url":"https://wwww.github.com"},"google":{"url":"https://wwww.google.com"}}	t	2017-04-13 05:25:00.299054+00	\N	\N
+f4d869a6-1a75-469b-a9cc-965c552929e4	user@boldr.io	$2a$10$F3/Xx3hWEpTdaP4fE/dIhOb.FtxRiYMuc80nQFPkSrsBH4L6B5.Ka	Jessica	Smith	Jess	https://boldr.io/images/unknown-avatar.png	https://boldr.io/images/unknown-avatar.png	Washington	Just a person	1988-01-01	https://boldr.io	en_US	{"facebook":{"url":"https://wwww.facebook.com"},"twitter":{"url":"https://wwww.twitter.com"},"linkedin":{"url":"https://wwww.linkedin.com"},"github":{"url":"https://wwww.github.com"},"google":{"url":"https://wwww.google.com"}}	t	2017-04-13 05:25:00.300661+00	\N	\N
+f11d3ebf-4ae6-4578-ba65-0c8f48b7f41f	demo@boldr.io	$2a$10$F3/Xx3hWEpTdaP4fE/dIhOb.FtxRiYMuc80nQFPkSrsBH4L6B5.Ka	Sam	Hunt	Samus	https://boldr.io/images/unknown-avatar.png	https://boldr.io/images/unknown-avatar.png	California	Someone doing things.	1988-01-01	https://boldr.io	en_US	{"facebook":{"url":"https://wwww.facebook.com"},"twitter":{"url":"https://wwww.twitter.com"},"linkedin":{"url":"https://wwww.linkedin.com"},"github":{"url":"https://wwww.github.com"},"google":{"url":"https://wwww.google.com"}}	t	2017-04-13 05:25:00.3031+00	\N	\N
 \.
 
 
@@ -1463,14 +1463,6 @@ ALTER TABLE ONLY media
 
 ALTER TABLE ONLY media
     ADD CONSTRAINT media_pkey PRIMARY KEY (id);
-
-
---
--- Name: media media_thumbname_unique; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY media
-    ADD CONSTRAINT media_thumbname_unique UNIQUE ("thumbName");
 
 
 --
@@ -1772,13 +1764,6 @@ CREATE INDEX media_mediatype_index ON media USING btree ("mediaType");
 
 
 --
--- Name: media_thumbname_index; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX media_thumbname_index ON media USING btree ("thumbName");
-
-
---
 -- Name: media_type_mediatype_index; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -1790,6 +1775,13 @@ CREATE INDEX media_type_mediatype_index ON media_type USING btree ("mediaType");
 --
 
 CREATE INDEX media_type_uuid_index ON media_type USING btree (uuid);
+
+
+--
+-- Name: media_url_index; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX media_url_index ON media USING btree (url);
 
 
 --
