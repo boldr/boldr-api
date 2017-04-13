@@ -76,7 +76,9 @@ class User extends BaseModel {
     };
   }
   static addTimestamps = true;
-
+  static get softDelete() {
+    return true;
+  }
   /**
    * An array of attribute names that will be excluded from being returned.
    *

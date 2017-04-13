@@ -7,7 +7,9 @@ class ContentType extends BaseModel {
     return 'content_type';
   }
   static addTimestamps = true;
-
+  static get softDelete() {
+    return true;
+  }
   static get relationMappings() {
     return {
       blocks: {

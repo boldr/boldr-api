@@ -56,19 +56,19 @@ function seed(knex, Promise) {
           language: 'en_US',
           social: {
             facebook: {
-              url: 'www.facebook.com',
+              url: 'https://www.facebook.com',
             },
             twitter: {
-              url: 'www.twitter.com',
+              url: 'https://wwww.twitter.com',
             },
             linkedin: {
-              url: 'www.linkedin.com',
+              url: 'https://wwww.linkedin.com',
             },
             github: {
-              url: 'www.github.com',
+              url: 'https://wwww.github.com',
             },
             google: {
-              url: 'www.google.com',
+              url: 'https://wwww.google.com',
             },
           },
           verified: true,
@@ -89,19 +89,19 @@ function seed(knex, Promise) {
           language: 'en_US',
           social: {
             facebook: {
-              url: 'www.facebook.com',
+              url: 'https://wwww.facebook.com',
             },
             twitter: {
-              url: 'www.twitter.com',
+              url: 'https://wwww.twitter.com',
             },
             linkedin: {
-              url: 'www.linkedin.com',
+              url: 'https://wwww.linkedin.com',
             },
             github: {
-              url: 'www.github.com',
+              url: 'https://wwww.github.com',
             },
             google: {
-              url: 'www.google.com',
+              url: 'https://wwww.google.com',
             },
           },
           verified: true,
@@ -122,19 +122,19 @@ function seed(knex, Promise) {
           language: 'en_US',
           social: {
             facebook: {
-              url: 'www.facebook.com',
+              url: 'https://wwww.facebook.com',
             },
             twitter: {
-              url: 'www.twitter.com',
+              url: 'https://wwww.twitter.com',
             },
             linkedin: {
-              url: 'www.linkedin.com',
+              url: 'https://wwww.linkedin.com',
             },
             github: {
-              url: 'www.github.com',
+              url: 'https://wwww.github.com',
             },
             google: {
-              url: 'www.google.com',
+              url: 'https://wwww.google.com',
             },
           },
           verified: true,

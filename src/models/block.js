@@ -7,7 +7,9 @@ class Block extends BaseModel {
     return 'block';
   }
   static addTimestamps = true;
-
+  static get softDelete() {
+    return true;
+  }
   static get relationMappings() {
     return {
       contentType: {

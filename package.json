@@ -80,6 +80,7 @@
     "nodemailer": "^4.0.0",
     "objection": "0.7.12",
     "objection-find": "^0.4.0",
+    "objection-softdelete": "^1.0.1",
     "pg": "^6.1.5",
     "request": "^2.81.0",
     "sharp": "^0.17.3",

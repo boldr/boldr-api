@@ -11,7 +11,10 @@ class Post extends BaseModel {
   static get tableName() {
     return 'post';
   }
-  static softDelete = true;
+
+  static get softDelete() {
+    return true;
+  }
   static addTimestamps = true;
   static hidden = ['password'];
   static get idColumn() {

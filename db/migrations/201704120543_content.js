@@ -12,6 +12,7 @@ module.exports.up = async (db) => {
 
     table.timestamp('createdAt').notNullable().defaultTo(db.fn.now());
     table.timestamp('updatedAt').nullable().defaultTo(null);
+    table.timestamp('deletedAt').nullable().defaultTo(null);
     // indexes
     table.index('name');
     table.index('safeName');
@@ -29,6 +30,7 @@ module.exports.up = async (db) => {
 
     table.timestamp('createdAt').notNullable().defaultTo(db.fn.now());
     table.timestamp('updatedAt').nullable().defaultTo(null);
+    table.timestamp('deletedAt').nullable().defaultTo(null);
     // indexes
     table.index('uuid');
   });
