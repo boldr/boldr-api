@@ -8,11 +8,11 @@ import shortId from 'shortid';
 import appRootDir from 'app-root-dir';
 import sharp from 'sharp';
 import formidable from 'formidable';
-import { responseHandler, BadRequest } from '../../core/index';
+import {responseHandler, BadRequest} from '../../core/index';
 import Activity from '../../models/activity';
 import MediaType from '../../models/mediaType';
 import Media from '../../models/media';
-import { logger } from '../../services';
+import {logger} from '../../services';
 
 const debug = _debug('boldrAPI:media');
 /**
@@ -71,7 +71,12 @@ export function uploadMedia(req, res, next) {
   form.encoding = 'utf-8';
   form.multiples = true;
   form.on('progress', (recv, total) => {
-    logger.info('received: %s % (%s / %s bytes)', Number(recv / total * 100).toFixed(2), recv, total);
+    logger.info(
+      'received: %s % (%s / %s bytes)',
+      Number(recv / total * 100).toFixed(2),
+      recv,
+      total,
+    );
   });
 
   form.on('error', err => {
@@ -79,11 +84,16 @@ export function uploadMedia(req, res, next) {
   });
 
   form.on('aborted', (name, file) => {
-    logger.warn('aborted: name="%s", path="%s", type="%s", size=%s bytes', file.name, file.path, file.type, file.size);
+    logger.warn(
+      'aborted: name="%s", path="%s", type="%s", size=%s bytes',
+      file.name,
+      file.path,
+      file.type,
+      file.size,
+    );
     res.status(308).end();
   });
   form
-    .parse(req)
     .on('fileBegin', (name, file) => {
       // the beginning of the file buffer.
       const id = shortId.generate();
@@ -102,7 +112,9 @@ export function uploadMedia(req, res, next) {
       // we're going to create a thumbnail with it.
       sharp(file.path)
         .resize(320, 240)
-        .toFile(path.join(UPLOAD_DIR, file.thumbnailSaveName), (err, info) => console.log(err, info));
+        .toFile(path.join(UPLOAD_DIR, file.thumbnailSaveName), (err, info) =>
+          console.log(err, info),
+        );
       if (!thumbnailSet) {
         data.thumbnail = {
           data: fs.readFileSync(file.path),
@@ -124,6 +136,7 @@ export function uploadMedia(req, res, next) {
       // receive field argument
       data[field] = value;
     })
+    .parse(req)
     .on('end', async () => {
       const payload = {
         userId: req.user.id,
@@ -132,7 +145,7 @@ export function uploadMedia(req, res, next) {
         thumbName: data.media.thumbnailName,
         mimetype: data.media.type,
         url: `/uploads/${data.media.imageName}`,
-        mediaType: parseInt(data.mediaType, 10),
+        mediaType: data.mediaType,
         path: `${appRootDir.get()}/static/uploads/${data.media.imageName}`,
       };
 
@@ -147,14 +160,22 @@ export function uploadFromUrl(req, res, next) {
       if (!filename.match(regex)) {
         return next(err);
       }
-      request(uri).pipe(fs.createWriteStream(`${appRootDir.get()}/static/uploads/${filename}`)).on('close', callback);
+      request(uri)
+        .pipe(
+          fs.createWriteStream(
+            `${appRootDir.get()}/static/uploads/${filename}`,
+          ),
+        )
+        .on('close', callback);
     });
   };
 
   const urlParsed = url.parse(req.body.url);
   if (urlParsed.pathname) {
     const onlyTheFilename = urlParsed.pathname
-      ? urlParsed.pathname.substring(urlParsed.pathname.lastIndexOf('/') + 1).replace(/((\?|#).*)?$/, '')
+      ? urlParsed.pathname
+          .substring(urlParsed.pathname.lastIndexOf('/') + 1)
+          .replace(/((\?|#).*)?$/, '')
       : '';
 
     const newFilename = uuid() + path.extname(onlyTheFilename);
@@ -181,7 +202,10 @@ export function uploadFromUrl(req, res, next) {
  */
 export async function updateMedia(req, res, next) {
   try {
-    const updatedMedia = await Media.query().patchAndFetchById(req.params.id, req.body);
+    const updatedMedia = await Media.query().patchAndFetchById(
+      req.params.id,
+      req.body,
+    );
     //
     // await Activity.query().insert({
     //   userId: req.user.id,
