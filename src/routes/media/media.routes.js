@@ -1,7 +1,7 @@
-import { Router } from 'express';
-import { isAuthenticated } from '../../services/authentication';
-import { checkRole } from '../../middleware/rbac';
-import { wrapRouter } from '../../utils/asyncRouter';
+import {Router} from 'express';
+import {isAuthenticated} from '../../services/authentication';
+import {checkRole} from '../../middleware/rbac';
+import {wrapRouter} from '../../utils/asyncRouter';
 import * as ctrl from './media.controller';
 
 /**
@@ -22,14 +22,14 @@ const router = wrapRouter(new Router());
  * @apiSuccess    {Object[]}    media           List of media.
  * @apiSuccess    {String}      id                    The media's id (uuid)
  * @apiSuccess    {String}      fileName             The media's name
- * @apiSuccess    {String}      safeName             Slugified / normalized fileName
- * @apiSuccess    {String}      fileDescription      A caption describing the media
- * @apiSuccess    {String}      fileType             The mime type
- * @apiSuccess    {String}      url                   The url where the file is located
- * @apiSuccess    {String}      path                   The the path on the server of the media
- * @apiSuccess    {String}      remoteUrl              Url for a remotely hosted media file
+ * @apiSuccess    {String}      safeName      Slugified / normalized fileName
+ * @apiSuccess    {String}      fileDescription  A caption describing the media
+ * @apiSuccess    {String}      fileType         The mime type
+ * @apiSuccess    {String}      url        The url where the file is located
+ * @apiSuccess    {String}      path   The the path on the server of the media
+ * @apiSuccess    {String}      remoteUrl  Url for a remotely hosted media file
  * @apiSuccess    {Date}        createdAt            The upload date
- * @apiSuccess    {Date}        updatedAt            When the media was modified.
+ * @apiSuccess    {Date}        updatedAt   When the media was modified.
  */
 router.get('/', ctrl.listMedia);
 

@@ -1,9 +1,16 @@
 import uuid from 'uuid';
 import * as objection from 'objection';
-import { mailer, signToken, generateHash } from '../../services';
-import { welcomeEmail } from '../../services/mailer/templates';
-import { User, Activity, VerificationToken } from '../../models';
-import { responseHandler, UserNotVerifiedError, BadRequest, InternalServer, Unauthorized, Conflict } from '../../core';
+import {mailer, signToken, generateHash} from '../../services';
+import {welcomeEmail} from '../../services/mailer/templates';
+import {User, Activity, VerificationToken} from '../../models';
+import {
+  responseHandler,
+  UserNotVerifiedError,
+  BadRequest,
+  InternalServer,
+  Unauthorized,
+  Conflict,
+} from '../../core';
 
 const debug = require('debug')('boldrAPI:auth-ctrl');
 
@@ -20,14 +27,16 @@ export async function registerUser(req, res, next) {
   req.assert('password', 'Password cannot be blank').notEmpty();
   req.assert('firstName', 'First name cannot be blank').notEmpty();
 
-  req.sanitize('email').normalizeEmail({ remove_dots: false });
+  req.sanitize('email').normalizeEmail({remove_dots: false});
   req.sanitize('firstName').trim();
   req.sanitize('lastName').trim();
 
   const checkExisting = await User.query().where('email', req.body.email);
 
   if (checkExisting.length) {
-    return res.status(409).json('An account matching this email already exists.');
+    return res
+      .status(409)
+      .json('An account matching this email already exists.');
   }
 
   const errors = req.validationErrors();
@@ -46,11 +55,18 @@ export async function registerUser(req, res, next) {
       lastName: req.body.lastName,
       username: req.body.username,
       avatarUrl: req.body.avatarUrl,
+      social: {
+        facebook: {url: 'https://facebook.com'},
+        twitter: {url: 'https://twitter.com'},
+        linkedin: {url: 'https://linkedin.com'},
+        google: {url: 'https://google.com'},
+        github: {url: 'https://github.com'},
+      },
     };
 
     const newUser = await objection.transaction(User, async User => {
       const user = await User.query().insert(payload);
-      await user.$relatedQuery('roles').relate({ id: 1 });
+      await user.$relatedQuery('roles').relate({id: 1});
 
       if (!user) {
         throwNotFound();
@@ -64,11 +80,13 @@ export async function registerUser(req, res, next) {
       // send the welcome email
       mailer(user, mailBody, mailSubject);
       // create a relationship between the user and the token
-      const verificationEmail = await user.$relatedQuery('verificationToken').insert({
-        ip: req.ip,
-        token: verifToken,
-        userId: user.id,
-      });
+      const verificationEmail = await user
+        .$relatedQuery('verificationToken')
+        .insert({
+          ip: req.ip,
+          token: verifToken,
+          userId: user.id,
+        });
       if (!verificationEmail) {
         return res.status(500).json('There was a problem with the mailer.');
       }
@@ -87,16 +105,24 @@ export async function registerUser(req, res, next) {
 }
 
 /**
- * login takes an email address and password, check the database, and issues a JWT.
+ * login takes an email address and password, check the database,
+ * and issues a JWT.
  * @param req
  * @param res
  * @param next
  */
 export async function loginUser(req, res, next) {
-  const user = await User.query().where({ email: req.body.email }).eager('roles').first();
+  const user = await User.query()
+    .where({email: req.body.email})
+    .eager('roles')
+    .first();
 
   if (!user) {
-    return next(new Unauthorized('Unable to find an account matching the information provided.'));
+    return next(
+      new Unauthorized(
+        'Unable to find an account matching the information provided.',
+      ),
+    );
   }
 
   if (!user.verified) {
@@ -104,7 +130,9 @@ export async function loginUser(req, res, next) {
   }
   try {
     const validAuth = await user.authenticate(req.body.password);
-    if (!validAuth) return next(new Unauthorized('Incorrect login credentials.'));
+    if (!validAuth) {
+      return next(new Unauthorized('Incorrect login credentials.'));
+    }
     // remove the password from the response.
     user.stripPassword();
     // sign the token
@@ -123,20 +151,26 @@ export async function loginUser(req, res, next) {
 
 export async function verifyUser(req, res, next) {
   try {
-    const { verifToken } = req.params;
+    const {token} = req.body;
 
-    if (!verifToken) {
+    if (!token) {
       return next(new BadRequest('Invalid account verification code'));
     }
 
-    const token = await VerificationToken.query().where({ token: req.params.verifToken }).first();
+    const userToken = await VerificationToken.query()
+      .where({token: req.body.token})
+      .first();
 
-    if (token.used === true) {
+    if (userToken.used === true) {
       return res.status(401).json('This token has already been used.');
     }
-    const user = await User.query().patchAndFetchById(token.userId, { verified: true });
+    const user = await User.query().patchAndFetchById(userToken.userId, {
+      verified: true,
+    });
 
-    await VerificationToken.query().where({ token: req.params.verifToken }).update({ used: true });
+    await VerificationToken.query()
+      .where({token: req.body.token})
+      .update({used: true});
 
     return responseHandler(res, 201, user);
   } catch (err) {

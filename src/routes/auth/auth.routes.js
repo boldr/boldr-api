@@ -1,6 +1,6 @@
-import { Router } from 'express';
-import { isAuthenticated } from '../../services/authentication';
-import { wrapRouter } from '../../utils/asyncRouter';
+import {Router} from 'express';
+import {isAuthenticated} from '../../services/authentication';
+import {wrapRouter} from '../../utils/asyncRouter';
 import * as ctrl from './auth.controller';
 
 const router = wrapRouter(new Router());
@@ -12,10 +12,12 @@ const router = wrapRouter(new Router());
  * @apiHeader {String} Authorization Bearer {token}
  * @apiParam {String} email User email address
  * @apiParam {String} password User password
- * @apiSuccess (Success 200) {String} token User `token` to be passed to other requests.
+ * @apiSuccess (Success 200) {String} token User `token` to
+ * be passed to other requests.
  * @apiSuccess (Success 200) {Object} user Current user data
  * @apiError 401 Unable to find a matching account.
- * @apiError 401 This account has not been confirmed. Please check your email for a verification link.
+ * @apiError 401 This account has not been confirmed. Please
+ * check your email for a verification link.
  *
  * @apiSuccessExample {json} Success-Response:
  *
@@ -72,14 +74,14 @@ router.post('/signup', ctrl.registerUser);
 router.get('/check', isAuthenticated, ctrl.checkAuthentication);
 
 /**
- * @api {get} /auth/verification/:verifToken        Verify user
+ * @api {post} /auth/verify      Verify user
  * @apiName verify
  * @apiGroup Auth
- * @apiParam {String} verification <VerificationToken>
- * @apiSuccess 200 {Object} user Current user data
+ * @apiParam {String} token <VerificationToken>
+ * @apiSuccess 201 {Object} user Current user data
  * @apiError 401 Invalid token.
  * @apiError 404 Missing or cannot find the verification token
  */
-router.get('/verification/:verifToken', ctrl.verifyUser);
+router.post('/verify', ctrl.verifyUser);
 
 export default router;

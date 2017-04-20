@@ -128,7 +128,7 @@ export function uploadMedia(req, res, next) {
           data: fs.readFileSync(file.path),
           contentType: file.type,
         },
-        imageName: file.saveName,
+        fileName: file.saveName,
         thumbnailName: file.thumbnailSaveName,
       };
     })
@@ -138,15 +138,22 @@ export function uploadMedia(req, res, next) {
     })
     .parse(req)
     .on('end', async () => {
+      const imgRegex = new RegExp(
+        '^.*.((j|J)(p|P)(e|E)?(g|G)|(g|G)(i|I)(f|F)|(p|P)(n|N)(g|G))$',
+      );
+      const vidRegex = new RegExp('^.*.((m|M)(p|P)(4)|(m|M)(k|K)(v|V))$');
+      const isImageType = data.media.fileName.match(imgRegex);
+      const isVideoType = data.media.fileName.match(vidRegex);
+
       const payload = {
         userId: req.user.id,
-        fileName: data.media.imageName,
-        safeName: data.media.imageName,
+        fileName: data.media.fileName,
+        safeName: data.media.fileName,
         thumbName: data.media.thumbnailName,
         mimetype: data.media.type,
-        url: `/uploads/${data.media.imageName}`,
-        mediaType: data.mediaType,
-        path: `${appRootDir.get()}/static/uploads/${data.media.imageName}`,
+        url: `/uploads/${data.media.fileName}`,
+        mediaType: isImageType ? 1 : 2,
+        path: `${appRootDir.get()}/static/uploads/${data.media.fileName}`,
       };
 
       const newImage = await Media.query().insert(payload);
@@ -237,7 +244,8 @@ export async function deleteMedia(req, res, next) {
       return next(new BadRequest());
     }
     // unlink the attachment from the activity
-    // await Activity.query().delete().where({ activityAttachment: req.params.id }).first();
+    // await Activity.query().delete()
+    // .where({ activityAttachment: req.params.id }).first();
 
     // remove the attachment from the database
     await Media.query().deleteById(req.params.id);
