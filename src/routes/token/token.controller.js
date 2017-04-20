@@ -1,7 +1,10 @@
 /* eslint-disable no-unused-vars */
 import uuid from 'uuid/v4';
 import { mailer, generateHash } from '../../services';
-import { passwordModifiedEmail, forgotPasswordEmail } from '../../services/mailer/templates';
+import {
+  passwordModifiedEmail,
+  forgotPasswordEmail,
+} from '../../services/mailer/templates';
 import User from '../../models/user';
 import { responseHandler, BadRequest } from '../../core';
 import { VerificationToken, ResetToken } from '../../models';
@@ -29,7 +32,9 @@ export async function forgottenPassword(req, res, next) {
     const mailBody = forgotPasswordEmail(resetPasswordToken);
 
     await mailer(user, mailBody, mailSubject);
-    return responseHandler(res, 202, { message: 'Sending email with reset link' });
+    return responseHandler(res, 202, {
+      message: 'Sending email with reset link',
+    });
   } catch (error) {
     return next(new BadRequest(error));
   }
@@ -43,10 +48,14 @@ export async function forgottenPassword(req, res, next) {
  */
 export async function resetPassword(req, res, next) {
   try {
-    const userResetToken = await ResetToken.query().where({ token: req.body.token }).first();
+    const userResetToken = await ResetToken.query()
+      .where({ token: req.body.token })
+      .first();
 
     if (!userResetToken) {
-      return res.status(404).json({ error: 'Unable to locate an user with the provided token.' });
+      return res
+        .status(404)
+        .json({ error: 'Unable to locate an user with the provided token.' });
     }
     const mailSubject = '[Boldr] Password Changed';
 

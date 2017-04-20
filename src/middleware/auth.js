@@ -17,7 +17,8 @@ export default app => {
 
   app.use(async (req, res, next) => {
     req.isAuthenticated = () => {
-      const token = req.headers.authorization && req.headers.authorization.split(' ')[1];
+      const token =
+        req.headers.authorization && req.headers.authorization.split(' ')[1];
       try {
         return jwt.verify(token, config.get('token.secret'));
       } catch (err) {
@@ -29,7 +30,10 @@ export default app => {
       next();
     } else {
       const payload = req.isAuthenticated();
-      const user = await User.query().findById(payload.sub).eager('roles').skipUndefined();
+      const user = await User.query()
+        .findById(payload.sub)
+        .eager('roles')
+        .skipUndefined();
       req.session.user = user;
       req.user = user;
       req.user.role = user.roles[0].name;

@@ -8,11 +8,11 @@ import shortId from 'shortid';
 import appRootDir from 'app-root-dir';
 import sharp from 'sharp';
 import formidable from 'formidable';
-import {responseHandler, BadRequest} from '../../core/index';
+import { responseHandler, BadRequest } from '../../core/index';
 import Activity from '../../models/activity';
 import MediaType from '../../models/mediaType';
 import Media from '../../models/media';
-import {logger} from '../../services';
+import { logger } from '../../services';
 
 const debug = _debug('boldrAPI:media');
 /**

@@ -11,7 +11,9 @@ import {
 it('BadRequest', () => {
   const badReq = new BadRequest();
   expect(typeof badReq).toBe('object');
-  expect(badReq.message).toBe('The request could not be understood by the server due to malformed syntax.');
+  expect(badReq.message).toBe(
+    'The request could not be understood by the server due to malformed syntax.',
+  );
 });
 
 it('Unauthorized', () => {

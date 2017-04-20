@@ -8,7 +8,9 @@ export async function listMenu(req, res, next) {
     const menus = await Menu.query().eager('[details]').skipUndefined();
 
     if (!menus) {
-      return next(new NotFound('Unable to find any navigations. Try creating one.'));
+      return next(
+        new NotFound('Unable to find any navigations. Try creating one.'),
+      );
     }
 
     return res.status(200).json(menus);
@@ -19,7 +21,10 @@ export async function listMenu(req, res, next) {
 
 export async function showMenu(req, res, next) {
   try {
-    const menu = await Menu.query().findById(req.params.id).eager('[details]').skipUndefined();
+    const menu = await Menu.query()
+      .findById(req.params.id)
+      .eager('[details]')
+      .skipUndefined();
 
     return responseHandler(res, 200, menu);
   } catch (error) {
@@ -44,7 +49,10 @@ export async function createMenu(req, res, next) {
 
 export async function updateMainMenu(req, res, next) {
   try {
-    const updatedNav = await Menu.query().patchAndFetchById(req.params.id, req.body);
+    const updatedNav = await Menu.query().patchAndFetchById(
+      req.params.id,
+      req.body,
+    );
 
     return res.status(202).json(updatedNav);
   } catch (error) {

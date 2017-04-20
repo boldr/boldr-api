@@ -6,7 +6,9 @@ import config from '../../config';
 const isProductionEnv = process.env.NODE_ENV === 'production';
 
 const formatter = options =>
-  options.meta && options.meta.requestId ? `[RQID=${options.meta.requestId}] ${options.message}` : `${options.message}`;
+  (options.meta && options.meta.requestId
+    ? `[RQID=${options.meta.requestId}] ${options.message}`
+    : `${options.message}`);
 
 const logger = new winston.Logger({
   transports: [

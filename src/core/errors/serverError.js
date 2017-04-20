@@ -25,7 +25,11 @@ class InternalServer extends HttpError {
  */
 class NotImplemented extends HttpError {
   constructor(message, status = 500, isPublic = false) {
-    super('The server does not support the functionality required to fulfill the request.', 500, isPublic);
+    super(
+      'The server does not support the functionality required to fulfill the request.',
+      500,
+      isPublic,
+    );
   }
 }
 

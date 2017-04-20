@@ -22,7 +22,7 @@
     "clean:apidoc": "rimraf static/apidocs",
     "dev": "better-npm-run dev",
     "docker": "cd boldrAPI; docker build -t strues/boldr-api .",
-    "format": "prettier-eslint --write \"src/**/*.js\" \"db/**/*.js\" \"internal/**/*.js\"",
+    "format": "prettier --single-quote=true --jsx-bracket-same-line=false --trailing-comma=all --write \"src/**/*.js\"",
     "lint": "eslint src db internal",
     "knex": "./node_modules/.bin/knex",
     "migrate": "better-npm-run migrate",
@@ -42,7 +42,7 @@
   },
   "lint-staged": {
     "src/**/*.js": [
-      "prettier-eslint --write",
+      "prettier --single-quote=true --jsx-bracket-same-line=false --trailing-comma=all --write \"src/**/*.js\"",
       "git add"
     ]
   },

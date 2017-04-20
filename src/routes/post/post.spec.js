@@ -11,12 +11,17 @@ describe('Posts API Endpoint', () => {
       email: 'admin@boldr.io',
       password: 'password',
     };
-    const { body } = await agent.post('/api/v1/auth/login').set('Accept', 'application/json').send(loginData);
+    const { body } = await agent
+      .post('/api/v1/auth/login')
+      .set('Accept', 'application/json')
+      .send(loginData);
     token = body.token; // eslint-disable-line
   });
 
   it('GET /posts -- List', async () => {
-    const { status, body } = await agent.get('/api/v1/posts').set('Accept', 'application/json');
+    const { status, body } = await agent
+      .get('/api/v1/posts')
+      .set('Accept', 'application/json');
 
     expect(status).toBe(200);
     // expect(Array.isArray(body.results[0].tags)).toBe(true);
@@ -33,7 +38,9 @@ describe('Posts API Endpoint', () => {
   });
 
   it('GET /posts/slug/:slug -- By slug', async () => {
-    const { status, body } = await agent.get('/api/v1/posts/slug/nother-one').set('Accept', 'application/json');
+    const { status, body } = await agent
+      .get('/api/v1/posts/slug/nother-one')
+      .set('Accept', 'application/json');
     expect(status).toBe(200);
     expect(typeof body).toBe('object');
   });

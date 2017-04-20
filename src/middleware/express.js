@@ -18,7 +18,9 @@ export default app => {
   // allow for sending credentials (auth token) in the headers.
   app.use(cors);
   app.use(cookieParser(config.get('token.secret')));
-  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+  if (
+    process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test'
+  ) {
     app.use(morgan('dev'));
   }
   app.use(compression());

@@ -57,7 +57,10 @@ export async function getAttachment(req, res, next) {
  */
 export async function updateAttachment(req, res, next) {
   try {
-    const updatedAttachment = await Attachment.query().patchAndFetchById(req.params.id, req.body);
+    const updatedAttachment = await Attachment.query().patchAndFetchById(
+      req.params.id,
+      req.body,
+    );
 
     await Activity.query().insert({
       userId: req.user.id,
@@ -89,7 +92,10 @@ export async function deleteAttachment(req, res, next) {
       return next(new BadRequest());
     }
     // unlink the attachment from the activity
-    await Activity.query().delete().where({ activityAttachment: req.params.id }).first();
+    await Activity.query()
+      .delete()
+      .where({ activityAttachment: req.params.id })
+      .first();
 
     // remove the attachment from the database
     await Attachment.query().deleteById(req.params.id);
@@ -124,7 +130,12 @@ export function uploadAttachment(req, res, next) {
   form.encoding = 'utf-8';
   form.multiples = true;
   form.on('progress', (recv, total) => {
-    logger.info('received: %s % (%s / %s bytes)', Number(recv / total * 100).toFixed(2), recv, total);
+    logger.info(
+      'received: %s % (%s / %s bytes)',
+      Number(recv / total * 100).toFixed(2),
+      recv,
+      total,
+    );
   });
 
   form.on('error', err => {
@@ -132,7 +143,13 @@ export function uploadAttachment(req, res, next) {
   });
 
   form.on('aborted', (name, file) => {
-    logger.warn('aborted: name="%s", path="%s", type="%s", size=%s bytes', file.name, file.path, file.type, file.size);
+    logger.warn(
+      'aborted: name="%s", path="%s", type="%s", size=%s bytes',
+      file.name,
+      file.path,
+      file.type,
+      file.size,
+    );
     res.status(308).end();
   });
   form

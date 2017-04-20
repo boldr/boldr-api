@@ -17,9 +17,13 @@ export default app => {
 
     const isValidationError = (err.error || {}) instanceof ValidationError;
 
-    const stacktrace = app.get('env') === 'development' ? { stack: err.stack } : {};
+    const stacktrace = app.get('env') === 'development'
+      ? { stack: err.stack }
+      : {};
 
-    const validation = isValidationError ? { validation: formatValidationErrors(err.error.data) } : {};
+    const validation = isValidationError
+      ? { validation: formatValidationErrors(err.error.data) }
+      : {};
 
     const message = isValidationError ? 'Validation error.' : err.message;
 

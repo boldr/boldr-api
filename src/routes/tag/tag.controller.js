@@ -39,7 +39,10 @@ export async function getTaggedPosts(req, res, next) {
 
 export async function getTaggedPostsByName(req, res, next) {
   try {
-    const tags = await Tag.query().where({ name: req.params.name }).eager('[posts]').first();
+    const tags = await Tag.query()
+      .where({ name: req.params.name })
+      .eager('[posts]')
+      .first();
 
     return responseHandler(res, 200, tags);
   } catch (error) {
@@ -77,10 +80,15 @@ export async function deleteTag(req, res, next) {
     // return a bad request if we cannot locate
     if (!tag) {
       /* istanbul ignore next */
-      return res.status(400).json('There was a problem with your request. Unable to find tag.');
+      return res
+        .status(400)
+        .json('There was a problem with your request. Unable to find tag.');
     }
     // unlink the attachment from the activity
-    await Activity.query().delete().where({ activityTag: req.params.id }).first();
+    await Activity.query()
+      .delete()
+      .where({ activityTag: req.params.id })
+      .first();
 
     // remove the attachment from the database
     await Tag.query().deleteById(req.params.id);
@@ -95,7 +103,9 @@ export async function deleteTag(req, res, next) {
 export async function relateTagToPost(req, res, next) {
   try {
     const tag = await Tag.query().findById(req.params.id);
-    const newRelation = await tag.$relatedQuery('posts').relate({ id: req.params.postid });
+    const newRelation = await tag
+      .$relatedQuery('posts')
+      .relate({ id: req.params.postid });
     return res.status(200).json(newRelation);
   } catch (error) {
     /* istanbul ignore next */

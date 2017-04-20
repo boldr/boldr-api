@@ -140,5 +140,4 @@ router
        */
   .delete(isAuthenticated, checkRole('Admin'), ctrl.destroy);
 
-
 export default router;

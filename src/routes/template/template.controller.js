@@ -13,7 +13,9 @@ export async function listTemplates(req, res, next) {
 
 export async function getTemplateByResource(req, res, next) {
   try {
-    const template = await Template.query().where({ name: req.params.name }).first();
+    const template = await Template.query()
+      .where({ name: req.params.name })
+      .first();
 
     return res.status(200).json(template);
   } catch (error) {

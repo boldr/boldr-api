@@ -57,7 +57,12 @@ router.get('/:id', ctrl.getAttachment);
  * @apiError 401 Invalid credentials.
  * @apiError 403 Forbidden
  */
-router.delete('/:id', isAuthenticated, checkRole('Admin'), ctrl.deleteAttachment);
+router.delete(
+  '/:id',
+  isAuthenticated,
+  checkRole('Admin'),
+  ctrl.deleteAttachment,
+);
 /**
  * @api {put} /attachments/:id      Update attachment
  * @apiName UpdateAttachment

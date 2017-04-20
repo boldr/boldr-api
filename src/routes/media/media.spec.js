@@ -12,7 +12,7 @@ describe('Media API Endpoint', () => {
       email: 'admin@boldr.io',
       password: 'password',
     };
-    const {body} = await agent
+    const { body } = await agent
       .post('/api/v1/auth/login')
       .set('Accept', 'application/json')
       .send(loginData);

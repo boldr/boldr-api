@@ -12,7 +12,10 @@ describe('User API Endpoint', async () => {
       email: 'admin@boldr.io',
       password: 'password',
     };
-    const { body } = await agent.post('/api/v1/auth/login').set('Accept', 'application/json').send(loginData);
+    const { body } = await agent
+      .post('/api/v1/auth/login')
+      .set('Accept', 'application/json')
+      .send(loginData);
     token = body.token;
     await db('user').insert({
       id: 'd42c3ebf-4ae6-4578-ba65-0c8f48b7f41f',
@@ -38,10 +41,12 @@ describe('User API Endpoint', async () => {
   });
 
   test('+++ GET /users/:id -- ID', () => {
-    return agent.get('/api/v1/users/1b062e26-df71-48ce-b363-4ae9b966e7a0').expect(res => {
-      expect(res.status).toBe(200);
-      expect(typeof res.body).toBe('object');
-    });
+    return agent
+      .get('/api/v1/users/1b062e26-df71-48ce-b363-4ae9b966e7a0')
+      .expect(res => {
+        expect(res.status).toBe(200);
+        expect(typeof res.body).toBe('object');
+      });
   });
   test('+++ GET /users/:username/profile -- Profile', () => {
     return agent.get('/api/v1/users/Joey/profile').expect(res => {

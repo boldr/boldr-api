@@ -17,7 +17,9 @@ const router = wrapRouter(new Router());
  * @apiSuccess {Number}   users            The user count
  */
 
-router.route('/stats', isAuthenticated, checkRole('Admin')).get(ctrl.getAllStats);
+router
+  .route('/stats', isAuthenticated, checkRole('Admin'))
+  .get(ctrl.getAllStats);
 
 /**
  * @api {get} /types/content          List content types

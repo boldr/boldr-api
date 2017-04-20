@@ -12,7 +12,10 @@ describe('Attachment API Endpoint', () => {
       email: 'admin@boldr.io',
       password: 'password',
     };
-    const { body } = await agent.post('/api/v1/auth/login').set('Accept', 'application/json').send(loginData);
+    const { body } = await agent
+      .post('/api/v1/auth/login')
+      .set('Accept', 'application/json')
+      .send(loginData);
     token = body.token; // eslint-disable-line
     await db('attachment').insert({
       id: '1c462e26-df71-48ce-b363-4ae9b966e7a0',
@@ -29,10 +32,12 @@ describe('Attachment API Endpoint', () => {
     });
   });
   test('+++ GET /attachments/:id', () => {
-    return agent.get('/api/v1/attachments/668e14aa-ebe6-11e6-8ebf-4f81f17749d5').expect(res => {
-      expect(res.status).toBe(200);
-      expect(typeof res.body).toBe('object');
-    });
+    return agent
+      .get('/api/v1/attachments/668e14aa-ebe6-11e6-8ebf-4f81f17749d5')
+      .expect(res => {
+        expect(res.status).toBe(200);
+        expect(typeof res.body).toBe('object');
+      });
   });
   test('+++ UPDATE /attachments/:id', () => {
     return agent

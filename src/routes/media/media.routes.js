@@ -1,7 +1,7 @@
-import {Router} from 'express';
-import {isAuthenticated} from '../../services/authentication';
-import {checkRole} from '../../middleware/rbac';
-import {wrapRouter} from '../../utils/asyncRouter';
+import { Router } from 'express';
+import { isAuthenticated } from '../../services/authentication';
+import { checkRole } from '../../middleware/rbac';
+import { wrapRouter } from '../../utils/asyncRouter';
 import * as ctrl from './media.controller';
 
 /**

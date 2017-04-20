@@ -1,8 +1,8 @@
 import uuid from 'uuid';
 import * as objection from 'objection';
-import {mailer, signToken, generateHash} from '../../services';
-import {welcomeEmail} from '../../services/mailer/templates';
-import {User, Activity, VerificationToken} from '../../models';
+import { mailer, signToken, generateHash } from '../../services';
+import { welcomeEmail } from '../../services/mailer/templates';
+import { User, Activity, VerificationToken } from '../../models';
 import {
   responseHandler,
   UserNotVerifiedError,
@@ -27,7 +27,7 @@ export async function registerUser(req, res, next) {
   req.assert('password', 'Password cannot be blank').notEmpty();
   req.assert('firstName', 'First name cannot be blank').notEmpty();
 
-  req.sanitize('email').normalizeEmail({remove_dots: false});
+  req.sanitize('email').normalizeEmail({ remove_dots: false });
   req.sanitize('firstName').trim();
   req.sanitize('lastName').trim();
 
@@ -56,17 +56,17 @@ export async function registerUser(req, res, next) {
       username: req.body.username,
       avatarUrl: req.body.avatarUrl,
       social: {
-        facebook: {url: 'https://facebook.com'},
-        twitter: {url: 'https://twitter.com'},
-        linkedin: {url: 'https://linkedin.com'},
-        google: {url: 'https://google.com'},
-        github: {url: 'https://github.com'},
+        facebook: { url: 'https://facebook.com' },
+        twitter: { url: 'https://twitter.com' },
+        linkedin: { url: 'https://linkedin.com' },
+        google: { url: 'https://google.com' },
+        github: { url: 'https://github.com' },
       },
     };
 
     const newUser = await objection.transaction(User, async User => {
       const user = await User.query().insert(payload);
-      await user.$relatedQuery('roles').relate({id: 1});
+      await user.$relatedQuery('roles').relate({ id: 1 });
 
       if (!user) {
         throwNotFound();
@@ -113,7 +113,7 @@ export async function registerUser(req, res, next) {
  */
 export async function loginUser(req, res, next) {
   const user = await User.query()
-    .where({email: req.body.email})
+    .where({ email: req.body.email })
     .eager('roles')
     .first();
 
@@ -151,14 +151,14 @@ export async function loginUser(req, res, next) {
 
 export async function verifyUser(req, res, next) {
   try {
-    const {token} = req.body;
+    const { token } = req.body;
 
     if (!token) {
       return next(new BadRequest('Invalid account verification code'));
     }
 
     const userToken = await VerificationToken.query()
-      .where({token: req.body.token})
+      .where({ token: req.body.token })
       .first();
 
     if (userToken.used === true) {
@@ -169,8 +169,8 @@ export async function verifyUser(req, res, next) {
     });
 
     await VerificationToken.query()
-      .where({token: req.body.token})
-      .update({used: true});
+      .where({ token: req.body.token })
+      .update({ used: true });
 
     return responseHandler(res, 201, user);
   } catch (err) {

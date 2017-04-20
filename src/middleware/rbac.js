@@ -14,7 +14,9 @@ export function checkPermissions({ role = null }) {
     const { user } = req;
 
     if (role && !hasRole(user, role)) {
-      return next(new Error(`User doesn't have required role. '${role}' role is needed.`));
+      return next(
+        new Error(`User doesn't have required role. '${role}' role is needed.`),
+      );
     }
 
     return next();
@@ -30,11 +32,16 @@ export function checkPermissions({ role = null }) {
 export function checkRole(role = null) {
   return async (req, res, next) => {
     // const user = req.user;
-    const userInfo = await User.query().findById(req.user.id).eager('[roles]').first();
+    const userInfo = await User.query()
+      .findById(req.user.id)
+      .eager('[roles]')
+      .first();
     const userRole = userInfo.roles[0].id;
     debug(userRole);
     if (!userRole === role) {
-      return res.status(403).json('Forbidden. Your role does not have sufficient privileges.');
+      return res
+        .status(403)
+        .json('Forbidden. Your role does not have sufficient privileges.');
     }
 
     return next();

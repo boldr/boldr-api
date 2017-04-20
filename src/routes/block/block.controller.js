@@ -22,7 +22,9 @@ export async function listBlocks(req, res, next) {
 
 export async function getBlock(req, res, next) {
   try {
-    const block = await Block.query().findById(req.params.id).eager('[contentType,children,parents]');
+    const block = await Block.query()
+      .findById(req.params.id)
+      .eager('[contentType,children,parents]');
 
     return res.status(200).json(block);
   } catch (error) {

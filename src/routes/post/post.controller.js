@@ -28,9 +28,11 @@ export async function createPost(req, res, next) {
   const postSlug = slugIt(req.body.title);
   // look for a matching slug in the database
   const existingPost = await Post.query().where('slug', postSlug).first();
-  if (existingPost) return res.status(409).json('A post with this title already exists.');
+  if (existingPost)
+    return res.status(409).json('A post with this title already exists.');
 
-  if (!req.body.tags) return res.status(400).json('You must submit at least one tag.');
+  if (!req.body.tags)
+    return res.status(400).json('You must submit at least one tag.');
 
   async function createPostTagRelation(existingTag, newPost) {
     await PostTag.query().insert({
@@ -100,7 +102,9 @@ export async function getSlug(req, res, next) {
       .first();
 
     if (!post) {
-      return res.status(400).json({ message: `Unable to find a post matching ${req.params.slug}.` });
+      return res.status(400).json({
+        message: `Unable to find a post matching ${req.params.slug}.`,
+      });
     }
     return responseHandler(res, 200, post);
   } catch (error) {
@@ -120,7 +124,11 @@ export async function getSlug(req, res, next) {
  */
 export async function getId(req, res, next) {
   try {
-    const post = await Post.query().findById(req.params.id).eager('[tags,author]').skipUndefined().first();
+    const post = await Post.query()
+      .findById(req.params.id)
+      .eager('[tags,author]')
+      .skipUndefined()
+      .first();
     return responseHandler(res, 200, post);
   } catch (error) {
     /* istanbul ignore next */
@@ -139,7 +147,10 @@ export async function getId(req, res, next) {
  */
 export async function destroy(req, res, next) {
   try {
-    await Activity.query().delete().where({ activityPost: req.params.id }).first();
+    await Activity.query()
+      .delete()
+      .where({ activityPost: req.params.id })
+      .first();
     await Post.query().delete().where('id', req.params.id).first();
 
     return res.status(204).send({});
@@ -160,15 +171,17 @@ export async function destroy(req, res, next) {
  */
 export function update(req, res) {
   debug(req.body);
-  return Post.query().patchAndFetchById(req.params.id, req.body).then(async post => {
-    await Activity.query().insert({
-      id: uuid(),
-      userId: req.user.id,
-      type: 'update',
-      activityPost: post.id,
+  return Post.query()
+    .patchAndFetchById(req.params.id, req.body)
+    .then(async post => {
+      await Activity.query().insert({
+        id: uuid(),
+        userId: req.user.id,
+        type: 'update',
+        activityPost: post.id,
+      });
+      responseHandler(res, 202, post);
     });
-    responseHandler(res, 202, post);
-  });
 }
 
 /**
@@ -185,7 +198,9 @@ export async function addTag(req, res, next) {
     const post = await Post.query().findById(req.params.id);
 
     if (!post) {
-      return res.status(404).json({ message: `Unable to find a post with the ID: ${req.params.id}.` });
+      return res.status(404).json({
+        message: `Unable to find a post with the ID: ${req.params.id}.`,
+      });
     }
 
     const tag = await post.$relatedQuery('tags').insert(req.body);

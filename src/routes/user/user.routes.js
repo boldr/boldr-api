@@ -71,7 +71,12 @@ router.put('/:id', isAuthenticated, ctrl.updateUser);
  * @apiUse UnauthorizedError
  * @apiUse NotFoundError
  */
-router.put('/admin/:id', isAuthenticated, checkRole('Admin'), ctrl.adminUpdateUser);
+router.put(
+  '/admin/:id',
+  isAuthenticated,
+  checkRole('Admin'),
+  ctrl.adminUpdateUser,
+);
 /**
  * @api {patch} /users/:id        Update user
  * @apiName ModifyUser

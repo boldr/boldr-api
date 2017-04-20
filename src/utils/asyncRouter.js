@@ -6,7 +6,9 @@ function wrapRouter(router) {
       router[originMethod] = router[method].bind(router);
       // eslint-disable-next-line
       router[method] = function(...handlers) {
-        router[originMethod](...handlers.map(fn => wrapAsyncHandler(fn, method !== 'param')));
+        router[originMethod](
+          ...handlers.map(fn => wrapAsyncHandler(fn, method !== 'param')),
+        );
         return router;
       };
     }

@@ -60,7 +60,11 @@ class BaseController {
     if (this.additionalProperties) {
       if (await isValidData(req, (this: any).additionalProperties)) {
         // $FlowIssue
-        data = Object.assign({}, data, getAdditionalProperties(req, (this: any).additionalProperties));
+        data = Object.assign(
+          {},
+          data,
+          getAdditionalProperties(req, (this: any).additionalProperties),
+        );
       } else {
         return utilities.throwNotFound(res);
       }
@@ -100,12 +104,12 @@ class BaseController {
       .page(req.query.page.number, req.query.page.size);
 
     if (this.filterEager) {
-      (this: any).filterEager.reduce(
-        (memo, data) => {
-          return query.filterEager(data.relation, filterEagerData(req.query, data.table, data.property));
-        },
-        query,
-      );
+      (this: any).filterEager.reduce((memo, data) => {
+        return query.filterEager(
+          data.relation,
+          filterEagerData(req.query, data.table, data.property),
+        );
+      }, query);
     }
 
     query
