@@ -41,7 +41,8 @@ export async function forgottenPassword(req, res, next) {
 }
 
 /**
- * resetPassword takes the user's reset_password_token, and a new password, hashes it and updates the password
+ * resetPassword takes the user's reset_password_token, and a new password,
+ * hashes it and updates the password
  * @param req
  * @param res
  * @returns {*}
@@ -51,7 +52,7 @@ export async function resetPassword(req, res, next) {
     const userResetToken = await ResetToken.query()
       .where({ token: req.body.token })
       .first();
-
+    console.log(userResetToken);
     if (!userResetToken) {
       return res
         .status(404)
@@ -60,11 +61,12 @@ export async function resetPassword(req, res, next) {
     const mailSubject = '[Boldr] Password Changed';
 
     const user = await User.query().findById(userResetToken.userId);
-    await User.query().patchAndFetchById(user.id, {
+    console.log(user);
+    User.query().patchAndFetchById(user.id, {
       password: req.body.password,
     });
-    const mailBody = await passwordModifiedEmail(user);
-    mailer(user, mailBody, mailSubject);
+    const mailBody = passwordModifiedEmail(user);
+    await mailer(user, mailBody, mailSubject);
     return responseHandler(res, 204, 'Sent');
   } catch (error) {
     return next(new BadRequest(error));
