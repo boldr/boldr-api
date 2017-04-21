@@ -49,7 +49,7 @@ class User extends BaseModel {
           type: 'string',
           minLength: 36,
           maxLength: 36,
-          pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
+          pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$', // eslint-disable-line
         },
         firstName: { type: 'string' },
         lastName: { type: 'string' },
@@ -161,8 +161,12 @@ class User extends BaseModel {
     if (this.hasOwnProperty('password')) {
       this.password = bcrypt.hashSync(this.password, 10);
     }
-    if (this.firstName) this.firstName = this.firstName.trim();
-    if (this.lastName) this.lastName = this.lastName.trim();
+    if (this.firstName) {
+      this.firstName = this.firstName.trim();
+    }
+    if (this.lastName) {
+      this.lastName = this.lastName.trim();
+    }
     this.email = this.email.trim();
   }
 

@@ -1,4 +1,4 @@
-module.exports.up = async (db) => {
+module.exports.up = async db => {
   await db.schema.createTable('content_type', table => {
     // pk
     table.increments('id').unsigned().primary();
@@ -23,7 +23,11 @@ module.exports.up = async (db) => {
     table.increments('id').unsigned().primary();
     // uuid
     table.uuid('uuid').notNullable().defaultTo(db.raw('uuid_generate_v4()'));
-    table.integer('contentTypeId').unsigned().references('id').inTable('content_type');
+    table
+      .integer('contentTypeId')
+      .unsigned()
+      .references('id')
+      .inTable('content_type');
     table.string('key', 64);
     table.jsonb('content');
     table.jsonb('entities');
@@ -37,8 +41,18 @@ module.exports.up = async (db) => {
   await db.schema.createTable('block_relation', table => {
     // pk
     table.increments('id').unsigned().primary();
-    table.integer('parentId').unsigned().references('id').inTable('block').onDelete('CASCADE');
-    table.integer('childId').unsigned().references('id').inTable('block').onDelete('CASCADE');
+    table
+      .integer('parentId')
+      .unsigned()
+      .references('id')
+      .inTable('block')
+      .onDelete('CASCADE');
+    table
+      .integer('childId')
+      .unsigned()
+      .references('id')
+      .inTable('block')
+      .onDelete('CASCADE');
   });
   await db.schema.createTable('media_type', table => {
     // pk
@@ -54,12 +68,20 @@ module.exports.up = async (db) => {
   });
   await db.schema.createTable('media', table => {
     // pk
-    table.uuid('id').notNullable().defaultTo(db.raw('uuid_generate_v4()')).primary();
+    table
+      .uuid('id')
+      .notNullable()
+      .defaultTo(db.raw('uuid_generate_v4()'))
+      .primary();
     table.string('fileName', 128).notNullable().unique();
     table.string('safeName', 128).notNullable();
     table.string('thumbName', 128);
     table.string('fileDescription').nullable();
-    table.integer('mediaType').unsigned().references('id').inTable('media_type');
+    table
+      .integer('mediaType')
+      .unsigned()
+      .references('id')
+      .inTable('media_type');
     table.string('mimetype');
     table.string('url').notNullable();
     table.string('path');
@@ -72,14 +94,32 @@ module.exports.up = async (db) => {
     table.index('url');
     table.index('mediaType');
   });
+  await db.schema.createTable('post_media', table => {
+    table
+      .uuid('postId')
+      .notNullable()
+      .references('id')
+      .inTable('post')
+      .onDelete('cascade')
+      .onUpdate('cascade');
+    table
+      .uuid('mediaId')
+      .notNullable()
+      .references('id')
+      .inTable('media')
+      .onDelete('cascade')
+      .onUpdate('cascade');
+    table.primary(['postId', 'mediaId']);
+  });
 };
 
-module.exports.down = async (db) => {
+module.exports.down = async db => {
   await db.schema.dropTableIfExists('content_type');
   await db.schema.dropTableIfExists('block');
   await db.schema.dropTableIfExists('block_relation');
   await db.schema.dropTableIfExists('media_type');
   await db.schema.dropTableIfExists('media');
+  await db.schema.dropTableIfExists('post_media');
 };
 
 module.exports.configuration = { transaction: true };

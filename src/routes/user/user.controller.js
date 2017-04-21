@@ -86,6 +86,7 @@ export async function adminUpdateUser(req, res, next) {
     };
     User.query()
       .patchAndFetchById(req.params.id, payload)
+      .eager('[roles]')
       .then(user => res.status(202).json(user));
   } catch (error) {
     /* istanbul ignore next */

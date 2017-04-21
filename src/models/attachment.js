@@ -20,18 +20,18 @@ class Attachment extends BaseModel {
           to: 'user.id',
         },
       },
-      posts: {
-        relation: Model.ManyToManyRelation,
-        modelClass: Post,
-        join: {
-          from: 'attachment.id',
-          through: {
-            from: 'post_attachment.attachmentId',
-            to: 'post_attachment.postId',
-          },
-          to: 'post.id',
-        },
-      },
+      // posts: {
+      //   relation: Model.ManyToManyRelation,
+      //   modelClass: Post,
+      //   join: {
+      //     from: 'attachment.id',
+      //     through: {
+      //       from: 'post_attachment.attachmentId',
+      //       to: 'post_attachment.postId',
+      //     },
+      //     to: 'post.id',
+      //   },
+      // },
       activity: {
         relation: Model.BelongsToOneRelation,
         modelClass: Activity,

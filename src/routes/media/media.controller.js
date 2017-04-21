@@ -24,7 +24,7 @@ const debug = _debug('boldrAPI:media');
  */
 export async function listMedia(req, res, next) {
   try {
-    const medias = await Media.query().eager('[type,owner]');
+    const medias = await Media.query().eager('[type,uploader]');
 
     return responseHandler(res, 200, medias);
   } catch (error) {

@@ -6,6 +6,7 @@ import Tag from './tag';
 import User from './user';
 import Attachment from './attachment';
 import BaseModel from './base';
+import Media from './media';
 
 class Post extends BaseModel {
   static get tableName() {
@@ -43,16 +44,16 @@ class Post extends BaseModel {
           to: 'tag.id',
         },
       },
-      attachments: {
+      media: {
         relation: Model.ManyToManyRelation,
-        modelClass: Attachment,
+        modelClass: Media,
         join: {
           from: 'post.id',
           through: {
-            from: 'post_attachment.postId',
-            to: 'post_attachment.attachmentId',
+            from: 'post_media.postId',
+            to: 'post_media.mediaId',
           },
-          to: 'attachment.id',
+          to: 'media.id',
         },
       },
     };

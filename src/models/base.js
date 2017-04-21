@@ -7,13 +7,15 @@ import { Model, ValidationError } from 'objection';
  */
 class BaseModel extends Model {
   /**
-   * If we should update the createdAt attribute when inserted and the updatedAt attribute when updated.
+   * If we should update the createdAt attribute when inserted and the
+   * updatedAt attribute when updated.
    *
    * @type {boolean}
    */
   static addTimestamps = true;
   /**
-   * An object of attribute names with function values to transform attributes on the model if they exist.
+   * An object of attribute names with function values to transform
+   * attributes on the model if they exist.
    *
    * @type {object}
    */

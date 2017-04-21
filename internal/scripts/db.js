@@ -74,6 +74,7 @@ async function dropDatabase(db) {
   await db.schema.dropTableIfExists('template_page');
   await db.schema.dropTableIfExists('menu_menu_detail');
   await db.schema.dropTableIfExists('block');
+  await db.schema.dropTableIfExists('post_media');
   await db.schema.dropTableIfExists('media');
   await db.schema.dropTableIfExists('media_type');
   await db.schema.dropTableIfExists('content_type');

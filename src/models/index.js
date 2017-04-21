@@ -21,6 +21,7 @@ import MenuMenuDetail from './join/menuMenuDetail';
 import PostTag from './join/postTag';
 import TemplatePage from './join/templatePage';
 import UserRole from './join/userRole';
+import PostMedia from './join/postMedia';
 
 export {
   Activity,
@@ -45,4 +46,5 @@ export {
   PostTag,
   TemplatePage,
   UserRole,
+  PostMedia,
 };

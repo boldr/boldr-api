@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import { Router } from 'express';
 import BaseController from '../../core/baseController';
 import processQuery from '../../utils/processQuery';
@@ -101,6 +102,20 @@ router
        */
   .get(ctrl.getSlug);
 
+/**
+ * @api {get} /posts/archived     Get posts and archived posts
+ * @apiName GetPostsWithArchive
+ * @apiGroup Post
+ * @apiPermission admin
+ * @apiUse authHeader
+ */
+router.get(
+  '/archived',
+  isAuthenticated,
+  checkRole('Admin'),
+  ctrl.getPostsWithArchive,
+);
+
 router
   .route('/:id')
   /**
@@ -122,22 +137,47 @@ router
        */
   .post(isAuthenticated, checkRole('Admin'), ctrl.addTag)
   /**
-       * @api {put} /posts/:id          Update post by id
-       * @apiName UpdatePost
-       * @apiGroup Post
-       * @apiPermission admin
+   * @api {put} /posts/:id          Update post by id
+   * @apiName UpdatePost
+   * @apiGroup Post
+   * @apiPermission admin
 
-       * @apiError {Object} 404 Unable to find a post matching the id.
-       */
+   * @apiError {Object} 404 Unable to find a post matching the id.
+   */
   .put(isAuthenticated, checkRole('Admin'), ctrl.update)
   /**
-       * @api {delete} /posts/:id       Delete post by id
-       * @apiName DestroyPost
-       * @apiGroup Post
-       * @apiPermission admin
+   * @api {delete} /posts/:id       Delete post by id
+   * @apiName DestroyPost
+   * @apiGroup Post
+   * @apiPermission admin
 
-       * @apiError {Object} 404 Unable to find a post matching the id.
-       */
+   * @apiError {Object} 404 Unable to find a post matching the id.
+   */
   .delete(isAuthenticated, checkRole('Admin'), ctrl.destroy);
+
+/**
+   * @api {get} /posts/:id/relate/:mediaId    Relate media to post
+   * @apiName RelatePostToMedia
+   * @apiGroup Post
+   * @apiPermission admin
+   * @apiUse authHeader
+   * @apiParam {String} id      The post id (uuid)
+   * @apiParam {String} mediaId  the id (uuid) of the media to relate
+   * @apiSuccess 204
+   * @apiError {Object} 400 Some parameters may contain invalid values.
+   * @apiError {Object} 401 Unauthorized.
+   */
+router.get('/:id/relate/:mediaId', ctrl.relatePostToMedia);
+
+/**
+ * @api {delete} /posts/:id/remove    Permanently delete a post
+ * @apiName RelatePostToMedia
+ * @apiGroup Post
+ * @apiPermission admin
+ * @apiUse authHeader
+ * @apiParam {String} id the post id (uuid)
+ * @apiSuccess 204
+ */
+router.delete('/:id/remove', ctrl.permanentlyDeletePost);
 
 export default router;

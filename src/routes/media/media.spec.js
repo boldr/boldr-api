@@ -21,8 +21,8 @@ describe('Media API Endpoint', () => {
       id: '1c462e26-df71-48ce-b363-4ae9b966e7a0',
       url: '/files/file.png',
       userId: '1b062e26-df71-48ce-b363-4ae9b966e7a0',
-      safeName: 'file.png',
-      fileName: 'file.png',
+      safeName: 'fiele.png',
+      fileName: 'fiele.png',
       mediaType: 1,
     });
   });

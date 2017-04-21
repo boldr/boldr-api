@@ -18,21 +18,22 @@ const debug = require('debug')('boldrAPI:post-ctrl');
  * @returns {Promise}
  */
 export async function createPost(req, res, next) {
-  req.assert('title', 'A title must be provided').notEmpty();
-  req.assert('content', 'Content can not be empty').notEmpty();
+  req.assert('title', 'A title is required to create a post.').notEmpty();
+  req.assert('content', 'Content is required when creating a post.').notEmpty();
+  req.assert('tags', 'A new post requires at least one tag.').notEmpty();
   req.sanitize('title').trim();
 
   const errors = req.validationErrors();
 
-  if (errors) return res.status(400).send(errors);
+  if (errors) {
+    return res.status(400).send(errors);
+  }
   const postSlug = slugIt(req.body.title);
   // look for a matching slug in the database
   const existingPost = await Post.query().where('slug', postSlug).first();
-  if (existingPost)
+  if (existingPost) {
     return res.status(409).json('A post with this title already exists.');
-
-  if (!req.body.tags)
-    return res.status(400).json('You must submit at least one tag.');
+  }
 
   async function createPostTagRelation(existingTag, newPost) {
     await PostTag.query().insert({
@@ -82,6 +83,26 @@ export async function createPost(req, res, next) {
     next(error);
   }
 }
+
+// export async function addMediaToPost(req, res, next) {
+//   try {
+//     const post = await transaction(Person.knex(), async function (trx) {
+//           const person = await Person
+//             .query(trx)
+//             .findById(req.params.id);
+//
+//           if (!person) {
+//             throwNotFound();
+//           }
+//
+//           return await person
+//             .$relatedQuery('movies', trx)
+//             .insert(req.body);
+//         });
+//   } catch (err) {
+//
+//   }
+// }
 
 /**
  * Get a post from its slug.
@@ -208,5 +229,49 @@ export async function addTag(req, res, next) {
     return responseHandler(res, 202, tag);
   } catch (error) {
     return next(error);
+  }
+}
+
+export async function relatePostToMedia(req, res, next) {
+  try {
+    const post = await Post.query().findById(req.params.id);
+    const newRelation = await post
+      .$relatedQuery('media')
+      .relate({ id: req.params.mediaId });
+    return res.status(200).json(newRelation);
+  } catch (error) {
+    /* istanbul ignore next */
+    return next(error);
+  }
+}
+
+/**
+ * getPostsWithArchive - return a list of posts w/ archived (deleted) posts.
+ *
+ * @param {Object} req
+ * @param {Object} res
+ * @param {Function} next
+ * @return {Object}      the posts
+ */
+export async function getPostsWithArchive(req, res, next) {
+  try {
+    const posts = await Post.query()
+      .eager('[author,tags,media]')
+      .skipUndefined()
+      .includeDeleted();
+
+    return res.status(200).json(posts);
+  } catch (err) {
+    return next(err);
+  }
+}
+
+export async function permanentlyDeletePost(req, res, next) {
+  try {
+    const post = await Post.query().forceDelete().where({ id: req.params.id });
+
+    return res.status(204).json(post);
+  } catch (err) {
+    return next(err);
   }
 }

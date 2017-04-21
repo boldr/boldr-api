@@ -16,6 +16,14 @@ describe('Posts API Endpoint', () => {
       .set('Accept', 'application/json')
       .send(loginData);
     token = body.token; // eslint-disable-line
+    await db('media').insert({
+      id: '1c462e26-df71-48ce-b424-4ae9b966e7a0',
+      url: '/files/file.png',
+      userId: '1b062e26-df71-48ce-b363-4ae9b966e7a0',
+      safeName: 'ffile.png',
+      fileName: 'ffile.png',
+      mediaType: 1,
+    });
   });
 
   it('GET /posts -- List', async () => {
@@ -123,6 +131,28 @@ describe('Posts API Endpoint', () => {
       });
 
     expect(status).toBe(202);
+    expect(typeof body).toBe('object');
+  });
+  //
+  it('GET /posts/:id/relate/:mediaId -- Relate post to media', async () => {
+    const { status, body } = await agent
+      .get(
+        '/api/v1/posts/5c9ed236-79f0-4ff7-93bd-2815f06c74b4/relate/1c462e26-df71-48ce-b424-4ae9b966e7a0',
+      ) // eslint-disable-line
+      .set('Accept', 'application/json')
+      .set('Authorization', `Bearer ${token}`);
+
+    expect(status).toBe(200);
+    expect(typeof body).toBe('object');
+  });
+  it('GET /posts/archived -- Get posts with deleted should fail without auth', async () => {
+    // eslint-disable-line
+    const { status, body } = await agent
+      .get('/api/v1/posts/archived') // eslint-disable-line
+      .set('Accept', 'application/json');
+    // .set('Authorization', `Bearer ${token}`);
+
+    expect(status).toBe(401);
     expect(typeof body).toBe('object');
   });
 });
