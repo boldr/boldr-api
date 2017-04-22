@@ -26,3 +26,34 @@ Have questions or want to help with development? Join us on <a href="https://sla
 
 
 ## TL;DR Setup Guide
+
+First you must somehow get the files to your machine. Below outlines two options.  
+
+**Using Boldr-CLI:**  
+
+```shell
+   yarn global --add boldr-cli
+   boldr-cli init
+   cd boldr-api
+   yarn
+   mv boldrrc.example .boldrrc
+```  
+
+**Using git:**  
+
+```shell
+  git clone git@github.com:boldr/boldr-api.git <DIR_NAME>
+  cd <DIR_NAME>
+  yarn
+  mv boldrrc.example .boldrrc
+```  
+
+#### Service Setup
+
+BoldrAPI requires a Postgres database and a Redis server to connect to. Using the `docker-compose.yml` file
+included in the repo is the quickest way.  
+
+`docker-compose up --build -d` starts the necessary services (postgres and redis).  
+
+Ensure the database is setup with the proper tables and seed data.  
+Use the command `yarn migrate && yarn seed`.
