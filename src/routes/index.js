@@ -18,7 +18,7 @@ import templateRoutes from './template/template.routes';
 import tokenRoutes from './token/token.routes';
 import userRoutes from './user/user.routes';
 
-const API_PREFIX = config.get('apiPrefix');
+const API_PREFIX = config.server.apiPrefix;
 
 export default app => {
   app.get(`${API_PREFIX}/health-check`, (req, res) => {

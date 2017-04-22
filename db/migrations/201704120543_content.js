@@ -19,10 +19,11 @@ module.exports.up = async db => {
     table.index('uuid');
   });
   await db.schema.createTable('block', table => {
-    // pk
-    table.increments('id').unsigned().primary();
-    // uuid
-    table.uuid('uuid').notNullable().defaultTo(db.raw('uuid_generate_v4()'));
+    table
+      .uuid('id')
+      .notNullable()
+      .defaultTo(db.raw('uuid_generate_v4()'))
+      .primary();
     table
       .integer('contentTypeId')
       .unsigned()
@@ -36,19 +37,18 @@ module.exports.up = async db => {
     table.timestamp('updatedAt').nullable().defaultTo(null);
     table.timestamp('deletedAt').nullable().defaultTo(null);
     // indexes
-    table.index('uuid');
   });
   await db.schema.createTable('block_relation', table => {
     // pk
     table.increments('id').unsigned().primary();
     table
-      .integer('parentId')
+      .uuid('parentId')
       .unsigned()
       .references('id')
       .inTable('block')
       .onDelete('CASCADE');
     table
-      .integer('childId')
+      .uuid('childId')
       .unsigned()
       .references('id')
       .inTable('block')

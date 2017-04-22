@@ -29,7 +29,6 @@ export default app => {
 
     res.status(statusCode);
     res.json({
-      status: statusCode,
       message,
       ...validation,
       ...stacktrace,

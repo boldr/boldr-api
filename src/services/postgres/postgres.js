@@ -1,14 +1,15 @@
 /* @flow */
 
 import knex from 'knex';
+import config from '../../config';
 
 const db = knex({
   client: 'pg',
-  connection: process.env.DATABASE_URI,
+  connection: config.db.url,
   migrations: {
     tableName: 'migrations',
   },
-  debug: process.env.DATABASE_DEBUG === 'true',
+  debug: config.db.debug,
 });
 
 async function disconnect(db: Object) {

@@ -5,12 +5,13 @@ const knex = require('knex');
 const task = require('./task');
 
 // The list of available commands, e.g. node scripts/db.js migrate:undo
-const commands = ['version', 'migrate', 'migrate:undo', 'migration', 'seed', 'reset'];
+const commands = [
+  'version', 'migrate', 'migrate:undo', 'migration', 'seed', 'reset'];
 const command = process.argv[2];
 
 const config = {
   client: 'pg',
-  connection: process.env.DATABASE_URI,
+  connection: process.env.BOLDR__DB__URL,
   migrations: {
     tableName: 'migrations',
     directory: path.resolve(process.cwd(), './db/migrations')
@@ -40,7 +41,7 @@ module.exports = task('db', async () => {
         await db.migrate.currentVersion(config).then(console.log);
         break;
       case 'migration':
-        fs.writeFileSync(`db/migrations/${version}_${process.argv[3] || 'new'}.js`, template, 'utf8');
+        fs.writeFileSync(`db/migrations/${version}_${process.argv[3] || 'new'}.js`, template, 'utf8'); // eslint-disable-line
         break;
       case 'migrate:undo':
         db = knex(config);
@@ -82,7 +83,6 @@ async function dropDatabase(db) {
   await db.schema.dropTableIfExists('activity');
   await db.schema.dropTableIfExists('menu');
   await db.schema.dropTableIfExists('menu_detail');
-  await db.schema.dropTableIfExists('gallery');
   await db.schema.dropTableIfExists('template');
   await db.schema.dropTableIfExists('page');
   await db.schema.dropTableIfExists('tag');

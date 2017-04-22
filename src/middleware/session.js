@@ -10,14 +10,14 @@ import config from '../config';
 
 const RedisStore = require('connect-redis')(session);
 
-const env = config.get('env') || 'development';
+const env = process.env.NODE_ENV || 'development';
 
 const sessionMiddleware = session({
   store: new RedisStore({
     client: mainRedisClient,
     ttl: 60 * 60 * 24,
   }),
-  secret: config.get('token.secret'),
+  secret: config.token.secret,
   name: 'boldr:sid',
   resave: false,
   saveUninitialized: true,

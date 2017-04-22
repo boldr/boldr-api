@@ -8,8 +8,8 @@ import config from './config';
 
 const debug = require('debug')('boldrAPI:engine');
 
-const PORT = config.get('port');
-const HOST = config.get('host');
+const PORT = config.server.port;
+const HOST = config.server.host;
 const server = http.createServer(app);
 
 const Model = objection.Model;
@@ -24,9 +24,9 @@ server.on('error', err => {
 });
 
 server.on('listening', () => {
+  debug(config.displayConfig());
   const address = server.address();
   logger.info('🚀  Starting server on %s:%s', address.address, address.port);
-  logger.debug(config.toString());
 });
 
 process.on('SIGINT', () => {

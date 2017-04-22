@@ -31,4 +31,4 @@ app.use(
 // Catch and format errors
 errorHandler(app);
 
-module.exports = app;
+exports = module.exports = app; // eslint-disable-line

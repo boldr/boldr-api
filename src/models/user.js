@@ -12,7 +12,6 @@ import Media from './media';
 
 const Promise = require('bluebird');
 const bcrypt = Promise.promisifyAll(require('bcrypt'));
-
 const debug = require('debug')('boldrAPI:user-model');
 
 /**
@@ -108,7 +107,7 @@ class User extends BaseModel {
           to: 'post.userId',
         },
       },
-      uploads: {
+      files: {
         relation: Model.HasManyRelation,
         modelClass: Attachment,
         join: {
@@ -116,7 +115,7 @@ class User extends BaseModel {
           to: 'attachment.userId',
         },
       },
-      files: {
+      uploads: {
         relation: Model.HasManyRelation,
         modelClass: Media,
         join: {
@@ -191,6 +190,7 @@ class User extends BaseModel {
       this.password = bcrypt.hashAsync(this.password, 10);
     }
   }
+
   /**
    * Checks to see if this user has the provided role or not.
    *

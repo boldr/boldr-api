@@ -5,9 +5,9 @@ import url from 'url';
 import Redis from 'ioredis';
 import bluebird from 'bluebird';
 import logger from '../logger';
+import config from '../../config';
 
-// $FlowIssue
-const redisCon = url.parse(process.env.REDIS_URI);
+const redisCon = url.parse(config.redis.url);
 // $FlowIssue
 const hostAddr = redisCon.host.split(':');
 const redisOptions = {

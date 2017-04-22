@@ -1,7 +1,9 @@
 node_modules
 coverage
 .env
-./lib
+lib/
 boldrAPI/
 .env.prod
 static/
+.boldrrc
+logs

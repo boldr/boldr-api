@@ -143,10 +143,11 @@ module.exports.up = async db => {
       .notNullable()
       .defaultTo(db.raw('uuid_generate_v4()'))
       .primary();
-    table.string('fileName');
-    table.string('safeName');
+    table.string('fileName').notNullable();
+    table.string('safeName').notNullable();
     table.string('fileDescription');
     table.string('fileType');
+    table.string('path');
     table.uuid('userId').unsigned().notNullable();
     table.string('url').notNullable();
 
@@ -192,28 +193,18 @@ module.exports.up = async db => {
     table.string('cssClassname', 255).nullable();
     table.boolean('hasDropdown').default(false);
     table.integer('order');
-    table.string('mobileHref', 255).nullable().comment(
-      'Mobile href is applicable in cases where the item is a dropdown trigger on desktop. Without a mobile href, it will only be text.'); // eslint-disable-line
+    table
+      .string('mobileHref', 255)
+      .nullable()
+      .comment(
+        'Mobile href is applicable in cases where the item is a dropdown' +
+        'trigger on desktop. Without a mobile href, it will only be text.'); // eslint-disable-line
     table.string('href').notNullable();
     table.string('icon').nullable();
     table.json('children');
     table.index('safeName');
     table.index('uuid');
     table.index('href');
-  });
-  await db.schema.createTable('gallery', table => {
-    table
-      .uuid('id')
-      .notNullable()
-      .defaultTo(db.raw('uuid_generate_v4()'))
-      .primary();
-    table.string('name').unique().notNullable();
-    table.string('slug');
-    table.string('description');
-    table.boolean('restricted').default(false);
-    table.enu('status', ['published', 'draft', 'archived']).defaultTo('draft');
-    table.timestamp('createdAt').notNullable().defaultTo(db.fn.now());
-    table.timestamp('updatedAt').nullable().defaultTo(null);
   });
 
   await db.schema.createTableIfNotExists('template', table => {
@@ -421,7 +412,6 @@ module.exports.down = async db => {
   await db.schema.dropTableIfExists('setting');
   await db.schema.dropTableIfExists('menu');
   await db.schema.dropTableIfExists('menu_detail');
-  await db.schema.dropTableIfExists('gallery');
   await db.schema.dropTableIfExists('template');
   await db.schema.dropTableIfExists('page');
   await db.schema.dropTableIfExists('activity');

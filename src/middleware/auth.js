@@ -20,7 +20,7 @@ export default app => {
       const token =
         req.headers.authorization && req.headers.authorization.split(' ')[1];
       try {
-        return jwt.verify(token, config.get('token.secret'));
+        return jwt.verify(token, config.token.secret);
       } catch (err) {
         return false;
       }

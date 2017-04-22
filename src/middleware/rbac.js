@@ -3,7 +3,8 @@ import User from '../models/user';
 
 const debug = require('debug')('boldrAPI:rbac');
 /**
- * This middleware checks to see if the given user/token combination has the provided role.
+ * This middleware checks to see if the given user/token combination
+ * has the provided role.
  *
  * @param {string} role
  * @returns {function}
