@@ -18,7 +18,7 @@ const config = new BoldrConfig('boldr', {
     },
   },
   db: {
-    url: 'postgres://postgres:password@db:5432/boldr',
+    url: 'postgres://postgres:password@127.0.0.1:5432/boldr',
     name: 'boldr',
     debug: false,
   },

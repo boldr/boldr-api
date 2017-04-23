@@ -1,35 +1,38 @@
 version: '3'
 
 services:
-  db:
+  database:
     build: ./db
-    container_name: boldr_db
     restart: always
+    tty: true
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
     ports:
       - "5432:5432"
-    tmpfs:
-      - /tmp
-      - /var/run/postgresql
     volumes:
-      - db:/var/lib/postgresql/data
+      - database_volume:/var/lib/postgresql/data
+    healthcheck:
+      test: exit 0
     networks:
       - boldr
 
   redis:
     image: redis:3.2.8-alpine
-    container_name: boldr_redis
     volumes:
-      - redis:/data
+      - redis_volume:/data
     ports:
       - "6379:6379"
     user: redis
+    healthcheck:
+      test: exit 0
     networks:
       - boldr
 
 volumes:
-  db:
-  redis:
-  yarn:
+  database_volume: {}
+  redis_volume: {}
 
 networks:
   boldr:

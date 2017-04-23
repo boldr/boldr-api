@@ -192,7 +192,7 @@
     "test": {
       "command": "npm run reset && jest -w 2 --forceExit",
       "env": {
-        "BOLDR__DB__URL": "postgres://postgres:password@localhost:5432/boldr_test",
+        "BOLDR__DB__URL": "postgres://postgres:password@127.0.0.1:5432/boldr_test",
         "NODE_ENV": "test",
         "KNEX_TEST_TIMEOUT": 30000
       }
@@ -202,7 +202,7 @@
       "env": {
         "NODE_ENV": "test",
         "BOLDR__REDIS__URL": "redis://127.0.0.1:6379/1",
-        "BOLDR__DB__URL": "postgres://postgres:password@127.0.0.1:5432/boldr",
+        "BOLDR__DB__URL": "postgres://postgres:password@127.0.0.1:5432/boldr_test",
         "BOLDR__TOKEN__SECRET": "b0ldrs0s3cr3t",
         "KNEX_TEST_TIMEOUT": 30000
       }

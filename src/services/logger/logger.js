@@ -24,7 +24,7 @@ const logTransports = [
     colorize: !isProd,
   }),
 ];
-if (config.logging.file.enable) {
+if (config.logging.file.enable && process.env.NODE_ENV !== 'test') {
   logTransports.push(
     new (require('winston-daily-rotate-file'))({
       level: loggingLevel,

@@ -1,24 +1,47 @@
 version: '3'
 
 services:
+  database:
+    build: ./db
+    restart: always
+    tty: true
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - database_volume:/var/lib/postgresql/data
+    healthcheck:
+      test: exit 0
+    networks:
+      - boldr
 
+  redis:
+    image: redis:3.2.8-alpine
+    volumes:
+      - redis_volume:/data
+    ports:
+      - "6379:6379"
+    user: redis
+    healthcheck:
+      test: exit 0
+    networks:
+      - boldr
   api:
     build: .
     container_name: boldr_api
     depends_on:
-      - db
-      - redis
+      database:
+        condition: service_started
+      redis:
+        condition: service_started
     environment:
-      - NODE_DEBUG=false
-      - DATABASE_DEBUG=false
-      - DATABASE_URI=postgres://postgres:password@127.0.0.1:5432/boldr
-      - REDIS_URI=redis://127.0.0.1:6379/0
-      - TOKEN_SECRET=b0ldr@p1k3k
-    expose:
-      - "2121:2121"
+      - BOLDR__DB__URL=postgres://postgres:password@127.0.0.1:5432/boldr
+      - BOLDR__REDIS__URL=redis://127.0.0.1:6379/0
     ports:
-      # V8 inspector (when NODE_DEBUG=true)
-      - "127.0.0.1:9229:9229"
+      - "2121:2121"
     volumes:
       - yarn:/root/.cache/yarn
       - ./:/app
@@ -29,37 +52,10 @@ services:
       - boldr
     command: yarn start
 
-  db:
-    build: ./db
-    container_name: boldr_db
-    restart: always
-    env_file: .env
-    ports:
-      - "5432:5432"
-    tmpfs:
-      - /tmp
-      - /var/run/postgresql
-    volumes:
-      - db:/var/lib/postgresql/data
-    networks:
-      - boldr
-
-  redis:
-    image: redis:3.2.8-alpine
-    container_name: boldr_redis
-    env_file: .env
-    volumes:
-      - redis:/data
-    ports:
-      - "6379:6379"
-    user: redis
-    networks:
-      - boldr
-
 volumes:
-  db:
-  redis:
-  yarn:
+  database_volume: {}
+  redis_volume: {}
+  yarn: {}
 
 networks:
   boldr:

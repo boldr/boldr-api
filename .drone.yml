@@ -2,14 +2,20 @@ debug: true
 pipeline:
   build:
     image: node:7
+    environment:
+      - BOLDR__DB__URL=postgres://postgres:password@127.0.0.1:5432/boldr_test
+      - BOLDR__REDIS__URL=redis://127.0.0.1:6379/1
     commands:
-      - npm install
-      - npm run test:ci
+      - yarn global add node-gyp
+      - yarn install --silent
+      - yarn test:ci
 services:
   database:
-    image: strues/boldr-pg
+    image: strues/boldr-pg:0.1.0
   redis:
     image: redis:3.2.6-alpine
+    environment:
+      - BOLDR__REDIS__URL=redis://127.0.0.1:6379/1
 
   # publish:
   #   docker:

@@ -1,17 +1,19 @@
 FROM node:7.9.0-alpine
 
-WORKDIR /user/src/app
-COPY package.json yarn.lock /user/src/app
+RUN mkdir /app
+WORKDIR /app
+ENV PATH /app/node_modules/.bin:$PATH
+COPY package.json yarn.lock /app
 
-RUN yarn global add pm2 && \
+RUN yarn global add pm2 node-gyp && \
   yarn install --pure-lockfile --no-progress --production && \
   yarn cache clean
 
-COPY . /user/src/app
+COPY . /app
 
 EXPOSE 2121
 
-VOLUME ["/user/src/app/node_modules", "/user/src/app/static"]
+VOLUME ["/app/node_modules", "/app/static"]
 
 CMD ["yarn", "start"]
 

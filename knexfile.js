@@ -3,7 +3,7 @@ const path = require('path');
 module.exports = {
   development: {
     client: 'pg',
-    connection: process.env.DATABASE_URI,
+    connection: process.env.BOLDR__DB__URL,
     migrations: {
       directory: path.resolve('./db/migrations'),
       tableName: 'migrations',
@@ -19,7 +19,7 @@ module.exports = {
   },
   test: {
     client: 'pg',
-    connection: process.env.DATABASE_URI,
+    connection: process.env.BOLDR__DB__URL,
     migrations: {
       directory: path.resolve('./db/migrations'),
       tableName: 'migrations',
@@ -32,7 +32,7 @@ module.exports = {
   production: {
     client: 'pg',
     searchPath: 'knex,public',
-    connection: process.env.DATABASE_URI,
+    connection: process.env.BOLDR__DB__URL,
     migrations: {
       directory: path.resolve('./db/migrations'),
       tableName: 'migrations',
