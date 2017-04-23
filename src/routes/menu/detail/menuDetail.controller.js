@@ -1,16 +1,22 @@
 import uuid from 'uuid/v4';
 import slugIt from '../../../utils/slugIt';
-import { InternalServer, BadRequest, responseHandler } from '../../../core/index';
+import {
+  InternalServer,
+  BadRequest,
+  responseHandler,
+} from '../../../core/index';
 import { Activity, Menu, MenuDetail, MenuMenuDetail } from '../../../models';
 
-const debug = require('debug')('boldr:menuDetail-controller');
+const debug = require('debug')('boldrAPI:menuDetail-ctrl');
 
 export async function getDetails(req, res, next) {
   try {
     const links = await MenuDetail.query();
 
     if (!links) {
-      return res.status(404).json({ message: 'Unable to find any links. Try creating one.' });
+      return res
+        .status(404)
+        .json({ message: 'Unable to find any links. Try creating one.' });
     }
 
     return responseHandler(res, 200, links);
@@ -32,32 +38,32 @@ export async function createDetail(req, res, next) {
   try {
     const payload = {
       name: req.body.name,
-      safe_name: slugIt(req.body.name),
+      safeName: slugIt(req.body.name),
       href: req.body.href,
-      mobile_href: req.body.mobile_href,
-      css_classname: req.body.css_classname,
-      has_dropdown: JSON.parse(req.body.has_dropdown),
+      mobileHref: req.body.mobileHref,
+      cssClassname: req.body.cssClassname,
+      hasDropdown: JSON.parse(req.body.hasDropdown),
       icon: req.body.icon,
       order: req.body.order,
       children: req.body.children,
     };
     const newLink = await MenuDetail.query().insert(payload);
 
-    const menuId = req.body.menu_id || 1;
+    const menuId = req.body.menuId || 1;
     const existingMenu = await Menu.query().where('id', menuId).first();
     if (!existingMenu) {
       throw new InternalServer();
     }
     debug(existingMenu, 'existing menu found');
     const associateMenuDetail = await MenuMenuDetail.query().insert({
-      menu_id: existingMenu.id,
-      menu_detail_id: newLink.id,
+      menuId: existingMenu.id,
+      menuDetailId: newLink.id,
     });
     debug(associateMenuDetail);
     await Activity.query().insert({
-      user_id: req.user.id,
+      userId: req.user.id,
       type: 'create',
-      activity_menu_detail: newLink.id,
+      activityMenuDetail: newLink.id,
     });
 
     return responseHandler(res, 201, newLink);
@@ -70,9 +76,13 @@ export async function updateDetail(req, res, next) {
   try {
     const detail = await MenuDetail.query().findById(req.params.id);
 
-    if (!detail) return res.status(404).json('Unable to find a menu detail with that id.');
+    if (!detail)
+      return res.status(404).json('Unable to find a menu detail with that id.');
 
-    const updatedDetail = await MenuDetail.query().updateAndFetchById(req.params.id, req.body);
+    const updatedDetail = await MenuDetail.query().updateAndFetchById(
+      req.params.id,
+      req.body,
+    );
 
     return res.status(202).json(updatedDetail);
   } catch (err) {
@@ -86,7 +96,10 @@ export async function deleteDetail(req, res, next) {
     if (!menuD) {
       return res.status(404).json('Unable to find a matching menu detail');
     }
-    await menuD.$relatedQuery('menu').unrelate().where('menu_detail_id', req.params.id);
+    await menuD
+      .$relatedQuery('menu')
+      .unrelate()
+      .where('menuDetailId', req.params.id);
     await MenuDetail.query().deleteById(req.params.id);
     return responseHandler(res, 204);
   } catch (error) {

@@ -1,6 +1,9 @@
 import Activity from './activity';
 import Attachment from './attachment';
-import Comment from './comment';
+import Block from './block';
+import ContentType from './contentType';
+import MediaType from './mediaType';
+import Media from './media';
 import Menu from './menu';
 import MenuDetail from './menuDetail';
 import Page from './page';
@@ -13,16 +16,20 @@ import Template from './template';
 import VerificationToken from './verificationToken';
 import User from './user';
 
+import BlockRelation from './join/blockRelation';
 import MenuMenuDetail from './join/menuMenuDetail';
 import PostTag from './join/postTag';
-import PostComment from './join/postComment';
 import TemplatePage from './join/templatePage';
 import UserRole from './join/userRole';
+import PostMedia from './join/postMedia';
 
 export {
   Activity,
   Attachment,
-  Comment,
+  Block,
+  ContentType,
+  MediaType,
+  Media,
   Menu,
   MenuDetail,
   Page,
@@ -35,8 +42,9 @@ export {
   VerificationToken,
   User,
   MenuMenuDetail,
+  BlockRelation,
   PostTag,
-  PostComment,
   TemplatePage,
   UserRole,
+  PostMedia,
 };

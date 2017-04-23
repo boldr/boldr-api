@@ -42,8 +42,8 @@ class Tag extends BaseModel {
         join: {
           from: 'tag.id',
           through: {
-            from: 'post_tag.tag_id',
-            to: 'post_tag.post_id',
+            from: 'post_tag.tagId',
+            to: 'post_tag.postId',
           },
           to: 'post.id',
         },

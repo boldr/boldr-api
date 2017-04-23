@@ -17,7 +17,7 @@ class UserRole extends BaseModel {
   static addTimestamps = false;
   static jsonSchema = {
     type: 'object',
-    required: ['user_id', 'role_id'],
+    required: ['userId', 'roleId'],
     properties: {
       id: {
         type: 'string',
@@ -25,13 +25,13 @@ class UserRole extends BaseModel {
         maxLength: 36,
         pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
       },
-      role_id: {
+      roleId: {
         type: 'string',
         minLength: 36,
         maxLength: 36,
         pattern: '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
       },
-      user_id: {
+      userId: {
         type: 'string',
         minLength: 36,
         maxLength: 36,
@@ -44,7 +44,7 @@ class UserRole extends BaseModel {
       relation: Model.BelongsToOneRelation,
       modelClass: Role,
       join: {
-        from: 'user_role.role_id',
+        from: 'user_role.roleId',
         to: 'role.id',
       },
     },
@@ -52,7 +52,7 @@ class UserRole extends BaseModel {
       relation: Model.BelongsToOneRelation,
       modelClass: User,
       join: {
-        from: 'user_role.user_id',
+        from: 'user_role.userId',
         to: 'user.id',
       },
     },

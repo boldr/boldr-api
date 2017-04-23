@@ -5,7 +5,8 @@ import activityRoutes from './activity/activity.routes';
 import adminRoutes from './admin/admin.routes';
 import attachmentRoutes from './attachment/attachment.routes';
 import authRoutes from './auth/auth.routes';
-import commentRoutes from './comment/comment.routes';
+import blockRoutes from './block/block.routes';
+import mediaRoutes from './media/media.routes';
 import menuDetailRoutes from './menu/detail/menuDetail.routes';
 import menuRoutes from './menu/menu.routes';
 import pageRoutes from './page/page.routes';
@@ -17,7 +18,7 @@ import templateRoutes from './template/template.routes';
 import tokenRoutes from './token/token.routes';
 import userRoutes from './user/user.routes';
 
-const API_PREFIX = config.get('apiPrefix');
+const API_PREFIX = config.server.apiPrefix;
 
 export default app => {
   app.get(`${API_PREFIX}/health-check`, (req, res) => {
@@ -36,7 +37,8 @@ export default app => {
   app.use(`${API_PREFIX}/admin`, adminRoutes);
   app.use(`${API_PREFIX}/attachments`, attachmentRoutes);
   app.use(`${API_PREFIX}/auth`, authRoutes);
-  app.use(`${API_PREFIX}/comments`, commentRoutes);
+  app.use(`${API_PREFIX}/blocks`, blockRoutes);
+  app.use(`${API_PREFIX}/media`, mediaRoutes);
   app.use(`${API_PREFIX}/menu-details`, menuDetailRoutes);
   app.use(`${API_PREFIX}/menus`, menuRoutes);
   app.use(`${API_PREFIX}/pages`, pageRoutes);
@@ -48,14 +50,6 @@ export default app => {
   app.use(`${API_PREFIX}/templates`, templateRoutes);
   app.use(`${API_PREFIX}/tokens`, tokenRoutes);
   app.use(`${API_PREFIX}/users`, userRoutes);
-
-  app.use((err, req, res, next) => {
-    if (err) {
-      res.status(err.statusCode || err.status || 500).send(err.data || err.message || {});
-    } else {
-      next();
-    }
-  });
 };
 /**
  * @apiDefine listParams
@@ -83,7 +77,7 @@ export default app => {
  * to access this endpoint.
  */
 
- /**
+/**
   * @apiDefine user   User access for certain restricted routes.
   * You must pass an authorization header with a token to access this endpoint.
   */
@@ -96,7 +90,7 @@ export default app => {
  *     "The request requires user authentication. Please try again with the correct authorization header"
  */
 
- /**
+/**
   * @apiDefine NotFoundError
   * @apiError 404    Not Found
   * @apiErrorExample NotFound (example):

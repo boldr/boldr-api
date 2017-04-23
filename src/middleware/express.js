@@ -1,61 +1,43 @@
-import cors from 'cors';
 import compression from 'compression';
 import bodyParser from 'body-parser';
 import methodOverride from 'method-override';
+import cookieParser from 'cookie-parser';
 import expressValidator from 'express-validator';
 import morgan from 'morgan';
 import expressWinston from 'express-winston';
 import flash from 'express-flash';
-import busboy from 'connect-busboy';
+import cors from 'cors';
+import responseTime from 'response-time';
 import hpp from 'hpp';
+import uuid from 'uuid';
 import config from '../config';
 import winstonInstance from '../services/logger';
 
 export default app => {
   app.disable('x-powered-by');
   app.set('trust proxy', 'loopback');
-  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
-    app.use(morgan('dev'));
-  }
-  app.use(compression());
   // enable CORS - Cross Origin Resource Sharing
   // allow for sending credentials (auth token) in the headers.
   app.use(
     cors({
-      origin: true,
+      origin(origin, cb) {
+        const whitelist = config.cors.whitelist ? config.cors.whitelist : [];
+        cb(null, whitelist.includes(origin));
+      },
       credentials: true,
     }),
   );
+  app.use(cookieParser(config.token.secret));
+  if (
+    process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test'
+  ) {
+    app.use(morgan('dev'));
+  }
+  app.use(compression());
+  app.use(bodyParser.json({ type: 'application/json' }));
   // parse application/x-www-form-urlencoded
-  app.use(
-    bodyParser.urlencoded({
-      extended: true,
-      limit: '20mb',
-    }),
-  );
-  // parse application/anything+json
-  app.use(
-    bodyParser.json({
-      type: 'application/*+json',
-      limit: '20mb',
-    }),
-  );
-  // parse application/json
-  app.use(
-    bodyParser.json({
-      type: 'application/json',
-      limit: '20mb',
-    }),
-  );
-  // parse text/plain
-  app.use(
-    bodyParser.text({
-      type: 'text/plain',
-      limit: '20mb',
-    }),
-  );
-  // parse anything else
-  app.use(bodyParser.raw({ limit: '20mb' }));
+  app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(expressValidator());
   app.use(
     methodOverride((req, res) => {
       if (req.body && typeof req.body === 'object' && '_method' in req.body) {
@@ -66,24 +48,20 @@ export default app => {
       }
     }),
   );
-  // must be right after bodyParser
-  app.use(expressValidator());
-  app.use(
-    busboy({
-      limits: {
-        fileSize: 5242880,
-      },
-    }),
-  );
+  app.use(responseTime());
+  app.use((req, res, next) => {
+    res.set('Request-Id', uuid.v4());
+    next();
+  });
   app.use(hpp());
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV === 'development') {
     expressWinston.requestWhitelist.push('body');
     expressWinston.responseWhitelist.push('body');
     app.use(
       expressWinston.logger({
         winstonInstance,
         meta: true,
-        msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms',
+        msg: 'HTTP {{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms', // eslint-disable-line
         colorStatus: true,
       }),
     );

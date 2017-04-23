@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+  database:
+    build: ./db
+    restart: always
+    tty: true
+    environment:
+      - PGDATA=/var/lib/postgresql/data
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - database_volume:/var/lib/postgresql/data
+    healthcheck:
+      test: exit 0
+    networks:
+      - boldr
+
+  redis:
+    image: redis:3.2.8-alpine
+    volumes:
+      - redis_volume:/data
+    ports:
+      - "6379:6379"
+    user: redis
+    healthcheck:
+      test: exit 0
+    networks:
+      - boldr
+  api:
+    build: .
+    container_name: boldr_api
+    depends_on:
+      database:
+        condition: service_started
+      redis:
+        condition: service_started
+    environment:
+      - BOLDR__DB__URL=postgres://postgres:password@127.0.0.1:5432/boldr
+      - BOLDR__REDIS__URL=redis://127.0.0.1:6379/0
+    ports:
+      - "2121:2121"
+    volumes:
+      - yarn:/root/.cache/yarn
+      - ./:/app
+      - "./static:/app/static"
+    user: node
+    working_dir: /app
+    networks:
+      - boldr
+    command: yarn start
+
+volumes:
+  database_volume: {}
+  redis_volume: {}
+  yarn: {}
+
+networks:
+  boldr:
+    driver: bridge

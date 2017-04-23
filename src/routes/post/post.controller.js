@@ -4,7 +4,7 @@ import { responseHandler, Conflict, BadRequest } from '../../core/index';
 import slugIt from '../../utils/slugIt';
 
 // Models
-import { Tag, Activity, Post, PostTag, Comment, PostComment } from '../../models';
+import { Tag, Activity, Post, PostTag } from '../../models';
 
 const debug = require('debug')('boldrAPI:post-ctrl');
 
@@ -18,24 +18,27 @@ const debug = require('debug')('boldrAPI:post-ctrl');
  * @returns {Promise}
  */
 export async function createPost(req, res, next) {
-  req.assert('title', 'A title must be provided').notEmpty();
-  req.assert('content', 'Content can not be empty').notEmpty();
+  req.assert('title', 'A title is required to create a post.').notEmpty();
+  req.assert('content', 'Content is required when creating a post.').notEmpty();
+  req.assert('tags', 'A new post requires at least one tag.').notEmpty();
   req.sanitize('title').trim();
 
   const errors = req.validationErrors();
 
-  if (errors) return res.status(400).send(errors);
+  if (errors) {
+    return res.status(400).send(errors);
+  }
   const postSlug = slugIt(req.body.title);
   // look for a matching slug in the database
   const existingPost = await Post.query().where('slug', postSlug).first();
-  if (existingPost) return res.status(409).json('A post with this title already exists.');
-
-  if (!req.body.tags) return res.status(400).json('You must submit at least one tag.');
+  if (existingPost) {
+    return res.status(409).json('A post with this title already exists.');
+  }
 
   async function createPostTagRelation(existingTag, newPost) {
     await PostTag.query().insert({
-      tag_id: existingTag.id,
-      post_id: newPost.id,
+      tagId: existingTag.id,
+      postId: newPost.id,
     });
   }
 
@@ -46,13 +49,13 @@ export async function createPost(req, res, next) {
       slug: postSlug,
       excerpt: req.body.excerpt,
       content: req.body.content,
-      raw_content: req.body.raw_content,
-      feature_image: req.body.feature_image,
-      background_image: req.body.background_image,
+      rawContent: req.body.rawContent,
+      featureImage: req.body.featureImage,
+      backgroundImage: req.body.backgroundImage,
       meta: req.body.meta,
       attachments: req.body.attachments,
       published: req.body.published,
-      user_id: req.user.id,
+      userId: req.user.id,
     });
     // relate the author to post
     await createPost.$relatedQuery('author').relate({ id: req.user.id });
@@ -70,9 +73,9 @@ export async function createPost(req, res, next) {
 
     await Activity.query().insert({
       id: uuid(),
-      user_id: req.user.id,
+      userId: req.user.id,
       type: 'create',
-      activity_post: createPost.id,
+      activityPost: createPost.id,
     });
     return responseHandler(res, 201, createPost);
   } catch (error) {
@@ -80,6 +83,26 @@ export async function createPost(req, res, next) {
     next(error);
   }
 }
+
+// export async function addMediaToPost(req, res, next) {
+//   try {
+//     const post = await transaction(Person.knex(), async function (trx) {
+//           const person = await Person
+//             .query(trx)
+//             .findById(req.params.id);
+//
+//           if (!person) {
+//             throwNotFound();
+//           }
+//
+//           return await person
+//             .$relatedQuery('movies', trx)
+//             .insert(req.body);
+//         });
+//   } catch (err) {
+//
+//   }
+// }
 
 /**
  * Get a post from its slug.
@@ -94,15 +117,15 @@ export async function getSlug(req, res, next) {
   try {
     const post = await Post.query()
       .where({ slug: req.params.slug })
-      .eager('[tags, author, comments, comments.commenter, comments.replies]')
-      .modifyEager('comments.[replies]', builder => {
-        builder.orderBy('created_at', 'desc');
-      })
+      .eager('[tags,author]')
       .omit(['password'])
+      .skipUndefined()
       .first();
 
     if (!post) {
-      return res.status(400).json({ message: `Unable to find a post matching ${req.params.slug}.` });
+      return res.status(400).json({
+        message: `Unable to find a post matching ${req.params.slug}.`,
+      });
     }
     return responseHandler(res, 200, post);
   } catch (error) {
@@ -124,10 +147,8 @@ export async function getId(req, res, next) {
   try {
     const post = await Post.query()
       .findById(req.params.id)
-      .eager('[tags, author, comments, comments.commenter, comments.replies]')
-      .modifyEager('comments.[replies]', builder => {
-        builder.orderBy('created_at', 'desc');
-      })
+      .eager('[tags,author]')
+      .skipUndefined()
       .first();
     return responseHandler(res, 200, post);
   } catch (error) {
@@ -147,7 +168,10 @@ export async function getId(req, res, next) {
  */
 export async function destroy(req, res, next) {
   try {
-    await Activity.query().delete().where({ activity_post: req.params.id }).first();
+    await Activity.query()
+      .delete()
+      .where({ activityPost: req.params.id })
+      .first();
     await Post.query().delete().where('id', req.params.id).first();
 
     return res.status(204).send({});
@@ -168,15 +192,17 @@ export async function destroy(req, res, next) {
  */
 export function update(req, res) {
   debug(req.body);
-  return Post.query().patchAndFetchById(req.params.id, req.body).then(async post => {
-    await Activity.query().insert({
-      id: uuid(),
-      user_id: req.user.id,
-      type: 'update',
-      activity_post: post.id,
+  return Post.query()
+    .patchAndFetchById(req.params.id, req.body)
+    .then(async post => {
+      await Activity.query().insert({
+        id: uuid(),
+        userId: req.user.id,
+        type: 'update',
+        activityPost: post.id,
+      });
+      responseHandler(res, 202, post);
     });
-    responseHandler(res, 202, post);
-  });
 }
 
 /**
@@ -193,7 +219,9 @@ export async function addTag(req, res, next) {
     const post = await Post.query().findById(req.params.id);
 
     if (!post) {
-      return res.status(404).json({ message: `Unable to find a post with the ID: ${req.params.id}.` });
+      return res.status(404).json({
+        message: `Unable to find a post with the ID: ${req.params.id}.`,
+      });
     }
 
     const tag = await post.$relatedQuery('tags').insert(req.body);
@@ -204,37 +232,46 @@ export async function addTag(req, res, next) {
   }
 }
 
+export async function relatePostToMedia(req, res, next) {
+  try {
+    const post = await Post.query().findById(req.params.id);
+    const newRelation = await post
+      .$relatedQuery('media')
+      .relate({ id: req.params.mediaId });
+    return res.status(200).json(newRelation);
+  } catch (error) {
+    /* istanbul ignore next */
+    return next(error);
+  }
+}
+
 /**
- * Add a comment to a post
- * @method addCommentToPost
+ * getPostsWithArchive - return a list of posts w/ archived (deleted) posts.
  *
  * @param {Object} req
  * @param {Object} res
  * @param {Function} next
- * @returns {Promise}
+ * @return {Object}      the posts
  */
-export async function addCommentToPost(req, res, next) {
+export async function getPostsWithArchive(req, res, next) {
   try {
-    const post = await Post.query().findById(req.params.id);
+    const posts = await Post.query()
+      .eager('[author,tags,media]')
+      .skipUndefined()
+      .includeDeleted();
 
-    if (!post) {
-      return res.status(404).json({ message: `Unable to find a post with the ID: ${req.params.id}.` });
-    }
-    const newComment = await Comment.query().insert({
-      content: req.body.content,
-      raw_content: req.body.raw_content,
-      comment_author_id: req.user.id,
-      comment_author_ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
-    });
-    await newComment.$relatedQuery('commenter').relate({ id: req.user.id });
+    return res.status(200).json(posts);
+  } catch (err) {
+    return next(err);
+  }
+}
 
-    await PostComment.query().insert({
-      comment_id: newComment.id,
-      post_id: post.id,
-    });
+export async function permanentlyDeletePost(req, res, next) {
+  try {
+    const post = await Post.query().forceDelete().where({ id: req.params.id });
 
-    return responseHandler(res, 201, newComment);
-  } catch (error) {
-    return next(error);
+    return res.status(204).json(post);
+  } catch (err) {
+    return next(err);
   }
 }

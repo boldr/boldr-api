@@ -23,7 +23,10 @@ export async function getRole(req, res, next) {
 
 export async function getRoleUsers(req, res, next) {
   try {
-    const role = await Role.query().findById(req.params.id).eager('users').omit(User, ['password']);
+    const role = await Role.query()
+      .findById(req.params.id)
+      .eager('users')
+      .omit(User, ['password']);
 
     return responseHandler(res, 200, role);
   } catch (error) {

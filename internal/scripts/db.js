@@ -1,21 +1,23 @@
+/* eslint-disable comma-dangle */
 const fs = require('fs');
 const path = require('path');
 const knex = require('knex');
 const task = require('./task');
 
 // The list of available commands, e.g. node scripts/db.js migrate:undo
-const commands = ['version', 'migrate', 'migrate:undo', 'migration', 'seed', 'reset'];
+const commands = [
+  'version', 'migrate', 'migrate:undo', 'migration', 'seed', 'reset'];
 const command = process.argv[2];
 
 const config = {
   client: 'pg',
-  connection: process.env.DATABASE_URI,
+  connection: process.env.BOLDR__DB__URL,
   migrations: {
     tableName: 'migrations',
-    directory: path.resolve(process.cwd(), './db/migrations'),
+    directory: path.resolve(process.cwd(), './db/migrations')
   },
   seeds: {
-    directory: path.resolve(process.cwd(), './db/seeds'),
+    directory: path.resolve(process.cwd(), './db/seeds')
   },
 };
 
@@ -39,7 +41,7 @@ module.exports = task('db', async () => {
         await db.migrate.currentVersion(config).then(console.log);
         break;
       case 'migration':
-        fs.writeFileSync(`db/migrations/${version}_${process.argv[3] || 'new'}.js`, template, 'utf8');
+        fs.writeFileSync(`db/migrations/${version}_${process.argv[3] || 'new'}.js`, template, 'utf8'); // eslint-disable-line
         break;
       case 'migrate:undo':
         db = knex(config);
@@ -65,24 +67,28 @@ module.exports = task('db', async () => {
 });
 
 async function dropDatabase(db) {
+  await db.schema.dropTableIfExists('block_relation');
   await db.schema.dropTableIfExists('post_attachment');
   await db.schema.dropTableIfExists('post_tag');
   await db.schema.dropTableIfExists('post_comment');
   await db.schema.dropTableIfExists('user_role');
   await db.schema.dropTableIfExists('template_page');
   await db.schema.dropTableIfExists('menu_menu_detail');
+  await db.schema.dropTableIfExists('block');
+  await db.schema.dropTableIfExists('post_media');
+  await db.schema.dropTableIfExists('media');
+  await db.schema.dropTableIfExists('media_type');
+  await db.schema.dropTableIfExists('content_type');
   await db.schema.dropTableIfExists('setting');
   await db.schema.dropTableIfExists('activity');
   await db.schema.dropTableIfExists('menu');
   await db.schema.dropTableIfExists('menu_detail');
-  await db.schema.dropTableIfExists('gallery');
   await db.schema.dropTableIfExists('template');
   await db.schema.dropTableIfExists('page');
   await db.schema.dropTableIfExists('tag');
   await db.schema.dropTableIfExists('verification_token');
   await db.schema.dropTableIfExists('reset_token');
   await db.schema.dropTableIfExists('post');
-  await db.schema.dropTableIfExists('comment');
   await db.schema.dropTableIfExists('attachment');
   await db.schema.dropTableIfExists('user');
   await db.schema.dropTableIfExists('role');

@@ -21,7 +21,7 @@ class TemplatePage extends BaseModel {
       relation: Model.BelongsToOneRelation,
       modelClass: Template,
       join: {
-        from: 'template_page.template_id',
+        from: 'template_page.templateId',
         to: 'template.id',
       },
     },
@@ -29,7 +29,7 @@ class TemplatePage extends BaseModel {
       relation: Model.BelongsToOneRelation,
       modelClass: Page,
       join: {
-        from: 'template_page.page_id',
+        from: 'template_page.pageId',
         to: 'page.id',
       },
     },

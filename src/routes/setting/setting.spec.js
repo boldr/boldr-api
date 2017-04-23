@@ -11,21 +11,30 @@ describe('Settings API Endpoint', async () => {
       email: 'admin@boldr.io',
       password: 'password',
     };
-    const { body } = await agent.post('/api/v1/auth/login').set('Accept', 'application/json').send(loginData);
+    const { body } = await agent
+      .post('/api/v1/auth/login')
+      .set('Accept', 'application/json')
+      .send(loginData);
     token = body.token;
   });
   test('+++ GET /settings -- List', () => {
-    return agent.get('/api/v1/settings').set('Accept', 'application/json').expect(res => {
-      expect(res.status).toBe(200);
-      expect(Array.isArray(res.body)).toBe(true);
-    });
+    return agent
+      .get('/api/v1/settings')
+      .set('Accept', 'application/json')
+      .expect(res => {
+        expect(res.status).toBe(200);
+        expect(Array.isArray(res.body)).toBe(true);
+      });
   });
 
   test('+++ GET /settings/:id -- Single setting', () => {
-    return agent.get('/api/v1/settings/1').set('Accept', 'application/json').expect(res => {
-      expect(res.status).toBe(200);
-      expect(typeof res.body).toBe('object');
-    });
+    return agent
+      .get('/api/v1/settings/1')
+      .set('Accept', 'application/json')
+      .expect(res => {
+        expect(res.status).toBe(200);
+        expect(typeof res.body).toBe('object');
+      });
   });
   test('+++ POST /settings', () => {
     return agent

@@ -1,41 +1,41 @@
 import { Model } from 'objection';
-import Comment from '../comment';
+import Media from '../media';
 import Post from '../post';
 import BaseModel from '../base';
 
 /**
- * This is the join table connecting comments to posts.
+ * This is the join table connecting media to posts.
  *
- * @see ../Comment
+ * @see ../Media
  * @see ../Post
  * @extends ../BaseModel
  */
-class PostComment extends BaseModel {
+class PostMedia extends BaseModel {
   static get tableName() {
-    return 'post_comment';
+    return 'post_media';
   }
 
   static addTimestamps = false;
 
   static get idColumn() {
-    return ['post_id', 'comment_id'];
+    return ['postId', 'mediaId'];
   }
 
   static get relationMappings() {
     return {
-      comment: {
+      media: {
         relation: Model.BelongsToOneRelation,
-        modelClass: Comment,
+        modelClass: Media,
         join: {
-          from: 'post_comment.comment_id',
-          to: 'comment.id',
+          from: 'post_media.mediaId',
+          to: 'media.id',
         },
       },
       post: {
         relation: Model.BelongsToOneRelation,
         modelClass: Post,
         join: {
-          from: 'post_comment.post_id',
+          from: 'post_media.postId',
           to: 'post.id',
         },
       },
@@ -43,4 +43,4 @@ class PostComment extends BaseModel {
   }
 }
 
-export default PostComment;
+export default PostMedia;

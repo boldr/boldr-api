@@ -18,7 +18,7 @@ class Activity extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: User,
         join: {
-          from: 'activity.user_id',
+          from: 'activity.userId',
           to: 'user.id',
         },
       },
@@ -26,7 +26,7 @@ class Activity extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: Post,
         join: {
-          from: 'activity.activity_post',
+          from: 'activity.activityPost',
           to: 'post.id',
         },
       },
@@ -34,7 +34,7 @@ class Activity extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: User,
         join: {
-          from: 'activity.activity_user',
+          from: 'activity.activityUser',
           to: 'user.id',
         },
       },
@@ -42,7 +42,7 @@ class Activity extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: Attachment,
         join: {
-          from: 'activity.activity_attachment',
+          from: 'activity.activityAttachment',
           to: 'attachment.id',
         },
       },
@@ -50,7 +50,7 @@ class Activity extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: Tag,
         join: {
-          from: 'activity.activity_tag',
+          from: 'activity.activityTag',
           to: 'tag.id',
         },
       },
@@ -58,7 +58,7 @@ class Activity extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: MenuDetail,
         join: {
-          from: 'activity.activity_menu_detail',
+          from: 'activity.activityMenuDetail',
           to: 'menu_detail.id',
         },
       },

@@ -15,11 +15,14 @@ import {
 } from '../../core';
 import User from '../../models/user';
 
-const debug = require('debug')('boldr:user-ctrl');
+const debug = require('debug')('boldrAPI:user-ctrl');
 
 export async function getUser(req, res, next) {
   try {
-    const user = await User.query().findById(req.params.id).eager('[roles]').omit(['password']);
+    const user = await User.query()
+      .findById(req.params.id)
+      .eager('[roles]')
+      .omit(['password']);
 
     return responseHandler(res, 200, user);
   } catch (error) {
@@ -32,10 +35,10 @@ export async function getUser(req, res, next) {
 export async function getUsername(req, res, next) {
   try {
     const user = await User.query()
-    .where({ username: req.params.username })
-    .eager('[roles]')
-    .omit(['password'])
-    .first();
+      .where({ username: req.params.username })
+      .eager('[roles]')
+      .omit(['password'])
+      .first();
 
     return responseHandler(res, 200, user);
   } catch (error) {
@@ -47,7 +50,9 @@ export async function getUsername(req, res, next) {
 
 export function updateUser(req, res, next) {
   if ('password' in req.body) {
-    req.assert('password', 'Password must be at least 4 characters long').len(4);
+    req
+      .assert('password', 'Password must be at least 4 characters long')
+      .len(4);
   }
   const errors = req.validationErrors();
 
@@ -55,7 +60,9 @@ export function updateUser(req, res, next) {
     return res.status(400).json(errors);
   }
 
-  return User.query().patchAndFetchById(req.params.id, req.body).then(user => res.status(202).json(user));
+  return User.query()
+    .patchAndFetchById(req.params.id, req.body)
+    .then(user => res.status(202).json(user));
 }
 
 export async function adminUpdateUser(req, res, next) {
@@ -65,17 +72,22 @@ export async function adminUpdateUser(req, res, next) {
       const u = await User.query().findById(req.params.id).eager('roles');
       await u.$relatedQuery('roles').unrelate();
       /* istanbul ignore next */
-      const newRole = await u.$relatedQuery('roles').relate({ id: req.body.role });
+      const newRole = await u
+        .$relatedQuery('roles')
+        .relate({ id: req.body.role });
     }
     const payload = {
       username: req.body.username,
       bio: req.body.bio,
       // role: req.body.role,
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
-      avatar_url: req.body.avatar_url,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      avatarUrl: req.body.avatarUrl,
     };
-    User.query().patchAndFetchById(req.params.id, payload).then(user => res.status(202).json(user));
+    User.query()
+      .patchAndFetchById(req.params.id, payload)
+      .eager('[roles]')
+      .then(user => res.status(202).json(user));
   } catch (error) {
     /* istanbul ignore next */
     return next(error);
@@ -106,10 +118,10 @@ export async function adminCreateUser(req, res, next) {
       // no need to hash here, its taken care of on the model instance
       email: req.body.email,
       password: req.body.password,
-      first_name: req.body.first_name,
-      last_name: req.body.last_name,
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
       username: req.body.username,
-      avatar_url: req.body.avatar_url,
+      avatarUrl: req.body.avatarUrl,
     };
     const checkExisting = await User.query().where('email', req.body.email);
 
@@ -134,11 +146,13 @@ export async function adminCreateUser(req, res, next) {
       // send the welcome email
       mailer(user, mailBody, mailSubject);
       // create a relationship between the user and the token
-      const verificationEmail = await user.$relatedQuery('verificationToken').insert({
-        ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
-        token: verificationToken,
-        user_id: user.id,
-      });
+      const verificationEmail = await user
+        .$relatedQuery('verificationToken')
+        .insert({
+          ip: req.headers['x-forwarded-for'] || req.connection.remoteAddress,
+          token: verificationToken,
+          userId: user.id,
+        });
 
       if (!verificationEmail) {
         return next(new InternalServer());

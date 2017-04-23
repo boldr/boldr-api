@@ -2,11 +2,12 @@ import { Router } from 'express';
 import { isAuthenticated } from '../../services/authentication';
 import { checkRole } from '../../middleware/rbac';
 import BaseController from '../../core/baseController';
+import { wrapRouter } from '../../utils/asyncRouter';
 import processQuery from '../../utils/processQuery';
 import { User } from '../../models';
 import * as ctrl from './user.controller';
 
-const router = new Router();
+const router = wrapRouter(new Router());
 const controller = new BaseController(User, 'id');
 /**
  * @api {get} /users        List all users
@@ -70,7 +71,12 @@ router.put('/:id', isAuthenticated, ctrl.updateUser);
  * @apiUse UnauthorizedError
  * @apiUse NotFoundError
  */
-router.put('/admin/:id', isAuthenticated, checkRole('Admin'), ctrl.adminUpdateUser);
+router.put(
+  '/admin/:id',
+  isAuthenticated,
+  checkRole('Admin'),
+  ctrl.adminUpdateUser,
+);
 /**
  * @api {patch} /users/:id        Update user
  * @apiName ModifyUser

@@ -1,6 +1,5 @@
 /* eslint-disable id-match */
 import { Model, ValidationError } from 'objection';
-import { snakeCase, camelCase, mapKeys } from 'lodash';
 
 /**
  * @class BaseModel
@@ -8,13 +7,15 @@ import { snakeCase, camelCase, mapKeys } from 'lodash';
  */
 class BaseModel extends Model {
   /**
-   * If we should update the created_at attribute when inserted and the updated_at attribute when updated.
+   * If we should update the createdAt attribute when inserted and the
+   * updatedAt attribute when updated.
    *
    * @type {boolean}
    */
   static addTimestamps = true;
   /**
-   * An object of attribute names with function values to transform attributes on the model if they exist.
+   * An object of attribute names with function values to transform
+   * attributes on the model if they exist.
    *
    * @type {object}
    */
@@ -32,8 +33,8 @@ class BaseModel extends Model {
    */
   $beforeInsert() {
     if (this.constructor.addTimestamps) {
-      this.created_at = new Date().toISOString();
-      this.updated_at = new Date().toISOString();
+      this.createdAt = new Date().toISOString();
+      this.updatedAt = new Date().toISOString();
     }
   }
 
@@ -42,22 +43,9 @@ class BaseModel extends Model {
    */
   $beforeUpdate() {
     if (this.constructor.addTimestamps) {
-      this.updated_at = new Date().toISOString();
+      this.updatedAt = new Date().toISOString();
     }
   }
-
-  /**
-   * Converts camelCase to snake_case for database insertion. This way
-   * the data sends to the client camelCased.
-   * @method $formatDatabaseJson
-   * @param  {[type]}            json [description]
-   * @return [type]                   [description]
-   */
-  $formatDatabaseJson(json) {
-    json = super.$formatDatabaseJson(json);
-    return mapKeys(json, (value, key) => snakeCase(key));
-  }
-
   /**
    * Ran after querying the database and transforming to the Model.
    *
@@ -65,8 +53,6 @@ class BaseModel extends Model {
    * @returns {object}
    */
   $parseDatabaseJson(json) {
-    // Convert the data to camelCase before sending.
-    json = mapKeys(json, (value, key) => camelCase(key));
     super.$parseDatabaseJson(json);
 
     Object.keys(this.constructor.transforms).forEach(key => {

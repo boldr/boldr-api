@@ -16,8 +16,8 @@ class Template extends BaseModel {
         join: {
           from: 'template.id',
           through: {
-            from: 'template_page.template_id',
-            to: 'template_page.page_id',
+            from: 'template_page.templateId',
+            to: 'template_page.pageId',
             // modelClass: UserRole,
           },
           to: 'page.id',

@@ -42,7 +42,12 @@ router.get('/:id', ctrl.showMenu);
  * @apiUse authHeader
  * @apiParam {Number} id The id of the menu
  */
-router.put('/:id', isAuthenticated, checkRole('Admin'), controller.update.bind(controller));
+router.put(
+  '/:id',
+  isAuthenticated,
+  checkRole('Admin'),
+  controller.update.bind(controller),
+);
 
 /**
  * @api {patch} /menus/:id      Update menu
@@ -52,7 +57,12 @@ router.put('/:id', isAuthenticated, checkRole('Admin'), controller.update.bind(c
  * @apiUse authHeader
  * @apiParam {Number} id The id of the link
  */
-router.patch('/:id', isAuthenticated, checkRole('Admin'), controller.update.bind(controller));
+router.patch(
+  '/:id',
+  isAuthenticated,
+  checkRole('Admin'),
+  controller.update.bind(controller),
+);
 
 router.use('/details', detailRoutes);
 export default router;

@@ -27,12 +27,9 @@ function filterEagerData(queryParams, relation, columnName) {
     .filter(key => key !== null);
   /* istanbul ignore next */
   return function filterEagerValues(builder) {
-    return values.reduce(
-      (memo, value) => {
-        return memo.where(columnName, value.op, value.value);
-      },
-      builder,
-    );
+    return values.reduce((memo, value) => {
+      return memo.where(columnName, value.op, value.value);
+    }, builder);
   };
 }
 

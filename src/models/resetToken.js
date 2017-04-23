@@ -14,7 +14,7 @@ class ResetToken extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: User,
         join: {
-          from: 'reset_token.user_id',
+          from: 'reset_token.userId',
           to: 'user.id',
         },
       },

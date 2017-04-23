@@ -17,8 +17,8 @@ class Menu extends BaseModel {
         join: {
           from: 'menu.id',
           through: {
-            from: 'menu_menu_detail.menu_id',
-            to: 'menu_menu_detail.menu_detail_id',
+            from: 'menu_menu_detail.menuId',
+            to: 'menu_menu_detail.menuDetailId',
           },
           to: 'menu_detail.id',
         },

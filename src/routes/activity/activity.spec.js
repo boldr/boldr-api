@@ -9,7 +9,10 @@ describe('Activities endpoint', () => {
       email: 'admin@boldr.io',
       password: 'password',
     };
-    const { body } = await agent.post('/api/v1/auth/login').set('Accept', 'application/json').send(loginData);
+    const { body } = await agent
+      .post('/api/v1/auth/login')
+      .set('Accept', 'application/json')
+      .send(loginData);
     token = body.token; // eslint-disable-line
   });
   test('GET /activities', async () => {

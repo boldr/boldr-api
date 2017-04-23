@@ -1,14 +1,10 @@
 import { Router } from 'express';
 import { isAuthenticated } from '../../services/authentication';
+import { wrapRouter } from '../../utils/asyncRouter';
 import { checkRole } from '../../middleware/rbac';
 import * as ctrl from './attachment.controller';
 
-/**
- * @apiDefine Attachment
- *
- */
-
-const router = new Router();
+const router = wrapRouter(new Router());
 
 /**
  * @api {get} /attachments              List all attachments
@@ -20,13 +16,13 @@ const router = new Router();
  *
  * @apiSuccess    {Object[]}    attachments           List of attachments.
  * @apiSuccess    {String}      id                    The attachments's id (uuid)
- * @apiSuccess    {String}      file_name             The attachment's name
- * @apiSuccess    {String}      safe_name             Slugified / normalized file_name
- * @apiSuccess    {String}      file_description      A caption describing the attachment
- * @apiSuccess    {String}      file_type             The mime type
+ * @apiSuccess    {String}      fileName             The attachment's name
+ * @apiSuccess    {String}      safeName             Slugified / normalized fileName
+ * @apiSuccess    {String}      fileDescription      A caption describing the attachment
+ * @apiSuccess    {String}      fileType             The mime type
  * @apiSuccess    {String}      url                   The url where the file is located
- * @apiSuccess    {Date}        created_at            The upload date
- * @apiSuccess    {Date}        updated_at            When the attachment was modified.
+ * @apiSuccess    {Date}        createdAt            The upload date
+ * @apiSuccess    {Date}        updatedAt            When the attachment was modified.
  */
 router.get('/', ctrl.listAttachments);
 
@@ -61,7 +57,12 @@ router.get('/:id', ctrl.getAttachment);
  * @apiError 401 Invalid credentials.
  * @apiError 403 Forbidden
  */
-router.delete('/:id', isAuthenticated, checkRole('Admin'), ctrl.deleteAttachment);
+router.delete(
+  '/:id',
+  isAuthenticated,
+  checkRole('Admin'),
+  ctrl.deleteAttachment,
+);
 /**
  * @api {put} /attachments/:id      Update attachment
  * @apiName UpdateAttachment

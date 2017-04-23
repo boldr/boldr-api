@@ -11,19 +11,28 @@ describe('Menu API Endpoint', async () => {
       email: 'admin@boldr.io',
       password: 'password',
     };
-    const { body } = await agent.post('/api/v1/auth/login').set('Accept', 'application/json').send(loginData);
+    const { body } = await agent
+      .post('/api/v1/auth/login')
+      .set('Accept', 'application/json')
+      .send(loginData);
     token = body.token;
   });
   test('+++ GET /menus', () => {
-    return agent.get('/api/v1/menus').set('Accept', 'application/json').expect(res => {
-      expect(res.status).toBe(200);
-    });
+    return agent
+      .get('/api/v1/menus')
+      .set('Accept', 'application/json')
+      .expect(res => {
+        expect(res.status).toBe(200);
+      });
   });
   test('+++ GET /menus/:id', () => {
-    return agent.get('/api/v1/menus/1').set('Accept', 'application/json').expect(res => {
-      expect(res.status).toBe(200);
-      expect(res.body.name).toBe('Main');
-    });
+    return agent
+      .get('/api/v1/menus/1')
+      .set('Accept', 'application/json')
+      .expect(res => {
+        expect(res.status).toBe(200);
+        expect(res.body.name).toBe('Main');
+      });
   });
   test('+++ POST /menus', () => {
     return agent

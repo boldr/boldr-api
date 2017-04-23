@@ -6,13 +6,16 @@ import Tag from './tag';
 import User from './user';
 import Attachment from './attachment';
 import BaseModel from './base';
-import Comment from './comment';
+import Media from './media';
 
 class Post extends BaseModel {
   static get tableName() {
     return 'post';
   }
-  static softDelete = true;
+
+  static get softDelete() {
+    return true;
+  }
   static addTimestamps = true;
   static hidden = ['password'];
   static get idColumn() {
@@ -25,7 +28,7 @@ class Post extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: User,
         join: {
-          from: 'post.user_id',
+          from: 'post.userId',
           to: 'user.id',
         },
       },
@@ -35,34 +38,22 @@ class Post extends BaseModel {
         join: {
           from: 'post.id',
           through: {
-            from: 'post_tag.post_id',
-            to: 'post_tag.tag_id',
+            from: 'post_tag.postId',
+            to: 'post_tag.tagId',
           },
           to: 'tag.id',
         },
       },
-      attachments: {
+      media: {
         relation: Model.ManyToManyRelation,
-        modelClass: Attachment,
+        modelClass: Media,
         join: {
           from: 'post.id',
           through: {
-            from: 'post_attachment.post_id',
-            to: 'post_attachment.attachment_id',
+            from: 'post_media.postId',
+            to: 'post_media.mediaId',
           },
-          to: 'attachment.id',
-        },
-      },
-      comments: {
-        relation: Model.ManyToManyRelation,
-        modelClass: Comment,
-        join: {
-          from: 'post.id',
-          through: {
-            from: 'post_comment.post_id',
-            to: 'post_comment.comment_id',
-          },
-          to: 'comment.id',
+          to: 'media.id',
         },
       },
     };

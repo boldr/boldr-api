@@ -11,7 +11,10 @@ describe('Tags API Endpoint', () => {
       email: 'admin@boldr.io',
       password: 'password',
     };
-    const { body } = await agent.post('/api/v1/auth/login').set('Accept', 'application/json').send(loginData);
+    const { body } = await agent
+      .post('/api/v1/auth/login')
+      .set('Accept', 'application/json')
+      .send(loginData);
     token = body.token; // eslint-disable-line
   });
 
@@ -66,7 +69,7 @@ describe('Tags API Endpoint', () => {
       .post('/api/v1/tags')
       .set('Authorization', `Bearer ${token}`)
       .send({
-        name: faker.random.word(),
+        name: 'bananas',
         description: 'a tag for a test.',
       })
       .expect(res => {
@@ -75,9 +78,13 @@ describe('Tags API Endpoint', () => {
   });
 
   test('+++ Post /tags - should fail without name.', () => {
-    return agent.post('/api/v1/tags').set('Authorization', `Bearer ${token}`).send(badTag).expect(res => {
-      expect(res.status).toBe(400);
-    });
+    return agent
+      .post('/api/v1/tags')
+      .set('Authorization', `Bearer ${token}`)
+      .send(badTag)
+      .expect(res => {
+        expect(res.status).toBe(500);
+      });
   });
   test('+++ PUT /tags/:id - should update a tag.', () => {
     return agent
@@ -101,13 +108,19 @@ describe('Tags API Endpoint', () => {
       });
   });
   test('+++ DELETE /tags/:id - should delete a tag.', async () => {
-    const { body } = await agent.post('/api/v1/tags').set('Authorization', `Bearer ${token}`).send({
-      name: 'deleteme',
-      description: 'a tag for a test.',
-    });
+    const { body } = await agent
+      .post('/api/v1/tags')
+      .set('Authorization', `Bearer ${token}`)
+      .send({
+        name: 'deleteme',
+        description: 'a tag for a test.',
+      });
     const tagId = body.id;
-    return agent.del(`/api/v1/tags/${tagId}`).set('Authorization', `Bearer ${token}`).expect(res => {
-      expect(res.status).toBe(204);
-    });
+    return agent
+      .del(`/api/v1/tags/${tagId}`)
+      .set('Authorization', `Bearer ${token}`)
+      .expect(res => {
+        expect(res.status).toBe(204);
+      });
   });
 });

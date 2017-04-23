@@ -16,28 +16,28 @@ class Attachment extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: User,
         join: {
-          from: 'attachment.user_id',
+          from: 'attachment.userId',
           to: 'user.id',
         },
       },
-      posts: {
-        relation: Model.ManyToManyRelation,
-        modelClass: Post,
-        join: {
-          from: 'attachment.id',
-          through: {
-            from: 'post_attachment.attachment_id',
-            to: 'post_attachment.post_id',
-          },
-          to: 'post.id',
-        },
-      },
+      // posts: {
+      //   relation: Model.ManyToManyRelation,
+      //   modelClass: Post,
+      //   join: {
+      //     from: 'attachment.id',
+      //     through: {
+      //       from: 'post_attachment.attachmentId',
+      //       to: 'post_attachment.postId',
+      //     },
+      //     to: 'post.id',
+      //   },
+      // },
       activity: {
         relation: Model.BelongsToOneRelation,
         modelClass: Activity,
         join: {
           from: 'attachment.id',
-          to: 'activity.activity_attachment',
+          to: 'activity.activityAttachment',
         },
       },
     };

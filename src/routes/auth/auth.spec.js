@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 import request from 'supertest';
 import faker from 'faker';
 import app from '../../app';
@@ -11,7 +12,10 @@ describe('Auth API Endpoint', () => {
       email: 'admin@boldr.io',
       password: 'password',
     };
-    const { body } = await agent.post('/api/v1/auth/login').set('Accept', 'application/json').send(loginData);
+    const { body } = await agent
+      .post('/api/v1/auth/login')
+      .set('Accept', 'application/json')
+      .send(loginData);
     token = body.token;
   });
 
@@ -42,11 +46,15 @@ describe('Auth API Endpoint', () => {
     });
   });
   test('+++ POST /login', () => {
-    return agent.post('/api/v1/auth/login').set('Accept', 'application/json').send(loginData).expect(res => {
-      expect(res.status).toBe(200);
-      expect(typeof res.body.token).toBe('string');
-      expect(typeof res.body.user).toBe('object');
-    });
+    return agent
+      .post('/api/v1/auth/login')
+      .set('Accept', 'application/json')
+      .send(loginData)
+      .expect(res => {
+        expect(res.status).toBe(200);
+        expect(typeof res.body.token).toBe('string');
+        expect(typeof res.body.user).toBe('object');
+      });
   });
 
   test('+++ POST /signup -- Fails with missing required fields', () => {
@@ -79,10 +87,10 @@ describe('Auth API Endpoint', () => {
       .send({
         email: faker.internet.email(),
         password: 'password',
-        first_name: faker.name.firstName(),
-        last_name: faker.name.lastName(),
+        firstName: faker.name.firstName(),
+        lastName: faker.name.lastName(),
         username: faker.internet.userName(),
-        avatar_url: faker.image.imageUrl(),
+        avatarUrl: faker.image.imageUrl(),
       })
       .expect(res => {
         expect(res.status).toBe(201);
@@ -90,9 +98,12 @@ describe('Auth API Endpoint', () => {
   });
 
   test('+++ GET /check -- Fails w/o auth header', () => {
-    return agent.get('/api/v1/auth/check').set('Accept', 'application/json').expect(res => {
-      expect(res.status).toBe(401);
-    });
+    return agent
+      .get('/api/v1/auth/check')
+      .set('Accept', 'application/json')
+      .expect(res => {
+        expect(res.status).toBe(401);
+      });
   });
 
   test('+++ GET /check -- Return user info', () => {

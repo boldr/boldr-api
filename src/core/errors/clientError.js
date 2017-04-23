@@ -39,7 +39,11 @@ class Unauthorized extends HttpError {
  * @param {number} code the error code.
  */
 class Forbidden extends HttpError {
-  constructor(message = 'Insufficient access rights.', status = 403, isPublic = false) {
+  constructor(
+    message = 'Insufficient access rights.',
+    status = 403,
+    isPublic = false,
+  ) {
     super(message, 403, isPublic);
   }
 }
@@ -101,7 +105,11 @@ class Conflict extends HttpError {
  */
 class UserNotVerifiedError extends HttpError {
   constructor(message, status = 401, isPublic = false) {
-    super('This account has not been confirmed. Please check your email for a verification link.', 401, isPublic);
+    super(
+      'This account has not been confirmed. Please check your email for a verification link.',
+      401,
+      isPublic,
+    );
   }
 }
 
