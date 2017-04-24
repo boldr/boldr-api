@@ -24,7 +24,7 @@ services:
     image: redis:3.2.8-alpine
     volumes:
       - ./internal/docker/redis.conf:/usr/local/etc/redis/redis.conf:ro
-      - redis_volume:/data
+      - redis_volume:/data:rw
     ports:
       - "6379:6379"
     expose:

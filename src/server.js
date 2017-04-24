@@ -4,7 +4,7 @@ import * as objection from 'objection';
 import * as objectionSoftDelete from 'objection-softdelete';
 import app from './app';
 import { logger, db, disconnect, destroyRedis } from './services';
-import config, { boldrConfig } from './config';
+import config from './config';
 
 const debug = require('debug')('boldrAPI:engine');
 
@@ -24,7 +24,7 @@ server.on('error', err => {
 });
 
 server.on('listening', () => {
-  debug(boldrConfig.displayConfig());
+  debug(config.displayConfig());
   const address = server.address();
   logger.info('🚀  Starting server on %s:%s', address.address, address.port);
 });

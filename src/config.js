@@ -2,7 +2,7 @@ import BoldrConfig from 'boldr-config';
 
 const pkg = require('../package.json');
 
-const boldrConfig = new BoldrConfig('boldr', {
+const config = new BoldrConfig('boldr', {
   server: {
     port: 2121,
     host: '127.0.0.1',
@@ -42,8 +42,4 @@ const boldrConfig = new BoldrConfig('boldr', {
   },
 });
 
-const config = boldrConfig.toObject();
-
 export default config;
-
-export { boldrConfig };
