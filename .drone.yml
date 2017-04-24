@@ -7,15 +7,13 @@ pipeline:
       - BOLDR__REDIS__URL=redis://127.0.0.1:6379/1
     commands:
       - yarn global add node-gyp
-      - yarn install --silent
+      - yarn install --pure-lockfile
       - yarn test:ci
 services:
   database:
     image: strues/boldr-pg:0.1.0
   redis:
     image: redis:3.2.8-alpine
-    environment:
-      - BOLDR__REDIS__URL=redis://127.0.0.1:6379/1
 
   # publish:
   #   docker:

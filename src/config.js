@@ -24,7 +24,7 @@ const config = new BoldrConfig('boldr', {
     debug: false,
   },
   redis: {
-    url: 'redis://127.0.0.1:6379/0',
+    url: 'redis://127.0.0.1:6379',
   },
   token: {
     secret: 'b0ldrk3kwi11s15',
