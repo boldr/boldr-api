@@ -1,7 +1,8 @@
-const BoldrConfig = require('boldr-config');
+import BoldrConfig from 'boldr-config';
+
 const pkg = require('../package.json');
 
-const config = new BoldrConfig('boldr', {
+const boldrConfig = new BoldrConfig('boldr', {
   server: {
     port: 2121,
     host: '127.0.0.1',
@@ -40,4 +41,9 @@ const config = new BoldrConfig('boldr', {
     whitelist: ['http://localhost:2121', 'http://localhost:3000'],
   },
 });
+
+const config = boldrConfig.toObject();
+
 export default config;
+
+export { boldrConfig };
