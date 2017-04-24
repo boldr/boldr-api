@@ -23,6 +23,7 @@ services:
   redis:
     image: redis:3.2.8-alpine
     volumes:
+      - ./internal/docker/redis.conf:/usr/local/etc/redis/redis.conf:ro
       - redis_volume:/data
     ports:
       - "6379:6379"
@@ -31,6 +32,8 @@ services:
     user: redis
     healthcheck:
       test: exit 0
+    command:
+      "redis-server /usr/local/etc/redis/redis.conf"
     networks:
       - boldr
 
