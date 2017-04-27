@@ -1,6 +1,6 @@
 debug: true
 pipeline:
-  build:
+  run-tests:
     image: node:7
     environment:
       - BOLDR__DB__URL=postgres://postgres:password@127.0.0.1:5432/boldr_test
@@ -13,7 +13,9 @@ services:
   database:
     image: strues/boldr-pg:0.1.0
   redis:
-    image: redis:3.2.8-alpine
+    image: strues/redis:3.2.8-alpine
+    expose:
+      - "6379"
 
   # publish:
   #   docker:

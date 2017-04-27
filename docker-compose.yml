@@ -21,19 +21,19 @@ services:
       - boldr
 
   redis:
-    image: redis:3.2.8-alpine
+    image: strues/redis:3.2.8-alpine
+    restart: always
+    mem_limit: 1024m
+    cpu_shares: 512
+    read_only: false
+    security_opt:
+     - "no-new-privileges"
     volumes:
-      - ./internal/docker/redis.conf:/usr/local/etc/redis/redis.conf:ro
       - redis_volume:/data:rw
     ports:
       - "6379:6379"
     expose:
       - "6379"
-    user: redis
-    healthcheck:
-      test: exit 0
-    command:
-      "redis-server /usr/local/etc/redis/redis.conf"
     networks:
       - boldr
 

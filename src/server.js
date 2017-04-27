@@ -1,20 +1,18 @@
-/* eslint-disable prefer-destructuring */
+/* eslint-disable prefer-destructuring, babel/new-cap */
 import http from 'http';
 import * as objection from 'objection';
 import * as objectionSoftDelete from 'objection-softdelete';
 import app from './app';
-import { logger, db, disconnect, destroyRedis } from './services';
+import { logger, connect, disconnect, destroyRedis } from './services';
 import config from './config';
 
 const debug = require('debug')('boldrAPI:engine');
 
 const PORT = config.server.port;
 const HOST = config.server.host;
-const server = http.createServer(app);
 
-const Model = objection.Model;
-Model.knex(db);
-objectionSoftDelete.register(objection);
+const server = http.createServer(app);
+connect();
 
 server.listen(PORT, HOST);
 

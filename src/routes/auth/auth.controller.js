@@ -98,7 +98,7 @@ export async function registerUser(req, res, next) {
       activityUser: payload.id,
     });
     // Massive transaction is finished, send the data to the user.
-    return responseHandler(res, 201, newUser);
+    return responseHandler(res, 201, 'Account created.');
   } catch (error) {
     return next(new BadRequest(error));
   }

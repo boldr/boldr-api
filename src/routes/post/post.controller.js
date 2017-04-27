@@ -36,10 +36,14 @@ export async function createPost(req, res, next) {
   }
 
   async function createPostTagRelation(existingTag, newPost) {
-    await PostTag.query().insert({
-      tagId: existingTag.id,
-      postId: newPost.id,
-    });
+    try {
+      await PostTag.query().insert({
+        tagId: existingTag.id,
+        postId: newPost.id,
+      });
+    } catch (error) {
+      debug(error);
+    }
   }
 
   try {
@@ -57,17 +61,18 @@ export async function createPost(req, res, next) {
       published: req.body.published,
       userId: req.user.id,
     });
-    // relate the author to post
-    await createPost.$relatedQuery('author').relate({ id: req.user.id });
 
     const reqTags = req.body.tags;
 
     reqTags.map(async tag => {
+      debug(tag);
       const existingTag = await Tag.query().where('name', tag).first();
       if (existingTag) {
-        createPostTagRelation(existingTag, createPost);
+        debug('existingTag', existingTag);
+        await createPostTagRelation(existingTag, createPost);
       } else {
-        createPost.$relatedQuery('tags').insert({ name: tag });
+        debug('tag', tag);
+        await createPost.$relatedQuery('tags').insert({ name: tag });
       }
     });
 

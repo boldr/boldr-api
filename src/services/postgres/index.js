@@ -1,5 +1,3 @@
-import db, { disconnect } from './postgres';
+import { connect, disconnect } from './postgres';
 
-export default db;
-
-export { db, disconnect };
+export { connect, disconnect };
