@@ -23,8 +23,6 @@ services:
   redis:
     image: strues/redis:3.2.8-alpine
     restart: always
-    mem_limit: 1024m
-    cpu_shares: 512
     read_only: false
     security_opt:
      - "no-new-privileges"

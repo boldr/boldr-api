@@ -5,8 +5,6 @@ import * as objection from 'objection';
 import * as objectionSoftDelete from 'objection-softdelete';
 import config from '../../config';
 
-let db;
-
 const knexOpts = {
   client: 'pg',
   connection: config.db.url,
@@ -16,17 +14,11 @@ const knexOpts = {
   debug: config.db.debug,
 };
 
-function connect() {
-  if (!db) {
-    db = knex(knexOpts);
-    const { Model } = objection;
-    // $FlowIssue
-    Model.knex(db);
-    objectionSoftDelete.register(objection);
-  }
-
-  return db;
-}
+const db = knex(knexOpts);
+const { Model } = objection;
+// $FlowIssue
+Model.knex(db);
+objectionSoftDelete.register(objection);
 
 async function disconnect(db: Object) {
   if (!db) {
@@ -38,5 +30,6 @@ async function disconnect(db: Object) {
     throw new Error(err);
   }
 }
+export default db;
 
-export { connect, disconnect };
+export { disconnect };

@@ -3,7 +3,7 @@ import http from 'http';
 import * as objection from 'objection';
 import * as objectionSoftDelete from 'objection-softdelete';
 import app from './app';
-import { logger, connect, disconnect, destroyRedis } from './services';
+import { logger, db, disconnect, destroyRedis } from './services';
 import config from './config';
 
 const debug = require('debug')('boldrAPI:engine');
@@ -12,7 +12,6 @@ const PORT = config.server.port;
 const HOST = config.server.host;
 
 const server = http.createServer(app);
-connect();
 
 server.listen(PORT, HOST);
 
