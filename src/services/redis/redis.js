@@ -35,6 +35,54 @@ else
     return 1
 end
 `;
+const SAVE_TOKEN_LUA_SCRIPT = `
+  local token = KEYS[1]
+  local user_tokens = KEYS[2]
+  redis.call("hmset", token, unpack(ARGV))
+  redis.call("sadd", user_tokens, token)
+  return {token}
+`;
+const REMOVE_TOKEN_LUA_SCRIPT = `
+    local token = KEYS[1]
+  redis.log(redis.LOG_NOTICE, "Trying to find userId for " .. token)
+  local user_id = redis.call("hget", token, "userId")
+  if not userId then
+    redis.log(redis.LOG_NOTICE, "Token has already been removed!")
+    return
+  end
+  redis.log(redis.LOG_NOTICE, "Found " .. userId)
+  redis.log(redis.LOG_NOTICE, "Removing " .. token)
+  redis.call("srem", "{user:" .. userId .. "}:tokens", token)
+  redis.call("del", token)
+  return {token}
+`;
+
+const CACHE_PERM_LUA_SCRIPT = `
+    local key = KEYS[1]
+  local field = ARGV[1]
+  local value = ARGV[2]
+  local new_ttl = tonumber(ARGV[3])
+  local ttl_now = redis.call("ttl", key)
+  redis.call("hset", key, field, value)
+  if ttl_now < 0 or ttl_now > new_ttl then
+    redis.call("expire", key, new_ttl)
+  end
+  return 1
+`;
+mainRedisClient.defineCommand('removeToken', {
+  lua: REMOVE_TOKEN_LUA_SCRIPT,
+  numberOfKeys: 1,
+});
+
+mainRedisClient.defineCommand('saveToken', {
+  lua: SAVE_TOKEN_LUA_SCRIPT,
+  numberOfKeys: 2,
+});
+
+mainRedisClient.defineCommand('cachePermission', {
+  lua: CACHE_PERM_LUA_SCRIPT,
+  numberOfKeys: 1,
+});
 mainRedisClient.defineCommand('shouldRefresh', {
   numberOfKeys: 2,
   lua: SHOULD_REFRESH_LUA_SCRIPT,

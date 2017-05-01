@@ -1,5 +1,5 @@
-// flow-typed signature: 8675c971a66828b0c9b0de37e666f62e
-// flow-typed version: 2df13a9248/pg_v6.x.x/flow_>=v0.32.x
+// flow-typed signature: 0fa8645f698c218659697bf5a3573a9c
+// flow-typed version: cb69951a83/pg_v6.x.x/flow_>=v0.32.x
 
 declare module pg {
   // Note: Currently There are some issues in Function overloading.
@@ -60,15 +60,15 @@ declare module pg {
     //database port
     port: number,
     // database host. defaults to localhost
-    host: string,
+    host?: string,
     // whether to try SSL/TLS to connect to server. default value: false
-    ssl: boolean,
+    ssl?: boolean,
     // name displayed in the pg_stat_activity view and included in CSV log entries
     // default value: process.env.PGAPPNAME
-    application_name: string,
+    application_name?: string,
     // fallback value for the application_name configuration parameter
     // default value: false
-    fallback_application_name: string,
+    fallback_application_name?: string,
 
     // pg-pool
     Client: mixed,

@@ -1,5 +1,5 @@
-// flow-typed signature: 8a43b0b1da028ea9da0c9242a91ae1e5
-// flow-typed version: 816ba89cd6/bluebird_v3.x.x/flow_>=v0.33.x
+// flow-typed signature: a379340a5d360a5a86716b8e3ed03d31
+// flow-typed version: 3a109ae4bc/bluebird_v3.x.x/flow_>=v0.33.x
 
 type Bluebird$RangeError = Error;
 type Bluebird$CancellationErrors = Error;
@@ -74,12 +74,12 @@ declare class Bluebird$Promise<+R> extends Promise<R>{
   ): Bluebird$Promise<T>;
   static map<T, U, Elem: $Promisable<T>>(
     Promises: Array<Elem>,
-    mapper: (item: T, index: number, arrayLength: number) => U,
+    mapper: (item: T, index: number, arrayLength: number) => $Promisable<U>,
     options?: Bluebird$ConcurrencyOption
   ): Bluebird$Promise<Array<U>>;
   static mapSeries<T, U, Elem: $Promisable<T>>(
     Promises: Array<Elem>,
-    mapper: (item: T, index: number, arrayLength: number) => U
+    mapper: (item: T, index: number, arrayLength: number) => $Promisable<U>
   ): Bluebird$Promise<Array<U>>;
   static reduce<T, U, Elem: $Promisable<T>>(
     Promises: Array<Elem>,
