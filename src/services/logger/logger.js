@@ -24,18 +24,18 @@ const logTransports = [
     colorize: !isProd,
   }),
 ];
-if (config.logging.file.enable && process.env.NODE_ENV !== 'test') {
-  logTransports.push(
-    new (require('winston-daily-rotate-file'))({
-      level: loggingLevel,
-      filename: `${logsFolder}/${fileName}-${mode}-${loggingLevel}.log`,
-      json: true,
-      prettyPrint: false,
-      maxsize: 5242880,
-      maxFiles: 5,
-    }),
-  );
-}
+// if (config.logging.file.enable && process.env.NODE_ENV !== 'test') {
+//   logTransports.push(
+//     new (require('winston-daily-rotate-file'))({
+//       level: loggingLevel,
+//       filename: `${logsFolder}/${fileName}-${mode}-${loggingLevel}.log`,
+//       json: true,
+//       prettyPrint: false,
+//       maxsize: 5242880,
+//       maxFiles: 5,
+//     }),
+//   );
+// }
 
 const logger = new winston.Logger({
   transports: logTransports,

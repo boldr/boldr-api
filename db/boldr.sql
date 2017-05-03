@@ -484,18 +484,6 @@ CREATE TABLE post (
 ALTER TABLE post OWNER TO postgres;
 
 --
--- Name: post_attachment; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE post_attachment (
-    "postId" uuid NOT NULL,
-    "attachmentId" uuid NOT NULL
-);
-
-
-ALTER TABLE post_attachment OWNER TO postgres;
-
---
 -- Name: post_media; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -1141,11 +1129,6 @@ INSERT INTO post VALUES ('ab33a0ca-b349-4cf8-947f-94f415149492', 'Random Post Ti
 <p><br></p>', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, whenan unknown printer took a galley of type and scrambled it to make a type specimen book.', '1b062e26-df71-48ce-b363-4ae9b966e7a0', true, '2017-04-22 23:54:39.911691+00', NULL, NULL);
 
 
---
--- Data for Name: post_attachment; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-
 
 --
 -- Data for Name: post_media; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -1451,15 +1434,6 @@ ALTER TABLE ONLY page
 
 ALTER TABLE ONLY page
     ADD CONSTRAINT page_url_unique UNIQUE (url);
-
-
---
--- Name: post_attachment post_attachment_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY post_attachment
-    ADD CONSTRAINT post_attachment_pkey PRIMARY KEY ("postId", "attachmentId");
-
 
 --
 -- Name: post_media post_media_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
@@ -1974,23 +1948,6 @@ ALTER TABLE ONLY menu_menu_detail
 
 ALTER TABLE ONLY menu_menu_detail
     ADD CONSTRAINT menu_menu_detail_menuid_foreign FOREIGN KEY ("menuId") REFERENCES menu(id);
-
-
---
--- Name: post_attachment post_attachment_attachmentid_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY post_attachment
-    ADD CONSTRAINT post_attachment_attachmentid_foreign FOREIGN KEY ("attachmentId") REFERENCES attachment(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: post_attachment post_attachment_postid_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY post_attachment
-    ADD CONSTRAINT post_attachment_postid_foreign FOREIGN KEY ("postId") REFERENCES post(id) ON UPDATE CASCADE ON DELETE CASCADE;
-
 
 --
 -- Name: post_media post_media_mediaid_foreign; Type: FK CONSTRAINT; Schema: public; Owner: postgres

@@ -4,7 +4,7 @@ import { responseHandler, Conflict, BadRequest } from '../../core/index';
 import slugIt from '../../utils/slugIt';
 
 // Models
-import { Tag, Activity, Post, PostTag } from '../../models';
+import { Tag, Activity, Post, PostTag, Media, PostMedia } from '../../models';
 
 const debug = require('debug')('boldrAPI:post-ctrl');
 
@@ -76,6 +76,13 @@ export async function createPost(req, res, next) {
       }
     });
 
+    const relatedFeatureImg = await Media.query()
+      .where('url', req.body.featureImage)
+      .first();
+    await PostMedia.query().insert({
+      mediaId: relatedFeatureImg.id,
+      postId: createPost.id,
+    });
     await Activity.query().insert({
       id: uuid(),
       userId: req.user.id,
@@ -89,19 +96,31 @@ export async function createPost(req, res, next) {
   }
 }
 
+export async function relateMediaToPost(req, res, next) {
+  try {
+    const post = await Post.query().findById(req.params.id);
+    const newRelation = await post
+      .$relatedQuery('media')
+      .relate({ id: req.params.mediaId });
+    return res.status(200).json(newRelation);
+  } catch (error) {
+    /* istanbul ignore next */
+    return next(error);
+  }
+}
 // export async function addMediaToPost(req, res, next) {
 //   try {
-//     const post = await transaction(Person.knex(), async function (trx) {
-//           const person = await Person
+//     const post = await transaction(Post.knex(), async function (trx) {
+//           const p = await Post
 //             .query(trx)
 //             .findById(req.params.id);
 //
-//           if (!person) {
+//           if (!p) {
 //             throwNotFound();
 //           }
 //
-//           return await person
-//             .$relatedQuery('movies', trx)
+//           return await p
+//             .$relatedQuery('media', trx)
 //             .insert(req.body);
 //         });
 //   } catch (err) {

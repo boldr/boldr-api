@@ -12,8 +12,8 @@ const redisCon = url.parse(config.redis.url);
 const hostAddr = redisCon.host.split(':');
 const redisOptions = {
   port: redisCon.port,
-  host: hostAddr[0],
-  db: 0,
+  host: redisCon.hostname,
+  db: process.env.NODE_ENV === 'test' ? 1 : 0,
 };
 
 const mainRedisClient = new Redis(redisOptions);

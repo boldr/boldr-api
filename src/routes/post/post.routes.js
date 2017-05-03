@@ -180,4 +180,11 @@ router.get('/:id/relate/:mediaId', ctrl.relatePostToMedia);
  */
 router.delete('/:id/remove', ctrl.permanentlyDeletePost);
 
+router.get(
+  '/:id/relate/:mediaId',
+  isAuthenticated,
+  checkRole('Admin'),
+  ctrl.relateMediaToPost,
+);
+
 export default router;

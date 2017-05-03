@@ -316,23 +316,7 @@ module.exports.up = async db => {
       .onDelete('cascade')
       .onUpdate('cascade');
   });
-  await db.schema.createTable('post_attachment', table => {
-    table
-      .uuid('postId')
-      .notNullable()
-      .references('id')
-      .inTable('post')
-      .onDelete('cascade')
-      .onUpdate('cascade');
-    table
-      .uuid('attachmentId')
-      .notNullable()
-      .references('id')
-      .inTable('attachment')
-      .onDelete('cascade')
-      .onUpdate('cascade');
-    table.primary(['postId', 'attachmentId']);
-  });
+
   await db.schema.createTable('post_tag', table => {
     table.increments('id').primary();
     table.uuid('postId').unsigned().notNullable();
@@ -417,7 +401,6 @@ module.exports.down = async db => {
   await db.schema.dropTableIfExists('activity');
   await db.schema.dropTableIfExists('verification_token');
   await db.schema.dropTableIfExists('reset_token');
-  await db.schema.dropTableIfExists('post_attachment');
   await db.schema.dropTableIfExists('post_tag');
   await db.schema.dropTableIfExists('user_role');
   await db.schema.dropTableIfExists('template_page');
