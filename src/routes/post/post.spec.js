@@ -60,7 +60,7 @@ describe('Posts API Endpoint', () => {
       .set('Authorization', `Bearer ${token}`)
       .send({
         // title: faker.name.title(),
-        featureImage: faker.image.imageUrl(),
+        featureImage: '/files/file.png',
         content: faker.lorem.paragraphs(),
         excerpt: faker.lorem.paragraph(),
         published: true,
@@ -77,7 +77,7 @@ describe('Posts API Endpoint', () => {
       .set('Authorization', `Bearer ${token}`)
       .send({
         title: faker.name.title(),
-        featureImage: faker.image.imageUrl(),
+        featureImage: '/files/file.png',
         content: faker.lorem.paragraphs(),
         excerpt: faker.lorem.paragraph(),
         published: true,
