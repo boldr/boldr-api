@@ -1,5 +1,7 @@
 import path from 'path';
 import util from 'util';
+import url from 'url';
+import uuid from 'uuid';
 import _debug from 'debug';
 import * as objection from 'objection';
 import request from 'request';
@@ -164,16 +166,12 @@ export function uploadMedia(req, res, next) {
 export function uploadFromUrl(req, res, next) {
   const download = (uri, filename, callback) => {
     request.head(uri, (err, res, body) => {
-      if (!filename.match(regex)) {
-        return next(err);
-      }
       request(uri)
         .pipe(
-          fs.createWriteStream(
-            `${appRootDir.get()}/static/uploads/${filename}`,
-          ),
+          fs.createWriteStream(`${appRootDir.get()}/static/uploads/${filename}`),
         )
-        .on('close', callback);
+        .on('close', callback)
+        .on('error', err);
     });
   };
 
@@ -185,13 +183,15 @@ export function uploadFromUrl(req, res, next) {
           .replace(/((\?|#).*)?$/, '')
       : '';
 
-    const newFilename = uuid() + path.extname(onlyTheFilename);
+    const newFilename = shortId() + path.extname(onlyTheFilename);
     download(urlParsed.href, newFilename, async () => {
       const newImage = await Media.query().insert({
         mediaType: 1,
         fileName: newFilename,
         safeName: newFilename,
+        thumbName: newFilename,
         url: `/uploads/${newFilename}`,
+        path: `${appRootDir.get()}/static/uploads/${newFilename}`,
         userId: req.user.id,
       });
 

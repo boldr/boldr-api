@@ -1,4 +1,4 @@
-// flow-typed signature: 4b48fcb305ec9f3ba431b0ac201327b5
+// flow-typed signature: 6858b677b36fe050a373b42cea9db9c9
 // flow-typed version: <<STUB>>/express-validator_v^3.2.0/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

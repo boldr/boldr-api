@@ -1,4 +1,4 @@
-// flow-typed signature: be2ca368883fcfda155752b08a648f84
+// flow-typed signature: 13e2ef58603a2179761d6385d3fea6b8
 // flow-typed version: <<STUB>>/knex_v0.13.0/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

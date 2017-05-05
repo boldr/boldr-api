@@ -1,4 +1,4 @@
-// flow-typed signature: 8d4aec1540a41f313e63c23cc1f2c02c
+// flow-typed signature: 920493ff36af26d93f8cd8a223052f09
 // flow-typed version: <<STUB>>/cz-conventional-kawaii_v^0.1.4/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

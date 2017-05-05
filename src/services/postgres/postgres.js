@@ -15,10 +15,14 @@ const knexOpts = {
 };
 
 const db = knex(knexOpts);
-const { Model } = objection;
-// $FlowIssue
-Model.knex(db);
-objectionSoftDelete.register(objection);
+
+function initializeDb(): Promise<mixed> {
+  const { Model } = objection;
+  Model.knex(db);
+  objectionSoftDelete.register(objection);
+
+  return db.raw('select 1+1 as result');
+}
 
 async function disconnect(db: Object) {
   if (!db) {
@@ -32,4 +36,4 @@ async function disconnect(db: Object) {
 }
 export default db;
 
-export { disconnect };
+export { disconnect, initializeDb };

@@ -1,4 +1,4 @@
-// flow-typed signature: 63c7b7ff03a71b26565b44e9438a37a1
+// flow-typed signature: 331d12721a2a167b6d16dfc5af0310fd
 // flow-typed version: <<STUB>>/connect-redis_v^3.3.0/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

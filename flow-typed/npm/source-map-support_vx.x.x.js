@@ -1,4 +1,4 @@
-// flow-typed signature: ac38f79ab7f54c926768b9fe7440910d
+// flow-typed signature: 09a12cd567843d8ff58d9886ac4061f9
 // flow-typed version: <<STUB>>/source-map-support_v^0.4.15/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

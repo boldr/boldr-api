@@ -1,4 +1,4 @@
-// flow-typed signature: b7fd62ab29c61d7e3aed3fe98a863eec
+// flow-typed signature: 7b44294009f6aa710c88a58a5c99ea0f
 // flow-typed version: <<STUB>>/express-flash_v^0.0.2/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

@@ -1,4 +1,4 @@
-// flow-typed signature: 86ad7108cb5e8c1040d05448202f2c71
+// flow-typed signature: de04b6b0679c513d40eb5d7a10477b54
 // flow-typed version: <<STUB>>/cz-conventional-changelog-emoji_v^0.1.0/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

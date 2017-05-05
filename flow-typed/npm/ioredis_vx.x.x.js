@@ -1,4 +1,4 @@
-// flow-typed signature: a167e8353f42641ecb56b02156cf3118
+// flow-typed signature: b5c585413c83acd167fd2f30853d6fc1
 // flow-typed version: <<STUB>>/ioredis_v^2.5.0/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

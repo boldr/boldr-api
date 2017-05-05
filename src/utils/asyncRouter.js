@@ -25,7 +25,9 @@ function wrapRouter(router) {
 }
 
 function wrapAsyncHandler(fn, withErrorParam = true) {
-  if (typeof fn !== 'function') return fn;
+  if (typeof fn !== 'function') {
+    return fn;
+  }
   if (withErrorParam && fn.length > 3) {
     // error handler
     // eslint-disable-next-line

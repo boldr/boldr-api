@@ -1,4 +1,4 @@
-// flow-typed signature: 58bdb616f443a6550ac5cfd9c2f9ce35
+// flow-typed signature: fab8eb57eec63deeee65a44dc50f6543
 // flow-typed version: <<STUB>>/better-npm-run_v^0.0.15/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

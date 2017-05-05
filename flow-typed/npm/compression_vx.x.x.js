@@ -1,4 +1,4 @@
-// flow-typed signature: 7b983ca8f37a1cd759c7690bbf6b2027
+// flow-typed signature: e7d859d79c452ce5f386727cda4aadde
 // flow-typed version: <<STUB>>/compression_v^1.6.2/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

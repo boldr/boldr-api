@@ -5,7 +5,9 @@ import pickBy from 'lodash/pickBy';
  * @returns {Object|Array}
  */
 export function removeNullandUndef(json) {
-  if (typeof json !== 'object' || json === null) return json;
+  if (typeof json !== 'object' || json === null) {
+    return json;
+  }
 
   const isArray = Array.isArray(json);
   const keys = isArray ? json.keys() : Object.keys(json);
@@ -14,8 +16,11 @@ export function removeNullandUndef(json) {
   for (const key of keys) {
     const value = copy[key];
     if (value === null) {
-      if (isArray) copy[key] = undefined;
-      else Reflect.deleteProperty(copy, key);
+      if (isArray) {
+        copy[key] = undefined;
+      } else {
+        Reflect.deleteProperty(copy, key);
+      }
     } else if (typeof value === 'object') {
       copy[key] = removeNullandUndef(value);
     }

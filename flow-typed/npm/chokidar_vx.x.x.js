@@ -1,4 +1,4 @@
-// flow-typed signature: 2c1cc002a34e08e68758c4190912d75d
+// flow-typed signature: 2719fbe275b51b4cf8ba68ed5b49a7b3
 // flow-typed version: <<STUB>>/chokidar_v^1.6.1/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

@@ -1,4 +1,4 @@
-// flow-typed signature: a0ad88268f9136f1c489febfd8674ae7
+// flow-typed signature: cca058b2ec6a55eb9223b369c4d410b7
 // flow-typed version: <<STUB>>/method-override_v^2.3.8/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

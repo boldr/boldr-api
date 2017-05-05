@@ -1,4 +1,4 @@
-// flow-typed signature: 7ec83b91cfc23c5b370966712e7104fb
+// flow-typed signature: 9e6108c8d3bb993463f68ac588d81344
 // flow-typed version: <<STUB>>/cookie-parser_v^1.4.3/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

@@ -1,4 +1,5 @@
 /* eslint-disable babel/new-cap */
+// @flow
 import { resolve as pathResolve } from 'path';
 import Express from 'express';
 import appRootDir from 'app-root-dir';
@@ -7,7 +8,7 @@ import { expressMiddleware, authMiddleware, errorHandler } from './middleware';
 
 const debug = require('debug')('boldrAPI:app');
 
-const app = Express();
+const app: express$Application = Express();
 
 // Base Express middleware
 // body-parser, method-override, busboy, cors

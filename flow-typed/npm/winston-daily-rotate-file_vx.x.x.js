@@ -1,4 +1,4 @@
-// flow-typed signature: ff1fd0e614cc981d2f56bc4a07119359
+// flow-typed signature: b1d3068461c11d08707a96f619eb2ecb
 // flow-typed version: <<STUB>>/winston-daily-rotate-file_v^1.4.6/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

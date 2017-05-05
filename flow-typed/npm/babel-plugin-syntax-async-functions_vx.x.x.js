@@ -1,4 +1,4 @@
-// flow-typed signature: d867c92c1dd6b208050ec200c96799b5
+// flow-typed signature: 0916b54c959418a859147b05f73b711d
 // flow-typed version: <<STUB>>/babel-plugin-syntax-async-functions_v^6.13.0/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

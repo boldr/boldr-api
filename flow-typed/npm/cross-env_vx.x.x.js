@@ -1,4 +1,4 @@
-// flow-typed signature: ca981b277c91944cdd4e54418d74c7ef
+// flow-typed signature: 3316cb1b4a8c836631d366aeca625a56
 // flow-typed version: <<STUB>>/cross-env_v^4.0.0/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

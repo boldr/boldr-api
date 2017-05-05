@@ -1,4 +1,4 @@
-// flow-typed signature: b94d207dc6a21655162d74b2686b51cd
+// flow-typed signature: 550f4a103b1ccf4916e98c27b4f26006
 // flow-typed version: <<STUB>>/response-time_v^2.3.2/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

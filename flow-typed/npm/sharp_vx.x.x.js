@@ -1,4 +1,4 @@
-// flow-typed signature: 20e0aa696453e3abc4b9a39fe7b5322a
+// flow-typed signature: c1afd2528ea362a7751d583aa9002020
 // flow-typed version: <<STUB>>/sharp_v^0.17.3/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

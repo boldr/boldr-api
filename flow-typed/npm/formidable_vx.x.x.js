@@ -1,4 +1,4 @@
-// flow-typed signature: 6fbf1aca5ff5e20dca2f4464ffb3713f
+// flow-typed signature: ab87dfd71fe592a3c5ec2f16ffb1fb0c
 // flow-typed version: <<STUB>>/formidable_v^1.1.1/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

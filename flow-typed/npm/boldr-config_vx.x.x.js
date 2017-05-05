@@ -1,4 +1,4 @@
-// flow-typed signature: 0ee881bc48f0e7289720d497a0c9ccb9
+// flow-typed signature: 8a4c0e7aca03a740d2471b3b203ba8ea
 // flow-typed version: <<STUB>>/boldr-config_v^0.1.4/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

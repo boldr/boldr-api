@@ -1,4 +1,4 @@
-// flow-typed signature: fe2dcc777cc2ece59571e40f1033a69d
+// flow-typed signature: ba5180d46eb5ddf5a9fc07ba204b25b8
 // flow-typed version: <<STUB>>/apidoc-markdown2_v^0.3.2/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

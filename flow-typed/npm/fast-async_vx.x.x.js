@@ -1,4 +1,4 @@
-// flow-typed signature: 22a9d17ed6f1f838fb2a06c8820778f3
+// flow-typed signature: bd3ecd8ab89ff74cbb8588f61fdac701
 // flow-typed version: <<STUB>>/fast-async_v^6.2.2/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

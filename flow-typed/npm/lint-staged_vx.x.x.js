@@ -1,4 +1,4 @@
-// flow-typed signature: 7a5aef99908cb304f7608e16c2108eb6
+// flow-typed signature: 02b96b983fb9976f705db6c5749ff656
 // flow-typed version: <<STUB>>/lint-staged_v^3.4.1/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

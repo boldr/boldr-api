@@ -1,4 +1,4 @@
-// flow-typed signature: bed45afb865c8b710e16bec5deb2e7d7
+// flow-typed signature: 05808e71987aca62f2bda156fd4c9ac8
 // flow-typed version: <<STUB>>/express-redis-cache_v^0.5.1/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

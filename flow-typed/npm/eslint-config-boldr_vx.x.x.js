@@ -1,4 +1,4 @@
-// flow-typed signature: 7fa5e233890b795f2907957492546d44
+// flow-typed signature: 56a5d71aa9566efc5bc89e0e08db5977
 // flow-typed version: <<STUB>>/eslint-config-boldr_v^0.9.3/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 

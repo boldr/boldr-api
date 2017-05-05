@@ -1,4 +1,4 @@
-// flow-typed signature: b8facfdabca313cd7bcc88bd89ec2113
+// flow-typed signature: 20e9ac40fe973792f1df6cff9bb2575f
 // flow-typed version: <<STUB>>/morgan_v^1.8.1/flow_v0.45.0
 
 /**
@@ -8,8 +8,8 @@
  *
  * Fill this stub out by replacing all the `any` types.
  *
- * Once filled out, we encourage you to share your work with the 
- * community by sending a pull request to: 
+ * Once filled out, we encourage you to share your work with the
+ * community by sending a pull request to:
  * https://github.com/flowtype/flow-typed
  */
 
