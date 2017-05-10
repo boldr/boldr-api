@@ -4,16 +4,12 @@ import app from './app';
 import { logger, initializeDb, disconnect, destroyRedis } from './services';
 import config from './config';
 
-const Promise = require('bluebird');
 const debug = require('debug')('boldrAPI:engine');
 
 const PORT = config.server.port;
 const HOST = config.server.host;
 
 const server = http.createServer(app);
-
-global.Promise = Promise;
-Promise.longStackTraces();
 
 initializeDb()
   .then(() => {
