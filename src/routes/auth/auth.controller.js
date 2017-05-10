@@ -1,5 +1,6 @@
 import uuid from 'uuid';
 import * as objection from 'objection';
+import passport from 'passport';
 import { mailer, signToken, generateHash } from '../../services';
 import { welcomeEmail } from '../../services/mailer/templates';
 import { User, Activity, VerificationToken } from '../../models';
@@ -116,37 +117,38 @@ export async function loginUser(req, res, next) {
     .where({ email: req.body.email })
     .eager('roles')
     .first();
-
-  if (!user) {
-    return next(
-      new Unauthorized(
-        'Unable to find an account matching the information provided.',
-      ),
-    );
-  }
-
-  if (!user.verified) {
-    return next(new UserNotVerifiedError());
-  }
-  try {
-    const validAuth = await user.authenticate(req.body.password);
-    if (!validAuth) {
-      return next(new Unauthorized('Incorrect login credentials.'));
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      return next(new InternalServer(err));
     }
-    // remove the password from the response.
-    user.stripPassword();
-    // sign the token
-    const token = signToken(user);
-    req.user = user;
-    res.set('Authorization', `Bearer ${token}`);
-    // req.role = user.role[0].id;
-    return res.json({
-      token,
-      user,
+    if (!user) {
+      return next(
+        new Unauthorized(
+          'Unable to find an account matching the information provided.',
+        ),
+      );
+    }
+    if (!user.verified) {
+      return next(new UserNotVerifiedError());
+    }
+    return req.logIn(user, loginErr => {
+      if (loginErr) {
+        return next(
+          new Unauthorized(
+            'Unable to find an account matching the information provided.',
+          ),
+        );
+      }
+      // remove the password from the response.
+      user.stripPassword();
+      // sign the token
+      const token = signToken(user);
+      req.user = user;
+      res.set('Authorization', `Bearer ${token}`);
+      debug(req.session);
+      return res.json({ token, user });
     });
-  } catch (error) {
-    return next(new BadRequest(error));
-  }
+  })(req, res, next);
 }
 
 export async function verifyUser(req, res, next) {
