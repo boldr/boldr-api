@@ -40,6 +40,9 @@ export default app => {
     // This makes the user object and the roles associated with the user
     // available at res.locals.user
     passport.authenticate('jwt', (err, user) => {
+      if (err) {
+        return next(err);
+      }
       res.locals.user = !!user ? user : null;
 
       return next();

@@ -10,6 +10,7 @@ const jwtOptions = {
     ExtractJwt.fromBodyField('access_token'),
     ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
   ]),
+  passReqToCallback: true,
 };
 
 export default function configureJwt(User) {
