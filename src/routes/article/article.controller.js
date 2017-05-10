@@ -4,20 +4,27 @@ import { responseHandler, Conflict, BadRequest } from '../../core/index';
 import slugIt from '../../utils/slugIt';
 
 // Models
-import { Tag, Activity, Post, PostTag, Media, PostMedia } from '../../models';
+import {
+  Tag,
+  Activity,
+  Article,
+  ArticleTag,
+  Media,
+  ArticleMedia,
+} from '../../models';
 
-const debug = require('debug')('boldrAPI:post-ctrl');
+const debug = require('debug')('boldrAPI:article-ctrl');
 
 /**
- * Create a post
- * @method createPost
+ * Create an article
+ * @method createArticle
  *
  * @param {Object} req
  * @param {Object} res
  * @param {Function} next
  * @returns {Promise}
  */
-export async function createPost(req, res, next) {
+export async function createArticle(req, res, next) {
   req.assert('title', 'A title is required to create a post.').notEmpty();
   req.assert('content', 'Content is required when creating a post.').notEmpty();
   req.assert('tags', 'A new post requires at least one tag.').notEmpty();
@@ -28,18 +35,20 @@ export async function createPost(req, res, next) {
   if (errors) {
     return res.status(400).send(errors);
   }
-  const postSlug = slugIt(req.body.title);
+  const articleSlug = slugIt(req.body.title);
   // look for a matching slug in the database
-  const existingPost = await Post.query().where('slug', postSlug).first();
-  if (existingPost) {
+  const existingArticle = await Article.query()
+    .where('slug', articleSlug)
+    .first();
+  if (existingArticle) {
     return res.status(409).json('A post with this title already exists.');
   }
 
-  async function createPostTagRelation(existingTag, newPost) {
+  async function createArticleTagRelation(existingTag, newArticle) {
     try {
-      await PostTag.query().insert({
+      await ArticleTag.query().insert({
         tagId: existingTag.id,
-        postId: newPost.id,
+        articleId: newArticle.id,
       });
     } catch (error) {
       debug(error);
@@ -48,9 +57,9 @@ export async function createPost(req, res, next) {
 
   try {
     // create the post
-    const createPost = await Post.query().insert({
+    const createArticle = await Article.query().insert({
       title: req.body.title,
-      slug: postSlug,
+      slug: articleSlug,
       excerpt: req.body.excerpt,
       content: req.body.content,
       rawContent: req.body.rawContent,
@@ -72,10 +81,10 @@ export async function createPost(req, res, next) {
         .skipUndefined();
       if (existingTag) {
         debug('existingTag', existingTag);
-        await createPostTagRelation(existingTag, createPost);
+        await createArticleTagRelation(existingTag, newArticle);
       } else {
         debug('tag', tag);
-        await createPost
+        await createArticle
           .$relatedQuery('tags')
           .insert({ name: tag })
           .skipUndefined();
@@ -86,23 +95,23 @@ export async function createPost(req, res, next) {
       .where('url', req.body.featureImage)
       .first()
       .skipUndefined();
-    await PostMedia.query()
+    await ArticleMedia.query()
       .insert({
         mediaId: relatedFeatureImg.id,
-        postId: createPost.id,
+        articleId: createArticle.id,
       })
       .skipUndefined();
-    return responseHandler(res, 201, createPost);
+    return responseHandler(res, 201, createArticle);
   } catch (error) {
     /* istanbul ignore next */
     next(error);
   }
 }
 
-export async function relateMediaToPost(req, res, next) {
+export async function relateMediaToArticle(req, res, next) {
   try {
-    const post = await Post.query().findById(req.params.id);
-    const newRelation = await post
+    const article = await Article.query().findById(req.params.id);
+    const newRelation = await article
       .$relatedQuery('media')
       .relate({ id: req.params.mediaId });
     return res.status(200).json(newRelation);
@@ -132,7 +141,7 @@ export async function relateMediaToPost(req, res, next) {
 // }
 
 /**
- * Get a post from its slug.
+ * Get an article from its slug.
  * @method getSlug
  *
  * @param {Object} req
@@ -142,19 +151,19 @@ export async function relateMediaToPost(req, res, next) {
  */
 export async function getSlug(req, res, next) {
   try {
-    const post = await Post.query()
+    const article = await Article.query()
       .where({ slug: req.params.slug })
       .eager('[tags,author]')
       .omit(['password'])
       .skipUndefined()
       .first();
 
-    if (!post) {
+    if (!article) {
       return res.status(400).json({
         message: `Unable to find a post matching ${req.params.slug}.`,
       });
     }
-    return responseHandler(res, 200, post);
+    return responseHandler(res, 200, article);
   } catch (error) {
     /* istanbul ignore next */
     return next(error);
@@ -172,12 +181,12 @@ export async function getSlug(req, res, next) {
  */
 export async function getId(req, res, next) {
   try {
-    const post = await Post.query()
+    const article = await Article.query()
       .findById(req.params.id)
       .eager('[tags,author]')
       .skipUndefined()
       .first();
-    return responseHandler(res, 200, post);
+    return responseHandler(res, 200, article);
   } catch (error) {
     /* istanbul ignore next */
     return next(error);
@@ -197,9 +206,9 @@ export async function destroy(req, res, next) {
   try {
     await Activity.query()
       .delete()
-      .where({ activityPost: req.params.id })
+      .where({ activityActivity: req.params.id })
       .first();
-    await Post.query().delete().where('id', req.params.id).first();
+    await Article.query().delete().where('id', req.params.id).first();
 
     return res.status(204).send({});
   } catch (error) {
@@ -219,16 +228,16 @@ export async function destroy(req, res, next) {
  */
 export function update(req, res) {
   debug(req.body);
-  return Post.query()
+  return Article.query()
     .patchAndFetchById(req.params.id, req.body)
-    .then(async post => {
+    .then(async article => {
       await Activity.query().insert({
         id: uuid(),
         userId: req.user.id,
         type: 'update',
-        activityPost: post.id,
+        activityArticle: article.id,
       });
-      responseHandler(res, 202, post);
+      responseHandler(res, 202, article);
     });
 }
 
@@ -243,15 +252,15 @@ export function update(req, res) {
  */
 export async function addTag(req, res, next) {
   try {
-    const post = await Post.query().findById(req.params.id);
+    const article = await Article.query().findById(req.params.id);
 
-    if (!post) {
+    if (!article) {
       return res.status(404).json({
-        message: `Unable to find a post with the ID: ${req.params.id}.`,
+        message: `Unable to find an article with the ID: ${req.params.id}.`,
       });
     }
 
-    const tag = await post.$relatedQuery('tags').insert(req.body);
+    const tag = await article.$relatedQuery('tags').insert(req.body);
 
     return responseHandler(res, 202, tag);
   } catch (error) {
@@ -259,10 +268,10 @@ export async function addTag(req, res, next) {
   }
 }
 
-export async function relatePostToMedia(req, res, next) {
+export async function relateArticleToMedia(req, res, next) {
   try {
-    const post = await Post.query().findById(req.params.id);
-    const newRelation = await post
+    const article = await Article.query().findById(req.params.id);
+    const newRelation = await article
       .$relatedQuery('media')
       .relate({ id: req.params.mediaId });
     return res.status(200).json(newRelation);
@@ -273,31 +282,33 @@ export async function relatePostToMedia(req, res, next) {
 }
 
 /**
- * getPostsWithArchive - return a list of posts w/ archived (deleted) posts.
+ * getArticlesWithArchive - return a list of articles w/ archived (deleted) posts.
  *
  * @param {Object} req
  * @param {Object} res
  * @param {Function} next
  * @return {Object}      the posts
  */
-export async function getPostsWithArchive(req, res, next) {
+export async function getArticlesWithArchive(req, res, next) {
   try {
-    const posts = await Post.query()
+    const articles = await Article.query()
       .eager('[author,tags,media]')
       .skipUndefined()
       .includeDeleted();
 
-    return res.status(200).json(posts);
+    return res.status(200).json(articles);
   } catch (err) {
     return next(err);
   }
 }
 
-export async function permanentlyDeletePost(req, res, next) {
+export async function permanentlyDeleteArticle(req, res, next) {
   try {
-    const post = await Post.query().forceDelete().where({ id: req.params.id });
+    const article = await Article.query()
+      .forceDelete()
+      .where({ id: req.params.id });
 
-    return res.status(204).json(post);
+    return res.status(204).json(article);
   } catch (err) {
     return next(err);
   }

@@ -6,12 +6,12 @@ import { isAuthenticated } from '../../services/authentication';
 import { checkRole } from '../../middleware/rbac';
 import redisClient from '../../services/redis';
 import { wrapRouter } from '../../utils/asyncRouter';
-import Post from '../../models/post';
-import * as ctrl from './post.controller';
+import Article from '../../models/article';
+import * as ctrl from './article.controller';
 
 // const cache = require('express-redis-cache')({ client: redisClient });
 
-const controller = new BaseController(Post, 'id');
+const controller = new BaseController(Article, 'id');
 
 const router = wrapRouter(new Router());
 
@@ -46,9 +46,9 @@ router
        */
   .get(processQuery, controller.index.bind(controller))
   /**
-       * @api {post} /posts         Create a new post
-       * @apiName Create New Post
-       * @apiGroup Post
+       * @api {post} /articles         Create a new article
+       * @apiName Create New Article
+       * @apiGroup Article
        * @apiPermission admin
        * @apiVersion 1.0.0
        * @apiHeader {String} Content-Type Content-Type: application/json
@@ -70,7 +70,7 @@ router
        * @apiError {Object} 409 There is already a post with this slug. Slugs (titles) must be unique.
        * @apiError {Object} 401 Unauthorized. You must be logged in to create a post.
        */
-  .post(isAuthenticated, checkRole('Admin'), ctrl.createPost);
+  .post(isAuthenticated, checkRole('Admin'), ctrl.createArticle);
 
 router
   .route('/slug/:slug')
@@ -113,7 +113,7 @@ router.get(
   '/archived',
   isAuthenticated,
   checkRole('Admin'),
-  ctrl.getPostsWithArchive,
+  ctrl.getArticlesWithArchive,
 );
 
 router
@@ -167,7 +167,7 @@ router
    * @apiError {Object} 400 Some parameters may contain invalid values.
    * @apiError {Object} 401 Unauthorized.
    */
-router.get('/:id/relate/:mediaId', ctrl.relatePostToMedia);
+router.get('/:id/relate/:mediaId', ctrl.relateArticleToMedia);
 
 /**
  * @api {delete} /posts/:id/remove    Permanently delete a post
@@ -178,13 +178,13 @@ router.get('/:id/relate/:mediaId', ctrl.relatePostToMedia);
  * @apiParam {String} id the post id (uuid)
  * @apiSuccess 204
  */
-router.delete('/:id/remove', ctrl.permanentlyDeletePost);
+router.delete('/:id/remove', ctrl.permanentlyDeleteArticle);
 
 router.get(
   '/:id/relate/:mediaId',
   isAuthenticated,
   checkRole('Admin'),
-  ctrl.relateMediaToPost,
+  ctrl.relateMediaToArticle,
 );
 
 export default router;

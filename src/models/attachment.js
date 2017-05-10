@@ -2,7 +2,6 @@ import { Model } from 'objection';
 import BaseModel from './base';
 // Related Models
 import User from './user';
-import Post from './post';
 import Activity from './activity';
 
 class Attachment extends BaseModel {

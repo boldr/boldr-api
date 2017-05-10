@@ -5,11 +5,11 @@ function truncate(knex, Promise, tables) {
 
 const tables = [
   '"user"',
-  'post',
+  'article',
   'role',
   'tag',
   'user_role',
-  'post_tag',
+  'article_tag',
   'menu',
   'menu_detail',
   'template',
@@ -54,23 +54,6 @@ function seed(knex, Promise) {
           profileImage: 'https://boldr.io/images/unknown-avatar.png',
           birthday: '01/01/1988',
           language: 'en_US',
-          social: {
-            facebook: {
-              url: 'https://www.facebook.com',
-            },
-            twitter: {
-              url: 'https://wwww.twitter.com',
-            },
-            linkedin: {
-              url: 'https://wwww.linkedin.com',
-            },
-            github: {
-              url: 'https://wwww.github.com',
-            },
-            google: {
-              url: 'https://wwww.google.com',
-            },
-          },
           verified: true,
         }),
         knex('user').insert({
@@ -87,23 +70,6 @@ function seed(knex, Promise) {
           profileImage: 'https://boldr.io/images/unknown-avatar.png',
           birthday: '01/01/1988',
           language: 'en_US',
-          social: {
-            facebook: {
-              url: 'https://wwww.facebook.com',
-            },
-            twitter: {
-              url: 'https://wwww.twitter.com',
-            },
-            linkedin: {
-              url: 'https://wwww.linkedin.com',
-            },
-            github: {
-              url: 'https://wwww.github.com',
-            },
-            google: {
-              url: 'https://wwww.google.com',
-            },
-          },
           verified: true,
         }),
         knex('user').insert({
@@ -120,24 +86,37 @@ function seed(knex, Promise) {
           profileImage: 'https://boldr.io/images/unknown-avatar.png',
           birthday: '01/01/1988',
           language: 'en_US',
-          social: {
-            facebook: {
-              url: 'https://wwww.facebook.com',
-            },
-            twitter: {
-              url: 'https://wwww.twitter.com',
-            },
-            linkedin: {
-              url: 'https://wwww.linkedin.com',
-            },
-            github: {
-              url: 'https://wwww.github.com',
-            },
-            google: {
-              url: 'https://wwww.google.com',
-            },
-          },
           verified: true,
+        }),
+      ]))
+      .then(() =>
+        Promise.all([
+        knex('social').insert({
+          userId: '1b062e26-df71-48ce-b363-4ae9b966e7a0',
+          facebookUrl: 'https://facebook.com',
+          twitterUrl: 'https://twitter.com',
+          githubUrl: 'https://github.com',
+          linkedinUrl: 'https://linkedin.com',
+          googleUrl: 'https://google.com',
+          stackoverflowUrl: 'https://stackoverflow.com',
+        }),
+        knex('social').insert({
+          userId: 'f4d869a6-1a75-469b-a9cc-965c552929e4',
+          facebookUrl: 'https://facebook.com',
+          twitterUrl: 'https://twitter.com',
+          githubUrl: 'https://github.com',
+          linkedinUrl: 'https://linkedin.com',
+          googleUrl: 'https://google.com',
+          stackoverflowUrl: 'https://stackoverflow.com',
+        }),
+        knex('social').insert({
+          userId: 'f11d3ebf-4ae6-4578-ba65-0c8f48b7f41f',
+          facebookUrl: 'https://facebook.com',
+          twitterUrl: 'https://twitter.com',
+          githubUrl: 'https://github.com',
+          linkedinUrl: 'https://linkedin.com',
+          googleUrl: 'https://google.com',
+          stackoverflowUrl: 'https://stackoverflow.com',
         }),
       ]))
     .then(() =>
@@ -153,7 +132,7 @@ function seed(knex, Promise) {
       ]))
     .then(() =>
       Promise.all([
-        knex('post').insert({
+        knex('article').insert({
           id: '5c9ed236-79f0-4ff7-93bd-2815f06c74b4',
           title: 'Just Another Post',
           slug: 'just-another-post',
@@ -174,7 +153,7 @@ function seed(knex, Promise) {
           published: true,
           userId: '1b062e26-df71-48ce-b363-4ae9b966e7a0',
         }),
-        knex('post').insert({
+        knex('article').insert({
           id: 'cb61bbae-c91e-4014-b665-3485734b88fb',
           title: 'Nother One',
           slug: 'nother-one',
@@ -195,7 +174,7 @@ function seed(knex, Promise) {
           published: false,
           userId: 'f11d3ebf-4ae6-4578-ba65-0c8f48b7f41f',
         }),
-        knex('post').insert({
+        knex('article').insert({
           id: 'ab33a0ca-b349-4cf8-947f-94f415149492',
           title: 'Random Post Title',
           slug: 'random-post-title',
@@ -219,16 +198,16 @@ function seed(knex, Promise) {
       ]))
     .then(() =>
       Promise.all([
-        knex('post_tag').insert({
-          postId: '5c9ed236-79f0-4ff7-93bd-2815f06c74b4',
+        knex('article_tag').insert({
+          articleId: '5c9ed236-79f0-4ff7-93bd-2815f06c74b4',
           tagId: 2,
         }),
-        knex('post_tag').insert({
-          postId: 'cb61bbae-c91e-4014-b665-3485734b88fb',
+        knex('article_tag').insert({
+          articleId: 'cb61bbae-c91e-4014-b665-3485734b88fb',
           tagId: 1,
         }),
-        knex('post_tag').insert({
-          postId: 'ab33a0ca-b349-4cf8-947f-94f415149492',
+        knex('article_tag').insert({
+          articleId: 'ab33a0ca-b349-4cf8-947f-94f415149492',
           tagId: 2,
         }),
       ]))
@@ -464,7 +443,7 @@ function seed(knex, Promise) {
         knex('setting').insert({
           key: 'siteLogo',
           label: 'Site Logo',
-          value: 'https://boldr.io/boldr.png',
+          value: 'https://boldr.io/assets/boldr-text-logo.png',
           description: 'The logo is displayed in the header area.',
         }),
         knex('setting').insert({

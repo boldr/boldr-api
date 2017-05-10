@@ -6,7 +6,7 @@ import Role from './role';
 import Attachment from './attachment';
 import ResetToken from './resetToken';
 import VerificationToken from './verificationToken';
-import Post from './post';
+import Article from './article';
 import UserRole from './join/userRole';
 import Media from './media';
 import Social from './social';
@@ -100,12 +100,12 @@ class User extends BaseModel {
           to: 'role.id',
         },
       },
-      posts: {
+      articles: {
         relation: Model.HasManyRelation,
-        modelClass: Post,
+        modelClass: Article,
         join: {
           from: 'user.id',
-          to: 'post.userId',
+          to: 'article.userId',
         },
       },
       files: {

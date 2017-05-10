@@ -7,10 +7,11 @@ import Media from './media';
 import Menu from './menu';
 import MenuDetail from './menuDetail';
 import Page from './page';
-import Post from './post';
+import Article from './article';
 import ResetToken from './resetToken';
 import Role from './role';
 import Setting from './setting';
+import Social from './social';
 import Tag from './tag';
 import Template from './template';
 import VerificationToken from './verificationToken';
@@ -18,10 +19,10 @@ import User from './user';
 
 import BlockRelation from './join/blockRelation';
 import MenuMenuDetail from './join/menuMenuDetail';
-import PostTag from './join/postTag';
+import ArticleTag from './join/articleTag';
 import TemplatePage from './join/templatePage';
 import UserRole from './join/userRole';
-import PostMedia from './join/postMedia';
+import ArticleMedia from './join/articleMedia';
 
 export {
   Activity,
@@ -33,18 +34,19 @@ export {
   Menu,
   MenuDetail,
   Page,
-  Post,
+  Article,
   Role,
   Setting,
   Tag,
+  Social,
   Template,
   ResetToken,
   VerificationToken,
   User,
   MenuMenuDetail,
   BlockRelation,
-  PostTag,
+  ArticleTag,
   TemplatePage,
   UserRole,
-  PostMedia,
+  ArticleMedia,
 };

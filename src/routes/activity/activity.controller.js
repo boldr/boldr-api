@@ -17,7 +17,7 @@ export async function listActivities(req, res, next) {
     const activities = await Activity.query()
       .orderBy('createdAt', 'desc')
       .limit(10)
-      .eager('[owner,post,member,attachment,menuDetail,tag]')
+      .eager('[owner,article,member,attachment,menuDetail,tag]')
       .skipUndefined();
 
     return responseHandler(res, 200, activities);

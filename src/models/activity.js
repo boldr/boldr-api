@@ -2,7 +2,7 @@ import { Model } from 'objection';
 import BaseModel from './base';
 // Related Model
 import User from './user';
-import Post from './post';
+import Article from './article';
 import Attachment from './attachment';
 import Tag from './tag';
 import MenuDetail from './menuDetail';
@@ -22,12 +22,12 @@ class Activity extends BaseModel {
           to: 'user.id',
         },
       },
-      post: {
+      article: {
         relation: Model.BelongsToOneRelation,
-        modelClass: Post,
+        modelClass: Article,
         join: {
-          from: 'activity.activityPost',
-          to: 'post.id',
+          from: 'activity.activityArticle',
+          to: 'article.id',
         },
       },
       member: {

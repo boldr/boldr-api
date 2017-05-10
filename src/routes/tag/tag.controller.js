@@ -28,20 +28,20 @@ export async function getTag(req, res, next) {
   }
 }
 
-export async function getTaggedPosts(req, res, next) {
+export async function getTaggedArticles(req, res, next) {
   try {
-    const tags = await Tag.query().findById(req.params.id).eager('posts');
+    const tags = await Tag.query().findById(req.params.id).eager('articles');
     return responseHandler(res, 200, tags);
   } catch (error) {
     return next(error);
   }
 }
 
-export async function getTaggedPostsByName(req, res, next) {
+export async function getTaggedArticlesByName(req, res, next) {
   try {
     const tags = await Tag.query()
       .where({ name: req.params.name })
-      .eager('[posts]')
+      .eager('[articles]')
       .first();
 
     return responseHandler(res, 200, tags);
@@ -100,12 +100,12 @@ export async function deleteTag(req, res, next) {
   }
 }
 
-export async function relateTagToPost(req, res, next) {
+export async function relateTagToArticle(req, res, next) {
   try {
     const tag = await Tag.query().findById(req.params.id);
     const newRelation = await tag
-      .$relatedQuery('posts')
-      .relate({ id: req.params.postid });
+      .$relatedQuery('articles')
+      .relate({ id: req.params.articleid });
     return res.status(200).json(newRelation);
   } catch (error) {
     /* istanbul ignore next */

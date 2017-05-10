@@ -33,7 +33,7 @@ router.get('/:id', ctrl.getTag);
  * @apiSuccess (200) {Object[]} posts List of posts.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
-router.get('/:name/posts', ctrl.getTaggedPostsByName);
+router.get('/:name/articles', ctrl.getTaggedArticlesByName);
 /**
  * @api {get} /tags/posts/:id      Get related posts from tag id
  * @apiName GetTaggedPosts
@@ -43,7 +43,7 @@ router.get('/:name/posts', ctrl.getTaggedPostsByName);
  * @apiSuccess (200) {Object[]} posts List of posts.
  * @apiError {Object} 400 Some parameters may contain invalid values.
  */
-router.get('/posts/:id', ctrl.getTaggedPosts);
+router.get('/articles/:id', ctrl.getTaggedArticles);
 /**
  * @api {post} /tags                Create tag
  * @apiName CreateTAg
@@ -94,16 +94,16 @@ router.patch('/:id', isAuthenticated, ctrl.updateTag);
 router.delete('/:id', isAuthenticated, ctrl.deleteTag);
 /**
  * @api {get} /tags/:id/relate/:postid    Relate tag to post
- * @apiName RelateTagToPost
+ * @apiName RelateTagToArticle
  * @apiGroup Tag
  * @apiPermission admin
  * @apiUse authHeader
  * @apiParam {Number} id      The tag id
- * @apiPAram {String} postid  the id (uuid) of the post to relate
+ * @apiPAram {String} articleid  the id (uuid) of the post to relate
  * @apiSuccess 204
  * @apiError {Object} 400 Some parameters may contain invalid values.
  * @apiError {Object} 401 Unauthorized. You must be logged in to create a tag.
  */
-router.get('/:id/relate/:postid', ctrl.relateTagToPost);
+router.get('/:id/relate/:articleid', ctrl.relateTagToArticle);
 
 export default router;

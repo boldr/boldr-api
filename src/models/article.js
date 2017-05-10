@@ -8,9 +8,9 @@ import Attachment from './attachment';
 import BaseModel from './base';
 import Media from './media';
 
-class Post extends BaseModel {
+class Article extends BaseModel {
   static get tableName() {
-    return 'post';
+    return 'article';
   }
 
   static get softDelete() {
@@ -28,7 +28,7 @@ class Post extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: User,
         join: {
-          from: 'post.userId',
+          from: 'article.userId',
           to: 'user.id',
         },
       },
@@ -36,10 +36,10 @@ class Post extends BaseModel {
         relation: Model.ManyToManyRelation,
         modelClass: Tag,
         join: {
-          from: 'post.id',
+          from: 'article.id',
           through: {
-            from: 'post_tag.postId',
-            to: 'post_tag.tagId',
+            from: 'article_tag.articleId',
+            to: 'article_tag.tagId',
           },
           to: 'tag.id',
         },
@@ -48,10 +48,10 @@ class Post extends BaseModel {
         relation: Model.ManyToManyRelation,
         modelClass: Media,
         join: {
-          from: 'post.id',
+          from: 'article.id',
           through: {
-            from: 'post_media.postId',
-            to: 'post_media.mediaId',
+            from: 'article_media.articleId',
+            to: 'article_media.mediaId',
           },
           to: 'media.id',
         },
@@ -60,4 +60,4 @@ class Post extends BaseModel {
   }
 }
 
-export default Post;
+export default Article;

@@ -2,7 +2,7 @@ import { Model } from 'objection';
 import BaseModel from './base';
 import MediaType from './mediaType';
 import User from './user';
-import Post from './post';
+import Article from './article';
 
 class Media extends BaseModel {
   static get tableName() {
@@ -28,16 +28,16 @@ class Media extends BaseModel {
           to: 'user.id',
         },
       },
-      posts: {
+      articles: {
         relation: Model.ManyToManyRelation,
-        modelClass: Post,
+        modelClass: Article,
         join: {
           from: 'media.id',
           through: {
-            from: 'post_media.mediaId',
-            to: 'post_media.postId',
+            from: 'article_media.mediaId',
+            to: 'article_media.articleId',
           },
-          to: 'post.id',
+          to: 'article.id',
         },
       },
     };

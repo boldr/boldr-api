@@ -68,14 +68,12 @@ module.exports = task('db', async () => {
 
 async function dropDatabase(db) {
   await db.schema.dropTableIfExists('block_relation');
-  await db.schema.dropTableIfExists('post_attachment');
-  await db.schema.dropTableIfExists('post_tag');
-  await db.schema.dropTableIfExists('post_comment');
+  await db.schema.dropTableIfExists('article_tag');
   await db.schema.dropTableIfExists('user_role');
   await db.schema.dropTableIfExists('template_page');
   await db.schema.dropTableIfExists('menu_menu_detail');
   await db.schema.dropTableIfExists('block');
-  await db.schema.dropTableIfExists('post_media');
+  await db.schema.dropTableIfExists('article_media');
   await db.schema.dropTableIfExists('media');
   await db.schema.dropTableIfExists('media_type');
   await db.schema.dropTableIfExists('content_type');
@@ -88,8 +86,9 @@ async function dropDatabase(db) {
   await db.schema.dropTableIfExists('tag');
   await db.schema.dropTableIfExists('verification_token');
   await db.schema.dropTableIfExists('reset_token');
-  await db.schema.dropTableIfExists('post');
+  await db.schema.dropTableIfExists('article');
   await db.schema.dropTableIfExists('attachment');
+  await db.schema.dropTableIfExists('social');
   await db.schema.dropTableIfExists('user');
   await db.schema.dropTableIfExists('role');
   await db.schema.dropTableIfExists('migrations_lock');

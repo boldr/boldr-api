@@ -56,13 +56,6 @@ export async function registerUser(req, res, next) {
       lastName: req.body.lastName,
       username: req.body.username,
       avatarUrl: req.body.avatarUrl,
-      social: {
-        facebook: { url: 'https://facebook.com' },
-        twitter: { url: 'https://twitter.com' },
-        linkedin: { url: 'https://linkedin.com' },
-        google: { url: 'https://google.com' },
-        github: { url: 'https://github.com' },
-      },
     };
 
     const newUser = await objection.transaction(User, async User => {

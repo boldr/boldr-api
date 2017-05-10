@@ -1,24 +1,24 @@
 import { Model } from 'objection';
 import Media from '../media';
-import Post from '../post';
+import Article from '../article';
 import BaseModel from '../base';
 
 /**
- * This is the join table connecting media to posts.
+ * This is the join table connecting media to articles.
  *
  * @see ../Media
- * @see ../Post
+ * @see ../Article
  * @extends ../BaseModel
  */
-class PostMedia extends BaseModel {
+class ArticleMedia extends BaseModel {
   static get tableName() {
-    return 'post_media';
+    return 'article_media';
   }
 
   static addTimestamps = false;
 
   static get idColumn() {
-    return ['postId', 'mediaId'];
+    return ['articleId', 'mediaId'];
   }
 
   static get relationMappings() {
@@ -27,20 +27,20 @@ class PostMedia extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: Media,
         join: {
-          from: 'post_media.mediaId',
+          from: 'article_media.mediaId',
           to: 'media.id',
         },
       },
-      post: {
+      article: {
         relation: Model.BelongsToOneRelation,
-        modelClass: Post,
+        modelClass: Article,
         join: {
-          from: 'post_media.postId',
-          to: 'post.id',
+          from: 'article_media.articleId',
+          to: 'article.id',
         },
       },
     };
   }
 }
 
-export default PostMedia;
+export default ArticleMedia;

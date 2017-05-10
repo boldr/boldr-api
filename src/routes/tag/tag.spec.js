@@ -37,20 +37,20 @@ describe('Tags API Endpoint', () => {
       expect(typeof res.body.name).toBe('string');
     });
   });
-  test('+++ GET /tags/posts/:id', () => {
-    return agent.get('/api/v1/tags/posts/1').expect(res => {
+  test('+++ GET /tags/articles/:id', () => {
+    return agent.get('/api/v1/tags/articles/1').expect(res => {
       expect(res.status).toBe(200);
       expect(typeof res.body).toBe('object');
       expect(typeof res.body.name).toBe('string');
       expect(typeof res.body.posts).not.toBeNull();
     });
   });
-  test('+++ GET /tags/:name/posts', () => {
-    return agent.get('/api/v1/tags/javascript/posts').expect(res => {
+  test('+++ GET /tags/:name/articles', () => {
+    return agent.get('/api/v1/tags/javascript/articles').expect(res => {
       expect(res.status).toBe(200);
       expect(typeof res.body).toBe('object');
       expect(typeof res.body.name).toBe('string');
-      expect(typeof res.body.posts).not.toBeNull();
+      expect(typeof res.body.articles).not.toBeNull();
     });
   });
   test('+++ Post /tags - should fail without authentication.', () => {

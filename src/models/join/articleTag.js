@@ -1,24 +1,24 @@
 import { Model } from 'objection';
 import Tag from '../tag';
-import Post from '../post';
+import Article from '../article';
 import BaseModel from '../base';
 
 /**
- * This is the join table connecting tags to posts.
+ * This is the join table connecting tags to articles.
  *
  * @see ../Tag
- * @see ../Post
+ * @see ../Article
  * @extends ../BaseModel
  */
-class PostTag extends BaseModel {
+class ArticleTag extends BaseModel {
   static get tableName() {
-    return 'post_tag';
+    return 'article_tag';
   }
 
   static addTimestamps = false;
 
   static get idColumn() {
-    return ['postId', 'tagId'];
+    return ['articleId', 'tagId'];
   }
 
   static get relationMappings() {
@@ -27,20 +27,20 @@ class PostTag extends BaseModel {
         relation: Model.BelongsToOneRelation,
         modelClass: Tag,
         join: {
-          from: 'post_tag.tagId',
+          from: 'article_tag.tagId',
           to: 'tag.id',
         },
       },
-      post: {
+      article: {
         relation: Model.BelongsToOneRelation,
-        modelClass: Post,
+        modelClass: Article,
         join: {
-          from: 'post_tag.postId',
-          to: 'post.id',
+          from: 'article_tag.articleId',
+          to: 'article.id',
         },
       },
     };
   }
 }
 
-export default PostTag;
+export default ArticleTag;

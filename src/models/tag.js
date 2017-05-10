@@ -1,7 +1,7 @@
 import { Model } from 'objection';
 import BaseModel from './base';
 // Related Model
-import Post from './post';
+import Article from './article';
 
 class Tag extends BaseModel {
   static get tableName() {
@@ -36,16 +36,16 @@ class Tag extends BaseModel {
   };
   static get relationMappings() {
     return {
-      posts: {
+      articles: {
         relation: Model.ManyToManyRelation,
-        modelClass: Post,
+        modelClass: Article,
         join: {
           from: 'tag.id',
           through: {
-            from: 'post_tag.tagId',
-            to: 'post_tag.postId',
+            from: 'article_tag.tagId',
+            to: 'article_tag.articleId',
           },
-          to: 'post.id',
+          to: 'article.id',
         },
       },
     };

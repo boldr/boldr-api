@@ -94,12 +94,12 @@ module.exports.up = async db => {
     table.index('url');
     table.index('mediaType');
   });
-  await db.schema.createTable('post_media', table => {
+  await db.schema.createTable('article_media', table => {
     table
-      .uuid('postId')
+      .uuid('articleId')
       .notNullable()
       .references('id')
-      .inTable('post')
+      .inTable('article')
       .onDelete('cascade')
       .onUpdate('cascade');
     table
@@ -109,7 +109,7 @@ module.exports.up = async db => {
       .inTable('media')
       .onDelete('cascade')
       .onUpdate('cascade');
-    table.primary(['postId', 'mediaId']);
+    table.primary(['articleId', 'mediaId']);
   });
 };
 
@@ -119,7 +119,7 @@ module.exports.down = async db => {
   await db.schema.dropTableIfExists('block_relation');
   await db.schema.dropTableIfExists('media_type');
   await db.schema.dropTableIfExists('media');
-  await db.schema.dropTableIfExists('post_media');
+  await db.schema.dropTableIfExists('article_media');
 };
 
 module.exports.configuration = { transaction: true };

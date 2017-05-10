@@ -4,7 +4,7 @@ import db from '../../services/postgres';
 import app from '../../app';
 
 const agent = request.agent(app);
-describe('Posts API Endpoint', () => {
+describe('Articles API Endpoint', () => {
   let token;
   beforeAll(async () => {
     const loginData = {
@@ -26,9 +26,9 @@ describe('Posts API Endpoint', () => {
     });
   });
 
-  it('GET /posts -- List', async () => {
+  it('GET /articles -- List', async () => {
     const { status, body } = await agent
-      .get('/api/v1/posts')
+      .get('/api/v1/articles')
       .set('Accept', 'application/json');
 
     expect(status).toBe(200);
@@ -37,25 +37,25 @@ describe('Posts API Endpoint', () => {
     expect(typeof body.results[0].slug).toBe('string');
   });
 
-  it('GET /posts/:id -- By id', async () => {
+  it('GET /articles/:id -- By id', async () => {
     const { status, body } = await agent
-      .get('/api/v1/posts/5c9ed236-79f0-4ff7-93bd-2815f06c74b4')
+      .get('/api/v1/articles/5c9ed236-79f0-4ff7-93bd-2815f06c74b4')
       .set('Accept', 'application/json');
     expect(status).toBe(200);
     expect(typeof body).toBe('object');
   });
 
-  it('GET /posts/slug/:slug -- By slug', async () => {
+  it('GET /articles/slug/:slug -- By slug', async () => {
     const { status, body } = await agent
-      .get('/api/v1/posts/slug/nother-one')
+      .get('/api/v1/articles/slug/nother-one')
       .set('Accept', 'application/json');
     expect(status).toBe(200);
     expect(typeof body).toBe('object');
   });
 
-  it('POST /posts -- Fails without a title', async () => {
+  it('POST /articles -- Fails without a title', async () => {
     const { status } = await agent
-      .post('/api/v1/posts')
+      .post('/api/v1/articles')
       .set('Accept', 'application/json')
       .set('Authorization', `Bearer ${token}`)
       .send({
@@ -70,9 +70,9 @@ describe('Posts API Endpoint', () => {
     expect(status).toBe(400);
   });
 
-  it('POST /posts -- Creates new post', async () => {
+  it('POST /articles -- Creates new article', async () => {
     const { status, body } = await agent
-      .post('/api/v1/posts')
+      .post('/api/v1/articles')
       .set('Accept', 'application/json')
       .set('Authorization', `Bearer ${token}`)
       .send({
@@ -88,9 +88,9 @@ describe('Posts API Endpoint', () => {
     expect(typeof body).toBe('object');
     expect(body.published).toEqual(true);
   });
-  it('POST /posts -- Creating a post fails if it already exists', async () => {
+  it('POST /articles -- Creating a article fails if it already exists', async () => {
     const { status, body } = await agent
-      .post('/api/v1/posts')
+      .post('/api/v1/articles')
       .set('Accept', 'application/json')
       .set('Authorization', `Bearer ${token}`)
       .send({
@@ -105,9 +105,9 @@ describe('Posts API Endpoint', () => {
     expect(status).toBe(500);
     expect(typeof body).toBe('object');
   });
-  it('PUT /posts/:id -- Update a post', async () => {
+  it('PUT /articles/:id -- Update an article', async () => {
     const { status, body } = await agent
-      .put('/api/v1/posts/cb61bbae-c91e-4014-b665-3485734b88fb')
+      .put('/api/v1/articles/cb61bbae-c91e-4014-b665-3485734b88fb')
       .set('Accept', 'application/json')
       .set('Authorization', `Bearer ${token}`)
       .send({
@@ -120,9 +120,9 @@ describe('Posts API Endpoint', () => {
     expect(status).toBe(202);
     expect(typeof body).toBe('object');
   });
-  it('POST /posts/:id -- Add tag to post', async () => {
+  it('POST /articles/:id -- Add tag to article', async () => {
     const { status, body } = await agent
-      .post('/api/v1/posts/cb61bbae-c91e-4014-b665-3485734b88fb')
+      .post('/api/v1/articles/cb61bbae-c91e-4014-b665-3485734b88fb')
       .set('Accept', 'application/json')
       .set('Authorization', `Bearer ${token}`)
       .send({
@@ -134,10 +134,10 @@ describe('Posts API Endpoint', () => {
     expect(typeof body).toBe('object');
   });
   //
-  it('GET /posts/:id/relate/:mediaId -- Relate post to media', async () => {
+  it('GET /articles/:id/relate/:mediaId -- Relate article to media', async () => {
     const { status, body } = await agent
       .get(
-        '/api/v1/posts/5c9ed236-79f0-4ff7-93bd-2815f06c74b4/relate/1c462e26-df71-48ce-b424-4ae9b966e7a0',
+        '/api/v1/articles/5c9ed236-79f0-4ff7-93bd-2815f06c74b4/relate/1c462e26-df71-48ce-b424-4ae9b966e7a0',
       ) // eslint-disable-line
       .set('Accept', 'application/json')
       .set('Authorization', `Bearer ${token}`);
@@ -145,10 +145,10 @@ describe('Posts API Endpoint', () => {
     expect(status).toBe(200);
     expect(typeof body).toBe('object');
   });
-  it('GET /posts/archived -- Get posts with deleted should fail without auth', async () => {
+  it('GET /articles/archived -- Get articles with deleted should fail without auth', async () => {
     // eslint-disable-line
     const { status, body } = await agent
-      .get('/api/v1/posts/archived') // eslint-disable-line
+      .get('/api/v1/articles/archived') // eslint-disable-line
       .set('Accept', 'application/json');
     // .set('Authorization', `Bearer ${token}`);
 

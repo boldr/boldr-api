@@ -40,7 +40,6 @@ module.exports.up = async db => {
     table.date('birthday', 8).nullable();
     table.string('website', 100).nullable();
     table.string('language', 10).notNullable().defaultTo('en_US');
-    table.json('social').nullable();
     table.boolean('verified').defaultTo(false);
 
     table.timestamp('createdAt').notNullable().defaultTo(db.fn.now());
@@ -103,7 +102,7 @@ module.exports.up = async db => {
 
     table.index('name');
   });
-  await db.schema.createTable('post', table => {
+  await db.schema.createTable('article', table => {
     // pk | uuid
     table
       .uuid('id')
@@ -249,7 +248,7 @@ module.exports.up = async db => {
       .primary();
     table.uuid('userId').unsigned().notNullable();
     table.enu('type', ['create', 'update', 'delete', 'register']).notNullable();
-    table.uuid('activityPost').unsigned();
+    table.uuid('activityArticle').unsigned();
     table.uuid('activityUser').unsigned();
     table.uuid('activityAttachment').unsigned();
     table.integer('activityTag').unsigned();
@@ -268,9 +267,9 @@ module.exports.up = async db => {
       .onUpdate('cascade');
 
     table
-      .foreign('activityPost')
+      .foreign('activityArticle')
       .references('id')
-      .inTable('post')
+      .inTable('article')
       .onDelete('cascade')
       .onUpdate('cascade');
     table
@@ -317,16 +316,16 @@ module.exports.up = async db => {
       .onUpdate('cascade');
   });
 
-  await db.schema.createTable('post_tag', table => {
+  await db.schema.createTable('article_tag', table => {
     table.increments('id').primary();
-    table.uuid('postId').unsigned().notNullable();
+    table.uuid('articleId').unsigned().notNullable();
     table.integer('tagId').unsigned().notNullable();
 
-    table.unique(['postId', 'tagId']);
+    table.unique(['articleId', 'tagId']);
     table
-      .foreign('postId')
+      .foreign('articleId')
       .references('id')
-      .inTable('post')
+      .inTable('article')
       .onDelete('cascade')
       .onUpdate('cascade');
     table
@@ -391,7 +390,7 @@ module.exports.down = async db => {
   await db.schema.dropTableIfExists('role');
   await db.schema.dropTableIfExists('user');
   await db.schema.dropTableIfExists('tag');
-  await db.schema.dropTableIfExists('post');
+  await db.schema.dropTableIfExists('article');
   await db.schema.dropTableIfExists('attachment');
   await db.schema.dropTableIfExists('setting');
   await db.schema.dropTableIfExists('menu');
@@ -401,7 +400,7 @@ module.exports.down = async db => {
   await db.schema.dropTableIfExists('activity');
   await db.schema.dropTableIfExists('verification_token');
   await db.schema.dropTableIfExists('reset_token');
-  await db.schema.dropTableIfExists('post_tag');
+  await db.schema.dropTableIfExists('article_tag');
   await db.schema.dropTableIfExists('user_role');
   await db.schema.dropTableIfExists('template_page');
   await db.schema.dropTableIfExists('menu_menu_detail');
