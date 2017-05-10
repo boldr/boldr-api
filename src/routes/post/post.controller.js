@@ -66,29 +66,32 @@ export async function createPost(req, res, next) {
 
     reqTags.map(async tag => {
       debug(tag);
-      const existingTag = await Tag.query().where('name', tag).first();
+      const existingTag = await Tag.query()
+        .where('name', tag)
+        .first()
+        .skipUndefined();
       if (existingTag) {
         debug('existingTag', existingTag);
         await createPostTagRelation(existingTag, createPost);
       } else {
         debug('tag', tag);
-        await createPost.$relatedQuery('tags').insert({ name: tag });
+        await createPost
+          .$relatedQuery('tags')
+          .insert({ name: tag })
+          .skipUndefined();
       }
     });
 
     const relatedFeatureImg = await Media.query()
       .where('url', req.body.featureImage)
-      .first();
-    await PostMedia.query().insert({
-      mediaId: relatedFeatureImg.id,
-      postId: createPost.id,
-    });
-    await Activity.query().insert({
-      id: uuid(),
-      userId: req.user.id,
-      type: 'create',
-      activityPost: createPost.id,
-    });
+      .first()
+      .skipUndefined();
+    await PostMedia.query()
+      .insert({
+        mediaId: relatedFeatureImg.id,
+        postId: createPost.id,
+      })
+      .skipUndefined();
     return responseHandler(res, 201, createPost);
   } catch (error) {
     /* istanbul ignore next */

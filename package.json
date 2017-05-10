@@ -98,6 +98,7 @@
     "winston-daily-rotate-file": "^1.4.6"
   },
   "devDependencies": {
+    "@glimpse/glimpse": "^0.20.8",
     "apidoc": "^0.17.5",
     "apidoc-markdown2": "^0.3.2",
     "babel-cli": "^6.24.1",
@@ -116,7 +117,7 @@
     "eslint-config-boldr": "^0.9.3",
     "faker": "^4.1.0",
     "fast-async": "^6.2.2",
-    "flow-bin": "0.45.0",
+    "flow-bin": "0.46.0",
     "husky": "^0.13.3",
     "jest": "^20.0.0",
     "lint-staged": "^3.4.1",

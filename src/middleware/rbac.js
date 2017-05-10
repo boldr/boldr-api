@@ -36,6 +36,7 @@ export function checkRole(role = null) {
     const userInfo = await User.query()
       .findById(req.user.id)
       .eager('[roles]')
+      .skipUndefined()
       .first();
     const userRole = userInfo.roles[0].id;
     debug(userRole);
