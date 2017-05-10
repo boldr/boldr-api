@@ -108,7 +108,7 @@ export async function registerUser(req, res, next) {
 export async function loginUser(req, res, next) {
   const user = await User.query()
     .where({ email: req.body.email })
-    .eager('roles')
+    .eager('[roles,socialMedia]')
     .first();
   passport.authenticate('local', (err, user, info) => {
     if (err) {
@@ -175,7 +175,9 @@ export async function verifyUser(req, res, next) {
 
 export async function checkAuthentication(req, res, next) {
   try {
-    const validUser = await User.query().findById(req.user.id).eager('roles');
+    const validUser = await User.query()
+      .findById(req.user.id)
+      .eager('[roles,socialMedia]');
 
     if (!validUser) {
       return res.status(401).json('Unauthorized: Please login again.');

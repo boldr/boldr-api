@@ -21,7 +21,7 @@ export async function getUser(req, res, next) {
   try {
     const user = await User.query()
       .findById(req.params.id)
-      .eager('[roles]')
+      .eager('[roles,socialMedia]')
       .omit(['password']);
 
     return responseHandler(res, 200, user);
@@ -36,7 +36,7 @@ export async function getUsername(req, res, next) {
   try {
     const user = await User.query()
       .where({ username: req.params.username })
-      .eager('[roles]')
+      .eager('[roles,socialMedia]')
       .omit(['password'])
       .first();
 
@@ -86,7 +86,7 @@ export async function adminUpdateUser(req, res, next) {
     };
     User.query()
       .patchAndFetchById(req.params.id, payload)
-      .eager('[roles]')
+      .eager('[roles,socialMedia]')
       .then(user => res.status(202).json(user));
   } catch (error) {
     /* istanbul ignore next */
@@ -101,6 +101,7 @@ export async function destroyUser(req, res, next) {
   }
   try {
     requestedUser.$relatedQuery('roles').delete();
+    requestedUser.$relatedQuery('socialMedia').delete();
     await User.query().deleteById(req.params.id);
 
     return res.status(204).json({ message: 'User deleted.' });
