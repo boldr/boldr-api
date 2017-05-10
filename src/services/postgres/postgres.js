@@ -8,6 +8,11 @@ import config from '../../config';
 const knexOpts = {
   client: 'pg',
   connection: config.db.url,
+  searchPath: 'knex,public',
+  pool: {
+    min: 2,
+    max: 10,
+  },
   migrations: {
     tableName: 'migrations',
   },

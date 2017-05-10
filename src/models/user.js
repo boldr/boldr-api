@@ -9,6 +9,7 @@ import VerificationToken from './verificationToken';
 import Post from './post';
 import UserRole from './join/userRole';
 import Media from './media';
+import Social from './social';
 
 const Promise = require('bluebird');
 const bcrypt = Promise.promisifyAll(require('bcrypt'));
@@ -137,6 +138,14 @@ class User extends BaseModel {
         join: {
           from: 'user.id',
           to: 'reset_token.userId',
+        },
+      },
+      socialMedia: {
+        relation: Model.HasOneRelation,
+        modelClass: Social,
+        join: {
+          from: 'user.id',
+          to: 'social.userId',
         },
       },
     };
