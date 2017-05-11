@@ -29,7 +29,8 @@ export default app => {
   );
   app.use(cookieParser(config.token.secret));
   if (
-    process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test'
+    process.env.NODE_ENV === 'development' ||
+    process.env.NODE_ENV === 'test'
   ) {
     app.use(morgan('dev'));
   }
@@ -37,6 +38,15 @@ export default app => {
   app.use(bodyParser.json({ type: 'application/json' }));
   // parse application/x-www-form-urlencoded
   app.use(bodyParser.urlencoded({ extended: true }));
+  app.use(
+    bodyParser.text({ type: 'application/graphql' }),
+    (req, res, next) => {
+      if (req.is('application/graphql')) {
+        req.body = { query: req.body };
+      }
+      next();
+    },
+  );
   app.use(expressValidator());
   app.use(
     methodOverride((req, res) => {

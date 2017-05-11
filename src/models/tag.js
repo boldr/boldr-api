@@ -50,6 +50,10 @@ class Tag extends BaseModel {
       },
     };
   }
+
+  static getTags() {
+    return Tag.query();
+  }
 }
 
 export default Tag;

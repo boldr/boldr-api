@@ -112,7 +112,6 @@ module.exports.up = async db => {
     table.string('title', 140).unique().notNullable();
     table.string('slug', 140).unique().notNullable();
     table.string('featureImage', 255).nullable();
-    table.json('attachments').nullable();
     table.json('meta').nullable();
     table.boolean('featured').defaultTo(false);
     table.json('rawContent');

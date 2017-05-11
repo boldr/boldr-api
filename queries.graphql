@@ -1,0 +1,32 @@
+query{
+	articles(offset:0, limit:10) {
+	  id,
+    title,
+    slug,
+    featureImage
+    featured
+    published
+    excerpt
+    author {
+      id,
+      username,
+      firstName
+    },
+    tags {
+      name
+    },
+    media {
+      fileName
+      safeName
+      thumbName
+      fileDescription
+      mediaType
+      mimetype
+      url
+      path
+      userId
+      createdAt
+      updatedAt
+    }
+	}
+}

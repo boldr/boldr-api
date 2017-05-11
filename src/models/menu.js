@@ -25,6 +25,13 @@ class Menu extends BaseModel {
       },
     };
   }
+
+  static getMenus() {
+    return Menu.query();
+  }
+  static getById(id) {
+    return Menu.query().where({ id });
+  }
 }
 
 export default Menu;

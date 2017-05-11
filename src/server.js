@@ -1,5 +1,6 @@
 /* eslint-disable prefer-destructuring, babel/new-cap */
 import http from 'http';
+import { SubscriptionServer } from 'subscriptions-transport-ws';
 import app from './app';
 import { logger, initializeDb, disconnect, destroyRedis } from './services';
 import config from './config';

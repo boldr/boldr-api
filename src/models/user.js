@@ -151,6 +151,30 @@ class User extends BaseModel {
     };
   }
 
+  static getUserByUsername(username) {
+    return User.query()
+      .where({ username })
+      .eager('[roles,socialMedia]')
+      .then(x => x[0]);
+  }
+
+  static getUsers() {
+    return User.query();
+  }
+
+  static getUserById(id) {
+    return User.query()
+      .where({ id })
+      .eager('[roles,socialMedia]')
+      .then(x => x[0]);
+  }
+
+  static getUserByEmail(email) {
+    return User.query()
+      .where({ email })
+      .eager('[roles,socialMedia]')
+      .then(x => x[0]);
+  }
   fullName() {
     return `${this.firstName} ${this.lastName}`;
   }

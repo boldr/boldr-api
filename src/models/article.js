@@ -58,6 +58,30 @@ class Article extends BaseModel {
       },
     };
   }
+  static getOnlyArticles(offset, limit) {
+    return Article.query().offset(offset).limit(limit);
+  }
+  static getArticles(offset, limit) {
+    return Article.query()
+      .offset(offset)
+      .limit(limit)
+      .eager('[author,tags,media]');
+  }
+  static getArticlesByTag(tag, offset, limit) {
+    return Tag.query().where({ name: tag }).then(([tag]) => {
+      return tag.$relatedQuery('articles').offset(offset).limit(limit);
+    });
+  }
+  static getArticlesByUserId(userId, offset, limit) {
+    return Article.query().where({ userId }).offset(offset).limit(limit);
+  }
+  static getArticleById(id) {
+    return Article.query().where({ id }).then(x => x[0]);
+  }
+
+  static getArticleBySlug(slug) {
+    return Article.query().where({ slug }).then(x => x[0]);
+  }
 }
 
 export default Article;
